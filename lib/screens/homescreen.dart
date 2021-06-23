@@ -24,15 +24,15 @@ class HomeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-
-            //TODO REPLACE WITH CONTENT
-
             //simple navigation
-                NavigationContainer(
-                    icon: Icons.favorite,
-                    text: "Favorites",
-                    passedRoute: LessonScreen.routeName,
-                )
+            Container(
+              child: NavigationContainer(
+                icon: Icons.assessment,
+                text: "Current Lesson",
+                passedRoute: LessonScreen.routeName,
+              )
+            )
+
               ],
             ),
 
