@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:geiger_edu/route_generator.dart';
 import 'package:geiger_edu/screens/homescreen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(MaterialApp(
+    title: 'GEIGER mobile learning',
+    theme: ThemeData(primaryColor: Color(0xFF5dbcd2)),
+    home: MyApp(),
+    onGenerateRoute: RouteGenerator.generateRoute,
+  ));
 }
 
 class MyApp extends StatefulWidget{
