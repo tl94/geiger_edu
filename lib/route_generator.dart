@@ -5,6 +5,7 @@ import 'package:geiger_edu/screens/lessonscreen.dart';
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
+
       case HomeScreen.routeName:
         // MaterialPageRoute transitions to the new route using a platform specific animation.
         return MaterialPageRoute(builder: (context) => HomeScreen());
