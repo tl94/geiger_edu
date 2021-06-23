@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:webview_flutter_plus/webview_flutter_plus.dart';
 
+import 'home_screen.dart';
+
 class LessonScreen extends StatelessWidget {
   static const routeName = '/lessonscreen';
 
@@ -11,8 +13,11 @@ class LessonScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: new Container(),
-        title: Text("GEIGER Mobile Learning"),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pushNamed(context, HomeScreen.routeName),
+        ),
+        title: Text("Password Safety"),
         centerTitle: true,
         backgroundColor: bckColor,
       ),
