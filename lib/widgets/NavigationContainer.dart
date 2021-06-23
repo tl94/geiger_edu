@@ -19,7 +19,8 @@ class _NavigationContainerState extends State<NavigationContainer>{
 
   @override
   Widget build(BuildContext context){
-    return Expanded(
+    return Container(
+      height: 100,
       child: new GestureDetector(
         onTap: () {
           Navigator.pushNamed(context, widget.passedRoute, arguments: {'title': widget.text},
