@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geiger_edu/route_generator.dart';
-import 'package:geiger_edu/screens/homescreen.dart';
+import 'package:geiger_edu/screens/home_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {

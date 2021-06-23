@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:geiger_edu/widgets/NavigationContainer.dart';
 
-import 'lessonscreen.dart';
+import 'lesson_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   static const routeName = '/homescreen';

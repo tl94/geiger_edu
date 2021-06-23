@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:geiger_edu/screens/homescreen.dart';
-import 'package:geiger_edu/screens/lessonscreen.dart';
+import 'package:geiger_edu/screens/home_screen.dart';
+import 'package:geiger_edu/screens/lesson_screen.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
