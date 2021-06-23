@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:geiger_edu/screens/profile_screen.dart';
 import 'package:geiger_edu/widgets/NavigationContainer.dart';
 
 import 'lesson_screen.dart';
@@ -31,6 +32,14 @@ class HomeScreen extends StatelessWidget {
                 text: "Current Lesson",
                 passedRoute: LessonScreen.routeName,
               )
+            ),
+            Spacer(),
+            Container(
+                child: NavigationContainer(
+                  icon: Icons.account_box_rounded,
+                  text: "Profile",
+                  passedRoute: ProfileScreen.routeName,
+                )
             )
 
               ],
