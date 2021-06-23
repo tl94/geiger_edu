@@ -53,6 +53,7 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/
+    - assets/logo/
     - assets/lesson/
     - assets/lesson/password/password_safety/eng/
     - assets/lesson/password/password_safety/eng/img/
