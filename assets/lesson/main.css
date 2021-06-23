@@ -1,0 +1,44 @@
+*{
+	margin: 	0;
+	padding: 	0;
+}
+
+p{
+	font-size: 		1.5rem;
+	font-display: 	block;
+	text-align: 	left;
+	padding-bottom: 4rem;
+}
+
+h1{
+	font-size: 4rem;
+}
+
+html{
+	text-align: 	center;
+	font-family:	verdana;
+}
+
+body{
+	margin: 	auto;
+	padding:	4rem;
+}
+
+img{
+	margin-bottom: 4rem;
+	max-width: 100%;
+}
+.img-small{
+	width: 	15rem;
+}
+.img-medium{
+	width: 	25rem;
+}
+.img-large{
+	width: 	40rem;
+}
+
+.img_button{
+	width: 	100%;
+	height: auto;
+}
