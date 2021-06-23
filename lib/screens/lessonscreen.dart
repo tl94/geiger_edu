@@ -17,11 +17,9 @@ class LessonScreen extends StatelessWidget {
         backgroundColor: bckColor,
       ),
       body: Container(
+
         margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 30),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
+        child:
 
             //TODO REPLACE WITH CONTENT
             WebViewPlus(
@@ -30,10 +28,9 @@ class LessonScreen extends StatelessWidget {
                 controller.loadUrl('assets/lesson/password/password_safety/eng/slide_0.html');
               },
             )
-          ],
-        ),
 
-      ),
-    );
+        ),
+      );
+
   }
 }
