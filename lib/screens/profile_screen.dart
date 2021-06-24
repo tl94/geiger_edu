@@ -7,6 +7,7 @@ import 'package:geiger_edu/widgets/NavigationContainer.dart';
 import 'package:flutter/foundation.dart';
 
 import 'home_screen.dart';
+import '../globals.dart';
 
 class ProfileScreen extends StatelessWidget {
   static const routeName = '/profilescreen';
@@ -16,6 +17,9 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final VoidCallback onEditingComplete;
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -62,15 +66,15 @@ class ProfileScreen extends StatelessWidget {
                     Text("Username", style: TextStyle(fontSize: 20),),
                     SizedBox(width: 60),
                     new Flexible(child: SizedBox( width: 200, child: TextField(
-                      controller: new TextEditingController(text: "Clara Kavali"),
+                      controller: new TextEditingController(text: userName),
                       decoration: InputDecoration(
                         //hintText: 'username',
                         //labelText: 'username'
                       ),
                       maxLines: 1,
                       //maxLength: 14,
-                      onEditingComplete:() { debugPrint('username:'); },)),
-                    )
+                      onSubmitted:(text) { userName = text;  })
+                    ))
             ]),]),
 
             Container(
