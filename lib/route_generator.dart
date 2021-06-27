@@ -12,7 +12,8 @@ class RouteGenerator {
 
       case LessonScreen.routeName:
         // MaterialPageRoute transitions to the new route using a platform specific animation.
-        return MaterialPageRoute(builder: (context) => LessonScreen());
+      // TODO use dynamic lesson path
+        return MaterialPageRoute(builder: (context) => LessonScreen(lessonPath: "assets/lesson/password/password_safety/eng"));
 
       default:
         return MaterialPageRoute(builder: (context) => HomeScreen());

@@ -129,7 +129,7 @@ packages:
     source: sdk
     version: "0.0.0"
   html:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: html
       url: "https://pub.dartlang.org"
