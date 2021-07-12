@@ -1,7 +1,5 @@
 import 'dart:io';
 
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_html/shims/dart_ui.dart';
@@ -90,6 +88,7 @@ class _LessonContainerState extends State<LessonContainer> {
         controller: _pageController,
         children: _getSlides(),
         onPageChanged: _onSlideChanged,
+        allowImplicitScrolling: true,
       ),
     );
   }
