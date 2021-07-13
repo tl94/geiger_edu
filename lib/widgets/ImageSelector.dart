@@ -17,8 +17,8 @@ class _ImageSelectorState extends State<ImageSelector>{
   getList(){
     List<Widget> gst = <Widget>[];
     for(var i in widget.imagePaths){
-    GestureDetector g = new GestureDetector(onTap: widget.onTap(i), child: Image.asset(i));
-    gst.add(g);
+      GestureDetector g = new GestureDetector(onTap: ()=>widget.onTap(i), child: Image.asset(i));
+      gst.add(g);
     }
     return gst;
   }
