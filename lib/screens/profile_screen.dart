@@ -30,14 +30,13 @@ class _ProfileScreenState extends State<ProfileScreen>{
     "assets/img/profile/user-04.png",
     "assets/img/profile/user-10.png"];
 
-  //TODO MOVE DEFAULTIMAGE TO DB
-  String _defaultImage = "assets/img/profile/default.png";
-
   displaySelection(String s){
     print(s);
     setState(() {
       _isVisible = !_isVisible;
-      _defaultImage = s;
+      if(currentImage != s){
+        currentImage = s;
+      }
     });
   }
 
@@ -68,7 +67,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                 children: <Widget>[
                   //** USER IMAGE **
                   GestureDetector(
-                      onTap: ()=>displaySelection(_defaultImage),
+                      onTap: ()=>displaySelection(currentImage),
                       child:Column( children: <Widget>[
                         Container(
                             height: 150,
@@ -81,7 +80,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                                 borderRadius: BorderRadius.circular(5.0)
                             ),
                             child:ClipRect(
-                                child:Image.asset(_defaultImage, fit: BoxFit.fitHeight))
+                                child:Image.asset(currentImage, fit: BoxFit.fitHeight))
                         ),
                         Text("Change Avatar",
                             style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20, color: ProfileScreen.borderColor))
