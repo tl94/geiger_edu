@@ -19,5 +19,7 @@ String apiKey = '6b4c7cac60be10eddc8890c63817e773';
 //TODO: Make a USER Class in model
 String userName = "Clara Kavali";
 String userImg = "assets/img/profile/user_icon.png";
+//User score
+int lessonScore = 225;
 //User profile image
 String currentImage = "assets/img/profile/default.png";

@@ -53,8 +53,10 @@ class _ProfileScreenState extends State<ProfileScreen>{
         backgroundColor: ProfileScreen.bckColor,
       ),
       body: Container(
-        margin: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 20.0),
-        child: Stack(
+        margin: EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
+        child: SingleChildScrollView(
+    child:Column(
+          children: [Stack(
           alignment: Alignment.center,
           textDirection: TextDirection.rtl,
           fit: StackFit.passthrough,
@@ -66,6 +68,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   //** USER IMAGE **
+                  SizedBox(height: 40),
                   GestureDetector(
                       onTap: ()=>displaySelection(currentImage),
                       child:Column( children: <Widget>[
@@ -89,22 +92,54 @@ class _ProfileScreenState extends State<ProfileScreen>{
 
                   //** USER NAME INPUT **
                   LabeledTextField(icon:userImg, label: "Username", text: userName, onSubmitted: (text){ userName = text; } ),
+                  SizedBox(height: 80),
+
+                  //** USER SCORE **
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text("Lesson Score", style: TextStyle(fontSize: 30),),
+                        SizedBox(height: 20),
+                        Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                          Image.asset("assets/img/score_icon.png", height: 40, key: UniqueKey(), ),
+                          Text(lessonScore.toString(), style: TextStyle(fontSize: 40),)
+                        ]),
+                        SizedBox(height: 40),
+                        Text("The Lernscore can help you indentify other peoples overall progress and knowledge base on the discussion-plattform. Share your score with your co-workers to see who is the furthest.                            Improve your score by finishing lessons.", style: TextStyle(fontSize: 20),)
+                  ]),
+
+                  //** USER PROGRESS EXPORT **
+                  SizedBox(height: 40),
+                  OutlinedButton(
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)))    ,
+                      side: MaterialStateProperty.resolveWith<BorderSide>(
+                              (Set<MaterialState> states) {
+                            final Color color = states.contains(MaterialState.pressed)
+                                ? Colors.green
+                                //: Colors.blue;
+                                : Colors.grey; //button is disabled
+                            return BorderSide(color: color, width: 2);
+                          }
+                      )
+                    ),
+                    onPressed: null,
+                    child: Text('Export Learning Progress',style: TextStyle(fontSize: 20)),
+                  ),
+                  SizedBox(height: 40),
                 ]
             ),
             if(_isVisible)
               ImageSelector(crossAxisCount: 3,
                   imagePaths: _imagePaths,
                   onTap: displaySelection
-              ),
-            Container(
-              //TODO: LEARN SCORE
-            ),
-            Container(
-              //TODO: LEARN PROGRESS - API export
-            )
+              )
+
+            ]),
+
           ],
         ),
-
+      )
       ),
     );
   }
