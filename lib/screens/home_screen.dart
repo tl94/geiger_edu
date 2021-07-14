@@ -28,7 +28,7 @@ class HomeScreen extends StatelessWidget {
             //simple navigation
             Container(
               child: NavigationContainer(
-                icon: Icons.assessment,
+                imagePath: "assets/img/continue_lesson.png",
                 text: "Current Lesson",
                 passedRoute: LessonScreen.routeName,
               )
@@ -36,7 +36,7 @@ class HomeScreen extends StatelessWidget {
             Spacer(),
             Container(
                 child: NavigationContainer(
-                  icon: Icons.account_box_rounded,
+                  imagePath: "assets/img/profile/user_icon.png",
                   text: "Profile",
                   passedRoute: ProfileScreen.routeName,
                 )
