@@ -28,14 +28,14 @@ class SelectionScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Container(
-              child: NavigationContainer(
-                imagePath: "assets/img/arrow_right.png",
-                text: "HOME",
-                passedRoute: HomeScreen.routeName,
-                currentValue: 1,
-                maxValue: 4,
-              )
-            ),
+                child: NavigationContainer(
+                  imagePath: "assets/img/password_icon.png",
+                  text: "Passwords",
+                  passedRoute: HomeScreen.routeName,
+                  currentValue: 1,
+                  maxValue: 2,
+                )
+            )
 
               ],
             ),
