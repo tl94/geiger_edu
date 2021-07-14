@@ -1,41 +1,54 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:webview_flutter_plus/webview_flutter_plus.dart';
+import 'package:geiger_edu/widgets/LessonContainer.dart';
+import 'package:geiger_edu/widgets/SlideContainer.dart';
 
-import 'home_screen.dart';
-
-class LessonScreen extends StatelessWidget {
+class LessonScreen extends StatefulWidget {
   static const routeName = '/lessonscreen';
-
   static const bckColor = const Color(0xFF5dbcd2); //0xFFedb879
+
+  final String lessonPath;
+
+  LessonScreen({required this.lessonPath}) : super();
+
+  @override
+  _LessonScreenState createState() => _LessonScreenState();
+}
+
+class _LessonScreenState extends State<LessonScreen> {
+  List<String> _slidePaths = [];
+
+  Future<List<String>> getSlidePaths(BuildContext context) async {
+    List<String> filenames = [];
+    var manifestContent =
+        await DefaultAssetBundle.of(context).loadString('AssetManifest.json');
+    Map<String, dynamic> manifestMap = json.decode(manifestContent);
+    var filePaths = manifestMap.keys
+        .where((String key) =>
+            key.contains(widget.lessonPath))
+        .where((String key) => key.contains('.html'))
+        .toList();
+    for (var path in filePaths) {
+      debugPrint(path.runtimeType.toString());
+      debugPrint(path);
+      debugPrint((await File(path).exists()).toString());
+    }
+    setState(() {
+      _slidePaths = filePaths;
+    });
+    return filenames;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pushNamed(context, HomeScreen.routeName),
-        ),
-        title: Text("Password Safety"),
-        centerTitle: true,
-        backgroundColor: bckColor,
-      ),
-      body: Container(
-
-        margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 30),
-        child:
-
-            //TODO REPLACE WITH CONTENT
-            WebViewPlus(
-              //javascriptMode: JavascriptMode.unrestricted,
-              onWebViewCreated: (controller) {
-                controller.loadUrl('assets/lesson/password/password_safety/eng/slide_0.html');
-              },
-            )
-
-        ),
-      );
-
+    if (_slidePaths.isEmpty) {
+      getSlidePaths(context);
+      return new Container(color: Colors.white);
+    } else {
+      return new LessonContainer(slidePaths: _slidePaths);
+    }
   }
 }
