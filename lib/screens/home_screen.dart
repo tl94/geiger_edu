@@ -4,6 +4,7 @@ import 'package:geiger_edu/screens/profile_screen.dart';
 import 'package:geiger_edu/widgets/NavigationContainer.dart';
 
 import 'lesson_screen.dart';
+import 'package:geiger_edu/globals.dart';
 
 class HomeScreen extends StatelessWidget {
   static const routeName = '/homescreen';
@@ -20,12 +21,13 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: bckColor,
       ),
       body: Container(
-        margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 30),
+        margin: EdgeInsets.fromLTRB(20, 20, 20, 20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            //simple navigation
+            Align(alignment: Alignment.center,child: Text("Your Progress", style: TextStyle(fontSize: 20, color: txtColor)) ),
+            Image.asset("assets/img/progress_placeholder.png", height: 150, key: UniqueKey(), ),
             Container(
               child: NavigationContainer(
                 imagePath: "assets/img/continue_lesson.png",

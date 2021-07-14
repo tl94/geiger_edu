@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geiger_edu/globals.dart';
 
 class NavigationContainer extends StatefulWidget{
 
@@ -14,12 +15,10 @@ class NavigationContainer extends StatefulWidget{
 
 class _NavigationContainerState extends State<NavigationContainer>{
 
-  final txtColor = const Color(0xff2f4858);
-
   @override
   Widget build(BuildContext context){
     return Container(
-      height: 100,
+      height: 80,
       child: new GestureDetector(
         onTap: () {
           Navigator.pushNamed(context, widget.passedRoute, arguments: {'title': widget.text},
@@ -28,7 +27,7 @@ class _NavigationContainerState extends State<NavigationContainer>{
 
         child:Container(
           padding: EdgeInsets.all(20.0),
-          margin: EdgeInsets.all(10.0),
+          //margin: EdgeInsets.all(10.0),
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(5.0),

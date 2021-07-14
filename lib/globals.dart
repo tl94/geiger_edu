@@ -2,6 +2,7 @@
 library geiger_edu.globals;
 
 import 'package:flutter/cupertino.dart';
+final txtColor = const Color(0xff2f4858);
 
 bool appRunning = false;
 bool isOnline = false;

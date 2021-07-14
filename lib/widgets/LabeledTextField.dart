@@ -21,7 +21,7 @@ class _LabeledTextFieldState extends State<LabeledTextField>{
           children: <Widget>[
             Image.asset(widget.icon, height: 30, key: UniqueKey(), ),
             SizedBox(width: 10),
-            Text(widget.label, style: TextStyle(fontSize: 20),),
+            Text(widget.label, style: TextStyle(fontSize: 20)),
             SizedBox(width: 60),
             new Flexible(child: SizedBox( width: 200, child: TextField(
                 controller: new TextEditingController(text: widget.text),
