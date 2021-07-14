@@ -3,12 +3,20 @@ import 'package:geiger_edu/globals.dart';
 
 class NavigationContainer extends StatefulWidget{
 
-  @override
   final String passedRoute;
   final String text;
   final String imagePath;
 
-  NavigationContainer({required String this.passedRoute, required String this.text, required this.imagePath}) : super();
+  final int currentValue;
+  final int maxValue;
+
+  NavigationContainer({
+    required this.passedRoute,
+    required this.text,
+    required this.imagePath,
+    this.currentValue = 99,
+    this.maxValue = 99
+  }) : super();
 
   _NavigationContainerState createState() => _NavigationContainerState();
 }
@@ -55,7 +63,43 @@ class _NavigationContainerState extends State<NavigationContainer>{
                     fontFamily:"Fontin",
                   ),
                 ),
-          Expanded(child: SizedBox(width: 15),),
+
+            Expanded(child: SizedBox(width: 1),),
+                if(widget.currentValue != 99)
+            Column(children: [
+              Text(widget.currentValue.toString()+"/"+widget.maxValue.toString(), style:TextStyle(fontSize:20.0)),
+
+              Flexible(
+                child:  new ListView.builder(
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                itemCount: widget.currentValue,
+                itemBuilder: (BuildContext context, int i) {
+                return Container(
+                  margin: EdgeInsets.fromLTRB(4,0,0,0),
+                  width:100/widget.maxValue,
+                  height: 1,
+                  decoration: BoxDecoration(color: Colors.green, borderRadius: BorderRadius.circular(2))
+                );
+                })
+              ),
+              Flexible(
+                child:  new ListView.builder(
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                itemCount: widget.maxValue-widget.currentValue,
+                itemBuilder: (BuildContext context, int i) {
+                  return Container(
+                      margin: EdgeInsets.fromLTRB(4,0,0,0),
+                      width:100/widget.maxValue,
+                      height: 1,
+                      decoration: BoxDecoration(color: Colors.orange, borderRadius: BorderRadius.circular(2))
+                  );
+
+                      })
+              ),
+            ],),
+          Expanded(child: SizedBox(width: 1),),
           Image.asset("assets/img/arrow_right.png", height: 20, key: UniqueKey(), )
               ]
 

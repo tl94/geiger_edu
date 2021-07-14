@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:geiger_edu/screens/profile_screen.dart';
+import 'package:geiger_edu/screens/selection_screen.dart';
 import 'package:geiger_edu/widgets/NavigationContainer.dart';
 
 import 'lesson_screen.dart';
@@ -34,6 +35,14 @@ class HomeScreen extends StatelessWidget {
                 text: "Current Lesson",
                 passedRoute: LessonScreen.routeName,
               )
+            ),
+            SizedBox(height: 20),
+            Container(
+                child: NavigationContainer(
+                  imagePath: "assets/img/select_lesson.png",
+                  text: "Select Lesson",
+                  passedRoute: SelectionScreen.routeName,
+                )
             ),
             Spacer(),
             Container(
