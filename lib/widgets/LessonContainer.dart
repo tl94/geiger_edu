@@ -7,8 +7,6 @@ import 'package:geiger_edu/widgets/SlideContainer.dart';
 
 import 'package:html/parser.dart';
 
-import 'package:webview_flutter_plus/webview_flutter_plus.dart';
-
 class LessonContainer extends StatefulWidget {
   final List<String> slidePaths;
 
