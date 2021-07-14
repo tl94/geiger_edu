@@ -15,7 +15,6 @@ class SlideContainer extends StatefulWidget {
 }
 
 class _SlideContainerState extends State<SlideContainer> {
-  String filePath = "";
 
   Widget build(BuildContext context) {
     return InAppWebView(
