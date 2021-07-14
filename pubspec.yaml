@@ -34,12 +34,24 @@ dependencies:
   webview_flutter: ^2.0.9
   flutter_inappwebview: ^5.3.2
 
+  # Flutter plugin for SQLite, a self-contained, high-reliability, embedded, SQL database engine
+  sqflite: ^2.0.0
+  path_provider: ^2.0.2
+
+  #Hive database
+  hive: ^2.0.4
+  hive_flutter: ^1.0.0
+
   #to load svg images
   flutter_svg: ^0.22.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+    #hive database generators
+  build_runner: ^1.12.2
+  hive_generator: ^1.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
