@@ -23,7 +23,6 @@ class User extends HiveObject{
     this.userScore = 0
   });
 
-
   //not used
   factory User.fromJson(Map<String, dynamic> json)=> User(
     userName: json["username"],
