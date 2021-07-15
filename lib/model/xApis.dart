@@ -1,7 +1,7 @@
 import 'package:geiger_edu/model/xApiObj.dart';
 
-class xApis {
-  final List<xApiObj>? xapis;
+class XApis {
+  final List<XApiObj>? xapis;
 
-  xApis({this.xapis});
+  XApis({this.xapis});
 }
