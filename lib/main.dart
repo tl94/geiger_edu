@@ -19,7 +19,7 @@ void main() async {
   //Register adapters
   Hive.registerAdapter(UserAdapter());
 
-  Hive.deleteBoxFromDisk('users'); //TODO REMOVE IN PRODUCTION ENV
+  await Hive.deleteBoxFromDisk('users'); //TODO REMOVE IN PRODUCTION ENV
 
   bool exists = await Hive.boxExists('users');
   if(!exists){//if it doesnt exist
