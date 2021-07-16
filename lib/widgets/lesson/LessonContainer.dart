@@ -1,11 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_html/shims/dart_ui.dart';
-import 'package:geiger_edu/widgets/SlideContainer.dart';
-
+import 'package:geiger_edu/widgets/lesson/SlideContainer.dart';
+import 'package:geiger_edu/widgets/lesson/lesson_complete_slide.dart';
 import 'package:html/parser.dart';
 
 class LessonContainer extends StatefulWidget {
@@ -20,6 +17,7 @@ class _LessonContainerState extends State<LessonContainer> {
   var _title = "";
   var _slideIndex = 0;
   List<Widget> _slides = [];
+  List<String> _slideTitles = [];
   final _pageController = new PageController();
   static const _buttonColor = Color.fromRGBO(0, 0, 0, 0.2);
 
@@ -29,8 +27,8 @@ class _LessonContainerState extends State<LessonContainer> {
   @override
   initState() {
     super.initState();
+    _getSlideTitles();
     _getSlides();
-    _getLessonTitle(context);
   }
 
   List<Widget> _getSlides() {
@@ -40,6 +38,7 @@ class _LessonContainerState extends State<LessonContainer> {
       SlideContainer slide = new SlideContainer(slidePath: sp);
       slides.add(slide);
     }
+    slides.add(new LessonCompleteSlide());
     setState(() {
       _slides = slides;
     });
@@ -48,7 +47,6 @@ class _LessonContainerState extends State<LessonContainer> {
 
   String _getCurrentSlidePath() {
     var pageNumber = _slideIndex;
-    print(pageNumber);
     var currentSlide = widget.slidePaths[pageNumber];
     return currentSlide;
   }
@@ -63,15 +61,11 @@ class _LessonContainerState extends State<LessonContainer> {
       var content = e.attributes["content"];
       if (content != null) title = content;
     }
-    setState(() {
-      _title = title;
-    });
     return title;
   }
 
-  Future<String> _getSlideTitle() async {
-    var doc = parse(await DefaultAssetBundle.of(context)
-        .loadString(_getCurrentSlidePath()));
+  Future<String> _getSlideTitle(String slidePath) async {
+    var doc = parse(await DefaultAssetBundle.of(context).loadString(slidePath));
     var elems = doc.getElementsByTagName("title");
     var title;
     for (var e in elems) {
@@ -81,20 +75,26 @@ class _LessonContainerState extends State<LessonContainer> {
     return title;
   }
 
-  Future<VoidCallback?> _onSlideChanged(int page) async {
-    setState(() {
-      _slideIndex = page;
-    });
-    var title;
-    if (_slideIndex == 0) {
-      title = await _getLessonTitle(context);
-    } else {
-      title = await _getSlideTitle();
+  Future<List<String>> _getSlideTitles() async {
+    List<String> slideTitles = [];
+    var slidePaths = widget.slidePaths;
+    slideTitles.add(await _getLessonTitle(context));
+    for (int i = 1; i < slidePaths.length; i++) {
+      slideTitles.add(await _getSlideTitle(slidePaths[i]));
     }
+    slideTitles.add("Complete!");
+    setState(() {
+      _slideTitles = slideTitles;
+      _title = slideTitles[0];
+    });
+    return slideTitles;
+  }
+
+  Future<VoidCallback?> _onSlideChanged(int page) async {
+    var title = _slideTitles[page];
     setState(() {
       _title = title;
     });
-    return null;
   }
 
   void _previousPage() async {
@@ -132,7 +132,7 @@ class _LessonContainerState extends State<LessonContainer> {
           Align(
               alignment: Alignment.centerRight,
               child: Material(
-                  color: Colors.white,
+                  color: Colors.transparent,
                   child: Ink(
                       decoration: const ShapeDecoration(
                         color: _buttonColor,
