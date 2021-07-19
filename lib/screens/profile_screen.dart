@@ -35,11 +35,10 @@ class _ProfileScreenState extends State<ProfileScreen>{
     "assets/img/profile/user-10.png"];
 
   displaySelection(String s){
-    print(s);
     setState(() {
       _isVisible = !_isVisible;
-      if(currentImage != s){
-        currentImage = s;
+      if(DB.getDefaultUser()!.userImagePath != s){
+        DB.editDefaultUser(null, s, null);
       }
     });
   }
@@ -74,7 +73,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                   //** USER IMAGE **
                   SizedBox(height: 40),
                   GestureDetector(
-                      onTap: ()=>displaySelection(currentImage),
+                      onTap: ()=>displaySelection(DB.getDefaultUser()!.userImagePath),
                       child:Column( children: <Widget>[
                         Container(
                             height: 150,
@@ -87,7 +86,14 @@ class _ProfileScreenState extends State<ProfileScreen>{
                                 borderRadius: BorderRadius.circular(5.0)
                             ),
                             child:ClipRect(
-                                child:Image.asset(currentImage, fit: BoxFit.fitHeight))
+                                child: HiveListener(
+                                  box: userBox,
+                                  keys: [ defaultUser ], // keys is optional to specify listening value changes
+                                  builder: (box) {
+                                    return Image.asset( DB.getDefaultUser()!.userImagePath.toString(), fit: BoxFit.fitHeight);
+                                  },
+                                )
+                            )
                         ),
                         Text("Change Avatar",
                             style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20, color: ProfileScreen.borderColor))
@@ -97,9 +103,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                   //** USER NAME INPUT **
                   HiveListener(
                     box: userBox,
-                    keys: [
-                      'default'
-                    ], // keys is optional to specify listening value changes
+                    keys: [ defaultUser ], // keys is optional to specify listening value changes
                     builder: (box) {
                       return LabeledTextField(
                           icon: userImg,
@@ -121,7 +125,13 @@ class _ProfileScreenState extends State<ProfileScreen>{
                         SizedBox(height: 20),
                         Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                           Image.asset("assets/img/score_icon.png", height: 40, key: UniqueKey(), ),
-                          Text(lessonScore.toString(), style: TextStyle(fontSize: 40),)
+                          HiveListener(
+                            box: userBox,
+                            keys: [ defaultUser ], // keys is optional to specify listening value changes
+                            builder: (box) {
+                              return Text( DB.getDefaultUser()!.userScore.toString(), style: TextStyle(fontSize: 40),);
+                            },
+                          )
                         ]),
                         SizedBox(height: 40),
                         Text("The Lernscore can help you indentify other peoples overall progress and knowledge base on the discussion-plattform. Share your score with your co-workers to see who is the furthest.                            Improve your score by finishing lessons.", style: TextStyle(fontSize: 20),)

@@ -33,7 +33,7 @@ class DB {
 
   static void createDefaultUser(){
     //add default user to box
-    User defaultUser = new User(userName: 'Turan', userImagePath: 'assets/img/profile/user_icon.png', userScore: 20);
+    User defaultUser = new User(userName: 'Turan', userImagePath: 'assets/img/profile/default.png', userScore: 20);
     userBox.put("default", defaultUser);
   }
 
@@ -44,14 +44,14 @@ class DB {
   static void editDefaultUser(String? userName, String? userImagePath, int? userScore){
     User? tempUser = getDefaultUser();
 
-    if(tempUser!.userName != userName && userName != null)
-    tempUser.userName = userName;
+    if(tempUser!.userName != userName && null != userName)
+      tempUser.userName = userName;
 
-    if(tempUser.userImagePath != userImagePath && userImagePath != null)
-    tempUser.userScore = userScore!;
+    if(tempUser.userImagePath != userImagePath && null != userImagePath)
+      tempUser.userImagePath = userImagePath;
 
-    if(tempUser.userScore != userScore && userScore != null)
-    tempUser.userImagePath = userImagePath!;
+    if(tempUser.userScore != userScore && null != userScore)
+      tempUser.userScore = userScore;
 
     //persist modified User object to database
     userBox.put("default", tempUser);
