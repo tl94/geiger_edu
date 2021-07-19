@@ -18,13 +18,15 @@ class DB {
     //Register adapters
     Hive.registerAdapter(UserAdapter());
 
-    bool exists = await Hive.boxExists('users');
-    bool isOpen = Hive.isBoxOpen('users');
+    bool usersExists = await Hive.boxExists('users');
+    bool usersIsOpen = Hive.isBoxOpen('users');
+    bool settingsExists = await Hive.boxExists('settings');
+    bool settingsIsOpen = Hive.isBoxOpen('settings');
 
-    if(!isOpen){
+    if(!usersIsOpen){
       await Hive.openBox<User>('users'); //user table
     }
-    if(!exists){//if it doesnt exist
+    if(!usersExists){//if it doesnt exist
       createDefaultUser();
     }
   }
