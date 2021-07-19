@@ -1,10 +1,8 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:geiger_edu/widgets/LessonContainer.dart';
-import 'package:geiger_edu/widgets/SlideContainer.dart';
+import 'package:geiger_edu/widgets/lesson/LessonContainer.dart';
 
 class LessonScreen extends StatefulWidget {
   static const routeName = '/lessonscreen';
@@ -27,15 +25,9 @@ class _LessonScreenState extends State<LessonScreen> {
         await DefaultAssetBundle.of(context).loadString('AssetManifest.json');
     Map<String, dynamic> manifestMap = json.decode(manifestContent);
     var filePaths = manifestMap.keys
-        .where((String key) =>
-            key.contains(widget.lessonPath))
+        .where((String key) => key.contains(widget.lessonPath))
         .where((String key) => key.contains('.html'))
         .toList();
-    for (var path in filePaths) {
-      debugPrint(path.runtimeType.toString());
-      debugPrint(path);
-      debugPrint((await File(path).exists()).toString());
-    }
     setState(() {
       _slidePaths = filePaths;
     });
