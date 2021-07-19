@@ -9,9 +9,6 @@ import 'package:hive_flutter/hive_flutter.dart';
  Box<Setting> settingBox = Boxes.getSettings();
 
 class DB {
-  //generate boxes
-
-
   static void init() async {
     //** Hive DB Setup **
     WidgetsFlutterBinding.ensureInitialized();
@@ -21,7 +18,7 @@ class DB {
     //Register adapters
     Hive.registerAdapter(UserAdapter());
 
-    await Hive.deleteBoxFromDisk('users'); //TODO REMOVE IN PRODUCTION ENV
+    await Hive.deleteBoxFromDisk('users');    //TODO REMOVE IN PRODUCTION ENV
     await Hive.deleteBoxFromDisk('settings'); //TODO REMOVE IN PRODUCTION ENV
 
     bool exists = await Hive.boxExists('users');
@@ -33,7 +30,7 @@ class DB {
 
   static void createDefaultUser(){
     //add default user to box
-    User defaultUser = new User(userName: 'Turan', userImagePath: 'assets/img/profile/default.png', userScore: 20);
+    User defaultUser = new User(userName: 'Daniel', userImagePath: 'assets/img/profile/default.png', userScore: 100);
     userBox.put("default", defaultUser);
   }
 
