@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:geiger_edu/services/db.dart';
 import 'package:geiger_edu/widgets/LabledSwitch.dart';
+import 'package:hive_listener/hive_listener.dart';
 
+import '../globals.dart';
 import 'home_screen.dart';
 class SettingsScreen extends StatefulWidget {
   static const routeName = '/settings';
@@ -18,7 +21,17 @@ class _SettingsScreenState extends State<SettingsScreen>{
 
   bool isSwitched = false; //0xFFedb879
 
+  switchDarkmode(){
+    DB.editDefaultSetting(!DB.getDefaultSetting()!.darkmode, null, null);
+  }
 
+  switchShowAlias(){
+    DB.editDefaultSetting(null, !DB.getDefaultSetting()!.showAlias, null);
+  }
+
+  switchShowScore(){
+    DB.editDefaultSetting(null, null, !DB.getDefaultSetting()!.showScore);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,20 +51,43 @@ class _SettingsScreenState extends State<SettingsScreen>{
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            HiveListener(
+              box: DB.getSettingBox(),
+              keys: [ defaultSetting ], // keys is optional to specify listening value changes
+              builder: (box) {
+                return LabeledSwitch(
+                  label: "Darkmode",
+                  isSelected: DB.getDefaultSetting()!.darkmode,
+                  onChanged: switchDarkmode,
+                );
+              },
+            ),
 
-            LabeledSwitch(
-                label: "Darkmode",
-                isSelected: false,
-                ),
             SizedBox(height: 20),
             Text("Lessons", style: TextStyle(fontSize: 20)),
-            LabeledSwitch(
-              label: "Show Alias when commenting",
-              isSelected: false,
+
+            HiveListener(
+              box: DB.getSettingBox(),
+              keys: [ defaultSetting ], // keys is optional to specify listening value changes
+              builder: (box) {
+                return LabeledSwitch(
+                  label: "Show Alias when commenting",
+                  isSelected: DB.getDefaultSetting()!.showAlias,
+                  onChanged: switchShowAlias,
+                );
+              },
             ),
-            LabeledSwitch(
-              label: "Show Score when commenting",
-              isSelected: false,
+
+            HiveListener(
+              box: DB.getSettingBox(),
+              keys: [ defaultSetting ], // keys is optional to specify listening value changes
+              builder: (box) {
+                return LabeledSwitch(
+                  label: "Show Score when commenting",
+                  isSelected: DB.getDefaultSetting()!.showScore,
+                  onChanged: switchShowScore,
+                );
+              },
             ),
             Spacer(),
             Text("Mobile Learning v0.2.210719", style: TextStyle(fontSize: 20, color: Colors.grey))

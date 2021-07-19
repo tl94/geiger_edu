@@ -6,12 +6,14 @@ class LabeledSwitch extends StatefulWidget{
   bool isSelected = false;
   final String? isSelectedText;
   final String? isDeselectedText;
+  final Function onChanged;
 
   LabeledSwitch({
     required this.label,
     required this.isSelected,
     this.isSelectedText,
     this.isDeselectedText,
+    required this.onChanged
   }) : super();
 
   _LabeledSwitchState createState() => _LabeledSwitchState();
@@ -26,9 +28,7 @@ class _LabeledSwitchState extends State<LabeledSwitch>{
       Switch(
         value: widget.isSelected,
         onChanged:(value) {
-          setState(() {
-            widget.isSelected = value;
-          });
+          widget.onChanged();
         },
         activeTrackColor: Colors.greenAccent,
         activeColor: Colors.green,

@@ -17,18 +17,20 @@ class DB {
 
     //Register adapters
     Hive.registerAdapter(UserAdapter());
+    Hive.registerAdapter(SettingAdapter());
 
-    bool usersExists = await Hive.boxExists('users');
     bool usersIsOpen = Hive.isBoxOpen('users');
-    bool settingsExists = await Hive.boxExists('settings');
     bool settingsIsOpen = Hive.isBoxOpen('settings');
 
     if(!usersIsOpen){
       await Hive.openBox<User>('users'); //user table
     }
-    if(!usersExists){//if it doesnt exist
+    if(DB.getUserBox().keys.isEmpty){ //if it doesnt exist
       createDefaultUser();
     }
+
+    if(!settingsIsOpen){ await Hive.openBox<Setting>('settings'); }
+    if(DB.getSettingBox().keys.isEmpty){ createDefaultSettings(); }
   }
 
   static void wipeDB() async{
@@ -47,9 +49,7 @@ class DB {
     return userBox.get("default");
   }
 
-  static Box<User> getUserBox(){
-    return userBox;
-  }
+  static Box<User> getUserBox(){ return userBox; }
 
   static void editDefaultUser(String? userName, String? userImagePath, int? userScore){
     User? tempUser = getDefaultUser();
@@ -67,6 +67,22 @@ class DB {
     userBox.put("default", tempUser);
   }
 
+  static void editDefaultSetting(bool? darkmode, bool? showAlias, bool? showScore){
+    Setting? tempSetting = getDefaultSetting();
+
+    if(tempSetting!.darkmode != darkmode && null != darkmode)
+      tempSetting.darkmode = darkmode;
+
+    if(tempSetting.showAlias != showAlias && null != showAlias)
+      tempSetting.showAlias = showAlias;
+
+    if(tempSetting.showScore != showScore && null != showScore)
+      tempSetting.showScore = showScore;
+
+    //persist modified Settings object to database
+    settingBox.put("default", tempSetting);
+  }
+
   static void modifyUserScore(int score){
     User? tempUser = getDefaultUser();
     tempUser!.userScore += score;
@@ -76,6 +92,12 @@ class DB {
   static void createDefaultSettings(){
     //add default settings to box
     Setting defaultSetting = new Setting(darkmode: false, showAlias: true, showScore: false);
-    settingBox.put("settings", defaultSetting);
+    settingBox.put("default", defaultSetting);
   }
+
+  static Setting? getDefaultSetting(){
+    return settingBox.get("default");
+  }
+
+  static Box<Setting> getSettingBox() {return settingBox;}
 }

@@ -15,6 +15,7 @@ List<num> lessons = [];
 //** USER DATA **
 //Hive-listener Key
 String defaultUser = 'default';
+String defaultSetting = 'default';
 
 //** ICONS **
 String userImg = "assets/img/profile/user_icon.png";
