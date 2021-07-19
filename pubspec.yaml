@@ -41,6 +41,7 @@ dependencies:
   #Hive database
   hive: ^2.0.4
   hive_flutter: ^1.0.0
+  hive_listener: ^1.2.1
 
   #to load svg images
   flutter_svg: ^0.22.0
