@@ -87,7 +87,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                             ),
                             child:ClipRect(
                                 child: HiveListener(
-                                  box: userBox,
+                                  box: DB.getUserBox(),
                                   keys: [ defaultUser ], // keys is optional to specify listening value changes
                                   builder: (box) {
                                     return Image.asset( DB.getDefaultUser()!.userImagePath.toString(), fit: BoxFit.fitHeight);
@@ -102,19 +102,18 @@ class _ProfileScreenState extends State<ProfileScreen>{
 
                   //** USER NAME INPUT **
                   HiveListener(
-                    box: userBox,
+                    box: DB.getUserBox(),
                     keys: [ defaultUser ], // keys is optional to specify listening value changes
                     builder: (box) {
                       return LabeledTextField(
                           icon: userImg,
                           label: "Username",
-                          text: userBox.get('default')!.userName,
+                          text: DB.getUserBox().get('default')!.userName,
                           onSubmitted: (text){ DB.editDefaultUser(text, null, null);}
                           )
                       ;
                     },
                   ),
-
                   SizedBox(height: 80),
 
                   //** USER SCORE **
@@ -126,7 +125,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                         Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                           Image.asset("assets/img/score_icon.png", height: 40, key: UniqueKey(), ),
                           HiveListener(
-                            box: userBox,
+                            box: DB.getUserBox(),
                             keys: [ defaultUser ], // keys is optional to specify listening value changes
                             builder: (box) {
                               return Text( DB.getDefaultUser()!.userScore.toString(), style: TextStyle(fontSize: 40),);

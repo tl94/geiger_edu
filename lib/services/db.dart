@@ -5,10 +5,10 @@ import 'package:geiger_edu/providers/boxes.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
- Box<User> userBox = Boxes.getUsers();
- Box<Setting> settingBox = Boxes.getSettings();
-
 class DB {
+  static Box<User> userBox = Boxes.getUsers();
+  static Box<Setting> settingBox = Boxes.getSettings();
+
   static void init() async {
     //** Hive DB Setup **
     WidgetsFlutterBinding.ensureInitialized();
@@ -18,14 +18,21 @@ class DB {
     //Register adapters
     Hive.registerAdapter(UserAdapter());
 
-    await Hive.deleteBoxFromDisk('users');    //TODO REMOVE IN PRODUCTION ENV
-    await Hive.deleteBoxFromDisk('settings'); //TODO REMOVE IN PRODUCTION ENV
-
     bool exists = await Hive.boxExists('users');
-    if(!exists){//if it doesnt exist
+    bool isOpen = Hive.isBoxOpen('users');
+
+    if(!isOpen){
       await Hive.openBox<User>('users'); //user table
+    }
+    if(!exists){//if it doesnt exist
       createDefaultUser();
     }
+  }
+
+  static void wipeDB() async{
+    //delete the hive-boxes, clears the file content from the device
+    await Hive.deleteBoxFromDisk('users');
+    await Hive.deleteBoxFromDisk('settings');
   }
 
   static void createDefaultUser(){
@@ -36,6 +43,10 @@ class DB {
 
   static User? getDefaultUser(){
     return userBox.get("default");
+  }
+
+  static Box<User> getUserBox(){
+    return userBox;
   }
 
   static void editDefaultUser(String? userName, String? userImagePath, int? userScore){
