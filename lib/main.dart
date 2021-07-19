@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:geiger_edu/route_generator.dart';
-import 'package:geiger_edu/screens/homescreen.dart';
-import 'package:provider/provider.dart';
+import 'package:geiger_edu/screens/home_screen.dart';
+import 'package:geiger_edu/services/db.dart';
 
-void main() {
+InAppLocalhostServer localhostServer = new InAppLocalhostServer();
+
+void main() async {
+  //** INITIALISE DATABASE **
+  DB.init();
+
+  //** LESSON-SERVER **
+  localhostServer.start();
+
   runApp(MaterialApp(
     title: 'GEIGER mobile learning',
     theme: ThemeData(primaryColor: Color(0xFF5dbcd2)),

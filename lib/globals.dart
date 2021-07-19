@@ -1,6 +1,10 @@
 // TODO Implement this library.
 library geiger_edu.globals;
 
+import 'package:flutter/cupertino.dart';
+
+final txtColor = const Color(0xff2f4858);
+
 bool appRunning = false;
 bool isOnline = false;
 
@@ -8,6 +12,9 @@ bool isOnline = false;
 int selectedPage = 1;
 List<num> lessons = [];
 
+//** USER DATA **
+//Hive-listener Key
+String defaultUser = 'default';
 
-// TODO: GEIGER API CONNECTION
-String apiKey = '6b4c7cac60be10eddc8890c63817e773';
+//** ICONS **
+String userImg = "assets/img/profile/user_icon.png";
