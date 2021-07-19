@@ -1,8 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:geiger_edu/providers/boxes.dart';
+import 'package:geiger_edu/services/db.dart';
 import 'package:geiger_edu/widgets/ImageSelector.dart';
 import 'package:geiger_edu/widgets/LabeledTextField.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_listener/hive_listener.dart';
 
 import 'home_screen.dart';
 import '../globals.dart';
@@ -91,7 +95,22 @@ class _ProfileScreenState extends State<ProfileScreen>{
                   SizedBox(height: 40),
 
                   //** USER NAME INPUT **
-                  LabeledTextField(icon:userImg, label: "Username", text: userName, onSubmitted: (text){ userName = text; } ),
+                  HiveListener(
+                    box: userBox,
+                    keys: [
+                      'default'
+                    ], // keys is optional to specify listening value changes
+                    builder: (box) {
+                      return LabeledTextField(
+                          icon: userImg,
+                          label: "Username",
+                          text: userBox.get('default')!.userName,
+                          onSubmitted: (text){ DB.editDefaultUser(text, null, null);}
+                          )
+                      ;
+                    },
+                  ),
+
                   SizedBox(height: 80),
 
                   //** USER SCORE **
