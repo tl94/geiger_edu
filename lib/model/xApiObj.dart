@@ -2,7 +2,7 @@ import 'package:hive/hive.dart';
 
 part 'xApiObj.g.dart';
 
-@HiveType(typeId: 1)
+@HiveType(typeId: 2)
 class XApiObj {
   //** AGENT **
   @HiveField(0)
