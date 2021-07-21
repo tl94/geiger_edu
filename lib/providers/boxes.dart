@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+import 'package:geiger_edu/model/lessonCategoryObj.dart';
 import 'package:geiger_edu/model/lessonObj.dart';
 import 'package:geiger_edu/model/settingObj.dart';
 import 'package:geiger_edu/model/xApis.dart';
@@ -14,6 +16,6 @@ class Boxes {
   static Box<XApis> getxApis() =>
       Hive.box<XApis>('xapis');
 
-  static Box<List<Lesson>> getLessons() =>
-      Hive.box<List<Lesson>>('lessons');
+  static Box<LessonCategory> getLessonCategories() =>
+      Hive.box<LessonCategory>('lessonCategories');
 }

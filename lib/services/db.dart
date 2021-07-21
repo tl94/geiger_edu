@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:geiger_edu/model/lessonCategoryObj.dart';
 import 'package:geiger_edu/model/lessonObj.dart';
 import 'package:geiger_edu/model/settingObj.dart';
 import 'package:geiger_edu/model/userObj.dart';
@@ -9,7 +10,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 class DB {
   static Box<User> userBox = Boxes.getUsers();
   static Box<Setting> settingBox = Boxes.getSettings();
-  static Box<List<Lesson>> lessonCategoryBox = Boxes.getLessons();
+  static Box<LessonCategory> lessonCategoryBox = Boxes.getLessonCategories();
 
   static void init() async {
     //** Hive DB Setup **
@@ -21,10 +22,11 @@ class DB {
     Hive.registerAdapter(UserAdapter());
     Hive.registerAdapter(SettingAdapter());
     Hive.registerAdapter(LessonAdapter());
+    Hive.registerAdapter(LessonCategoryAdapter());
 
     bool usersIsOpen = Hive.isBoxOpen('users');
     bool settingsIsOpen = Hive.isBoxOpen('settings');
-    bool lessonIsOpen = Hive.isBoxOpen('lessons');
+    bool lessonIsOpen = Hive.isBoxOpen('lessonCategories');
 
     if(!usersIsOpen){
       await Hive.openBox<User>('users'); //user table
@@ -36,7 +38,7 @@ class DB {
     if(!settingsIsOpen){ await Hive.openBox<Setting>('settings'); }
     if(DB.getSettingBox().keys.isEmpty){ createDefaultSettings(); }
 
-    if(!lessonIsOpen){ await Hive.openBox<List<Lesson>>('lessons'); }
+    if(!lessonIsOpen){ await Hive.openBox<LessonCategory>('lessonCategories'); }
     if(DB.getLessonCategoryBox().keys.isEmpty){ createTestLessons(); }
 
     print(":: "+DB.lessonCategoryBox.keys.length.toString());
@@ -53,22 +55,25 @@ class DB {
     Lesson l2 = new Lesson(name: "L2", completed: false,recommended: false,lastIndex: 4,maxIndex: 8);
     Lesson l3 = new Lesson(name: "L3", completed: true,recommended: false,lastIndex: 4,maxIndex: 8);
     List<Lesson> l = [l1,l2,l3];
-    getLessonCategoryBox().put("Passwords", l);
+    LessonCategory c1 = new LessonCategory(name: "Passwords", lessonList: l);
+    getLessonCategoryBox().put(c1.name,c1);
 
     Lesson k1 = new Lesson(name: "k1", completed: false,recommended: false,lastIndex: 0,maxIndex: 8);
     Lesson k2 = new Lesson(name: "k2", completed: false,recommended: false,lastIndex: 4,maxIndex: 8);
     Lesson k3 = new Lesson(name: "k3", completed: false,recommended: false,lastIndex: 4,maxIndex: 8);
     List<Lesson> k = [k1,k2,k3];
 
-    getLessonCategoryBox().put("Maleware", k);
+    LessonCategory c2 = new LessonCategory(name: "Malware", lessonList: k);
+    getLessonCategoryBox().put(c2.name,c2);
   }
 
-  static Box<List<Lesson>> getLessonCategoryBox(){ return lessonCategoryBox; }
+  static Box<LessonCategory> getLessonCategoryBox(){ return lessonCategoryBox; }
 
   static void wipeDB() async{
     //delete the hive-boxes, clears the file content from the device
     await Hive.deleteBoxFromDisk('users');
     await Hive.deleteBoxFromDisk('settings');
+    await Hive.deleteBoxFromDisk('lessonCategories');
   }
 
   static void createDefaultUser(){
