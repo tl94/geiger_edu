@@ -43,8 +43,9 @@ dependencies:
   hive_flutter: ^1.0.0
   hive_listener: ^1.2.1
 
-  #to load svg images
-  flutter_svg: ^0.22.0
+  flutter_svg: ^0.22.0  # to load svg images
+  string_validator: ^0.3.0
+  page_view_indicators: ^2.0.0
 
 dev_dependencies:
   flutter_test:

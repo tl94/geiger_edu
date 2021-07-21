@@ -24,9 +24,10 @@ class _LessonScreenState extends State<LessonScreen> {
     var manifestContent =
         await DefaultAssetBundle.of(context).loadString('AssetManifest.json');
     Map<String, dynamic> manifestMap = json.decode(manifestContent);
+    RegExp regExp = RegExp("slide_\*");
     var filePaths = manifestMap.keys
         .where((String key) => key.contains(widget.lessonPath))
-        .where((String key) => key.contains('.html'))
+        .where((String key) => regExp.hasMatch(key))
         .toList();
     setState(() {
       _slidePaths = filePaths;
