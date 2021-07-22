@@ -3,6 +3,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:geiger_edu/route_generator.dart';
 import 'package:geiger_edu/screens/home_screen.dart';
 import 'package:geiger_edu/services/db.dart';
+import 'package:geiger_edu/widgets/LoadingAnimation.dart';
 
 InAppLocalhostServer localhostServer = new InAppLocalhostServer();
 
@@ -30,7 +31,7 @@ class _MyAppState extends State<MyApp>{
   void initState(){
     super.initState();
     Future.delayed(
-        Duration(seconds: 3),
+        Duration(seconds: 5),
             (){Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));}
     );
   }
@@ -40,9 +41,23 @@ class _MyAppState extends State<MyApp>{
     return Scaffold(
       body: Center(
           child: Container(
-              height: 300,
-              child: Image.asset("assets/logo/test.jpg", fit: BoxFit.fitHeight))
-      ),
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width/2,
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset("assets/img/splashscreen/splashscreen_logo.png", fit: BoxFit.fitWidth),
+                    SizedBox(height: 50),
+                    LoadingAnimation()
+                  ])
+          )
+      )
     );
   }
 }
