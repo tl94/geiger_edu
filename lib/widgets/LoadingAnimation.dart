@@ -24,6 +24,14 @@ class _LoadingAnimationState extends State<LoadingAnimation> with TickerProvider
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    _controller1.dispose();
+    _controller2.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(child:
         Stack(alignment: Alignment.center, children: [
