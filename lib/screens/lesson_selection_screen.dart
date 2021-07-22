@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:geiger_edu/model/lessonObj.dart';
 import 'package:geiger_edu/screens/selection_screen.dart';
 import 'package:geiger_edu/services/db.dart';
+import 'package:geiger_edu/widgets/LessonDropdown.dart';
 
 import 'lesson_screen.dart';
 import 'package:geiger_edu/globals.dart' as globals;
@@ -19,15 +20,6 @@ class LessonSelectionScreen extends StatelessWidget {
     required this.title,
     required this.lessons,
   }) : super(key: key);
-
-  List<String> getList(){
-    List<String> gst = <String>[];
-    for(int i = 0; i < globals.lessons.length;i++){
-      var g = globals.lessons[i].name;
-      gst.add(g);
-    }
-    return gst;
-  }
 
   Map<String, int> getCompleted(var key){
     Map<String, int> result = {};
@@ -47,10 +39,6 @@ class LessonSelectionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var gst = getList();
-
-    final args = ModalRoute.of(context)!.settings.arguments;
-
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -68,6 +56,27 @@ class LessonSelectionScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
 
+            Flexible(
+                child: Row(children: [
+                  Container(
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width-40,
+                    child: ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: this.lessons!.length,
+                        itemBuilder: (BuildContext context, int i) {
+                          return Container(
+                              margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                              child: LessonDropdown(
+                                title: this.lessons![i].name,
+                                completed: this.lessons![i].completed
+                              )
+                          );
+                        }),
+                  )])),
 
           ],
         ),
