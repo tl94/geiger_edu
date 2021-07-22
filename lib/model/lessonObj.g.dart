@@ -18,30 +18,42 @@ class LessonAdapter extends TypeAdapter<Lesson> {
     };
     return Lesson(
       name: fields[0] as String,
-      completed: fields[1] as bool,
-      recommended: fields[2] as bool?,
-      apiUrl: fields[3] as String?,
-      lastIndex: fields[4] as int,
-      maxIndex: fields[5] as int,
+      recommended: fields[1] as bool,
+      motivation: fields[2] as String,
+      lengthInMinutes: fields[3] as int,
+      difficultyLevel: fields[4] as DifficultyLevel,
+      lastIndex: fields[5] as int,
+      maxIndex: fields[6] as int,
+      completed: fields[7] as bool,
+      path: fields[8] as String,
+      apiUrl: fields[9] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, Lesson obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
-      ..write(obj.completed)
-      ..writeByte(2)
       ..write(obj.recommended)
+      ..writeByte(2)
+      ..write(obj.motivation)
       ..writeByte(3)
-      ..write(obj.apiUrl)
+      ..write(obj.lengthInMinutes)
       ..writeByte(4)
-      ..write(obj.lastIndex)
+      ..write(obj.difficultyLevel)
       ..writeByte(5)
-      ..write(obj.maxIndex);
+      ..write(obj.lastIndex)
+      ..writeByte(6)
+      ..write(obj.maxIndex)
+      ..writeByte(7)
+      ..write(obj.completed)
+      ..writeByte(8)
+      ..write(obj.path)
+      ..writeByte(9)
+      ..write(obj.apiUrl);
   }
 
   @override

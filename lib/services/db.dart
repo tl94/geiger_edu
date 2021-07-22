@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:geiger_edu/model/difficultyLevelObj.dart';
 import 'package:geiger_edu/model/lessonCategoryObj.dart';
 import 'package:geiger_edu/model/lessonObj.dart';
 import 'package:geiger_edu/model/settingObj.dart';
@@ -23,6 +24,7 @@ class DB {
     Hive.registerAdapter(SettingAdapter());
     Hive.registerAdapter(LessonAdapter());
     Hive.registerAdapter(LessonCategoryAdapter());
+    Hive.registerAdapter(DifficultyLevelAdapter());
 
     bool usersIsOpen = Hive.isBoxOpen('users');
     bool settingsIsOpen = Hive.isBoxOpen('settings');
@@ -51,16 +53,16 @@ class DB {
   static void createTestLessons(){
     //TODO: replace with updateLessonBox
 
-    Lesson l1 = new Lesson(name: "L1", completed: true,recommended: false,lastIndex: 0,maxIndex: 8);
-    Lesson l2 = new Lesson(name: "L2", completed: false,recommended: false,lastIndex: 4,maxIndex: 8);
-    Lesson l3 = new Lesson(name: "L3", completed: true,recommended: false,lastIndex: 4,maxIndex: 8);
+    Lesson l1 = new Lesson(name: "L1", completed: true,recommended: false,lastIndex: 0,maxIndex: 6, motivation: 'This is an easy beginner lesson', difficultyLevel: DifficultyLevel.beginner, lengthInMinutes: 5, apiUrl: '', path: '');
+    Lesson l2 = new Lesson(name: "L2", completed: false,recommended: false,lastIndex: 5,maxIndex: 8, motivation: 'This is a more difficult advanced lesson', difficultyLevel: DifficultyLevel.advanced, lengthInMinutes: 8, apiUrl: '', path: '');
+    Lesson l3 = new Lesson(name: "L3", completed: false,recommended: false,lastIndex: 2,maxIndex: 4, motivation: 'This is a lesson for masters', difficultyLevel: DifficultyLevel.master, lengthInMinutes: 10, apiUrl: '', path: '');
     List<Lesson> l = [l1,l2,l3];
     LessonCategory c1 = new LessonCategory(name: "Passwords", lessonList: l);
     getLessonCategoryBox().put(c1.name,c1);
 
-    Lesson k1 = new Lesson(name: "k1", completed: false,recommended: false,lastIndex: 0,maxIndex: 8);
-    Lesson k2 = new Lesson(name: "k2", completed: false,recommended: false,lastIndex: 4,maxIndex: 8);
-    Lesson k3 = new Lesson(name: "k3", completed: false,recommended: false,lastIndex: 4,maxIndex: 8);
+    Lesson k1 = new Lesson(name: "L1", completed: true,recommended: false,lastIndex: 0,maxIndex: 6, motivation: 'This is an easy beginner lesson', difficultyLevel: DifficultyLevel.beginner, lengthInMinutes: 5, apiUrl: '', path: '');
+    Lesson k2 = new Lesson(name: "L2", completed: false,recommended: false,lastIndex: 5,maxIndex: 8, motivation: 'This is a more difficult advanced lesson', difficultyLevel: DifficultyLevel.advanced, lengthInMinutes: 8, apiUrl: '', path: '');
+    Lesson k3 = new Lesson(name: "L3", completed: false,recommended: false,lastIndex: 2,maxIndex: 4, motivation: 'This is a lesson for masters', difficultyLevel: DifficultyLevel.master, lengthInMinutes: 10, apiUrl: '', path: '');
     List<Lesson> k = [k1,k2,k3];
 
     LessonCategory c2 = new LessonCategory(name: "Malware", lessonList: k);
