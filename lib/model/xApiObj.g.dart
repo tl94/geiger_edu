@@ -8,7 +8,7 @@ part of 'xApiObj.dart';
 
 class XApiObjAdapter extends TypeAdapter<XApiObj> {
   @override
-  final int typeId = 1;
+  final int typeId = 2;
 
   @override
   XApiObj read(BinaryReader reader) {
