@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:geiger_edu/model/lessonObj.dart';
 import 'package:geiger_edu/screens/home_screen.dart';
-import 'package:geiger_edu/screens/profile_screen.dart';
+import 'package:geiger_edu/screens/lesson_selection_screen.dart';
 import 'package:geiger_edu/services/db.dart';
 import 'package:geiger_edu/widgets/NavigationContainer.dart';
 
 import 'lesson_screen.dart';
-import 'package:geiger_edu/globals.dart';
+import 'package:geiger_edu/globals.dart' as globals;
 
 class SelectionScreen extends StatelessWidget {
   static const routeName = '/selection';
@@ -27,11 +27,16 @@ class SelectionScreen extends StatelessWidget {
     return gst;
   }
 
+  List<Lesson> getLessonList(var key){
+    var lessonList = DB.getLessonCategoryBox().get(key)!.lessonList;
+    return lessonList;
+  }
+
   Map<String, int> getCompleted(var key){
     Map<String, int> result = {};
     int completedCount = 0;
 
-    var lessonList = DB.getLessonCategoryBox().get(key)!.lessonList;
+    var lessonList = getLessonList(key);
 
     for(var lesson in lessonList ){
       if(lesson.completed)
@@ -49,7 +54,10 @@ class SelectionScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        leading: new Container(),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pushNamed(context, HomeScreen.routeName),
+        ),
         title: Text("GEIGER Mobile Learning"),
         centerTitle: true,
         backgroundColor: bckColor,
@@ -79,9 +87,10 @@ class SelectionScreen extends StatelessWidget {
                   child: NavigationContainer(
                       imagePath: "assets/img/password_icon.png",
                       text: gst[i].toString(),
-                      passedRoute: HomeScreen.routeName,
+                      passedRoute: LessonSelectionScreen.routeName,
                       currentValue: lessonSpecs["completed"]!,
                       maxValue: lessonSpecs["allLessons"]!,
+                      passedLessons: getLessonList(gst[i]),
                     ),
                 );
               }),
