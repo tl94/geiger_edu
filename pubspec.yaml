@@ -77,6 +77,7 @@ flutter:
     - assets/img/profile/
     - assets/img/splashscreen/
     - assets/img/loadingcircle/
+    - assets/img/indicator/
     - assets/lesson/
     - assets/lesson/password/password_safety/eng/
     - assets/lesson/password/password_safety/eng/img/

@@ -11,6 +11,10 @@ final txtColor = const Color(0xff2f4858);
 bool appRunning = false;
 bool isOnline = false;
 
+//** GEIGER INDICATOR **
+int completedLessons = 0;
+int maxLessons = 0;
+
 //** USER DATA **
 //Hive-listener Key
 String defaultUser = 'default';

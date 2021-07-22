@@ -7,6 +7,7 @@ import 'package:geiger_edu/model/userObj.dart';
 import 'package:geiger_edu/providers/boxes.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:geiger_edu/globals.dart' as globals;
 
 class DB {
   static Box<User> userBox = Boxes.getUsers();
@@ -43,7 +44,28 @@ class DB {
     if(!lessonIsOpen){ await Hive.openBox<LessonCategory>('lessonCategories'); }
     if(DB.getLessonCategoryBox().keys.isEmpty){ createTestLessons(); }
 
-    print(":: "+DB.lessonCategoryBox.keys.length.toString());
+    runGeigerIndicator();
+  }
+
+  static void runGeigerIndicator(){
+    var tempCompletedLessons = 0;
+    var tempMaxLessons = 0;
+
+    for(var key in DB.lessonCategoryBox.keys){
+      var x = DB.getLessonCategoryBox().get(key)!.lessonList;
+      tempMaxLessons += x.length;
+      for(int i = 0; i< x.length ; i++){
+        if(x[i].completed)
+          tempCompletedLessons++;
+      }
+    }
+
+    globals.maxLessons = tempMaxLessons;
+    globals.completedLessons = tempCompletedLessons;
+  }
+
+  static void incrementGeigerIndicator(){
+    globals.completedLessons++;
   }
 
   static void updateLessonBox(){

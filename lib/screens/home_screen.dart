@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:geiger_edu/screens/profile_screen.dart';
 import 'package:geiger_edu/screens/selection_screen.dart';
 import 'package:geiger_edu/screens/settings_screen.dart';
+import 'package:geiger_edu/widgets/Indicator.dart';
 import 'package:geiger_edu/widgets/NavigationContainer.dart';
 
 import 'lesson_screen.dart';
@@ -24,47 +25,48 @@ class HomeScreen extends StatelessWidget {
       ),
       body: Container(
         margin: EdgeInsets.fromLTRB(20, 20, 20, 20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Align(alignment: Alignment.center,child: Text("Your Progress", style: TextStyle(fontSize: 20, color: txtColor)) ),
-            Image.asset("assets/img/progress_placeholder.png", height: 150, key: UniqueKey(), ),
-            Container(
-              child: NavigationContainer(
-                imagePath: "assets/img/continue_lesson.png",
-                text: "Current Lesson",
-                passedRoute: LessonScreen.routeName,
+        child: Stack(children: [
+              Align(alignment: Alignment.center,child: Indicator()),
+              Container(
+                  margin: EdgeInsets.fromLTRB(0, 140, 0, 0),
+                  child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                Container(
+                    child: NavigationContainer(
+                      imagePath: "assets/img/continue_lesson.png",
+                      text: "Current Lesson",
+                      passedRoute: LessonScreen.routeName,
+                    )
+                ),
+                SizedBox(height: 10),
+                Container(
+                    child: NavigationContainer(
+                      imagePath: "assets/img/select_lesson.png",
+                      text: "Select Lesson",
+                      passedRoute: SelectionScreen.routeName,
+                    )
+                ),
+                Spacer(),
+                Container(
+                    child: NavigationContainer(
+                      imagePath: "assets/img/profile/user_icon.png",
+                      text: "Profile",
+                      passedRoute: ProfileScreen.routeName,
+                    )
+                ),
+                SizedBox(height: 10),
+                Container(
+                    child: NavigationContainer(
+                      imagePath: "assets/img/settings_icon.png",
+                      text: "Settings",
+                      passedRoute: SettingsScreen.routeName,
+                    )
+                )
+              ])
               )
-            ),
-            SizedBox(height: 10),
-            Container(
-                child: NavigationContainer(
-                  imagePath: "assets/img/select_lesson.png",
-                  text: "Select Lesson",
-                  passedRoute: SelectionScreen.routeName,
-                )
-            ),
-
-            Spacer(),
-
-            Container(
-                child: NavigationContainer(
-                  imagePath: "assets/img/profile/user_icon.png",
-                  text: "Profile",
-                  passedRoute: ProfileScreen.routeName,
-                )
-            ),
-            SizedBox(height: 10),
-            Container(
-                child: NavigationContainer(
-                  imagePath: "assets/img/settings_icon.png",
-                  text: "Settings",
-                  passedRoute: SettingsScreen.routeName,
-                )
-            )
-              ],
-            )
+            ])
         ),
       );
   }
