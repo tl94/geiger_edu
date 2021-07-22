@@ -55,7 +55,6 @@ class LessonSelectionScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-
             Flexible(
                 child: Row(children: [
                   Container(
@@ -63,6 +62,7 @@ class LessonSelectionScreen extends StatelessWidget {
                         .of(context)
                         .size
                         .width-40,
+                    height: MediaQuery.of(context).size.height,
                     child: ListView.builder(
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
@@ -70,9 +70,10 @@ class LessonSelectionScreen extends StatelessWidget {
                         itemBuilder: (BuildContext context, int i) {
                           return Container(
                               margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                              child: LessonDropdown(
+                              child:LessonDropdown(
                                 title: this.lessons![i].name,
-                                completed: this.lessons![i].completed
+                                completed: this.lessons![i].completed,
+                                //TODO: ADD MISSING LESSON PARAMETERS
                               )
                           );
                         }),

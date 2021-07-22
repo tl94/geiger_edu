@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geiger_edu/globals.dart';
-import 'package:geiger_edu/model/lessonObj.dart';
-import 'package:geiger_edu/globals.dart' as globals;
+import 'package:geiger_edu/screens/home_screen.dart';
 
 class LessonDropdown extends StatefulWidget {
   final String title;
@@ -9,15 +8,15 @@ class LessonDropdown extends StatefulWidget {
 
   //**Dropdown opened**
   final String? motivation;
-  final int? lengthInMinutes;
-  final String? difficultyLevel;
+  final int? duration;
+  final String? difficulty;
 
   LessonDropdown(
       {required this.title,
         required this.completed,
-        this.motivation,
-        this.lengthInMinutes,
-        this.difficultyLevel})
+        this.motivation = "-",
+        this.duration = 0,
+        this.difficulty = "Beginner"})
       : super();
 
   _LessonDropdownState createState() => _LessonDropdownState();
@@ -25,30 +24,37 @@ class LessonDropdown extends StatefulWidget {
 
 class _LessonDropdownState extends State<LessonDropdown> {
   bool _isOpened = false;
+  static final _titleColor = const Color(0xff748ea0);
+  final double _dropDownHeight = 300;
+  final double _fontSize = 18;
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 80,
+      height: _isOpened ? 90+_dropDownHeight : 90,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(5.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 1,
+              blurRadius: 2,
+              offset: Offset(0, 3),
+            ),
+          ],
+        ),
       child: new GestureDetector(
         onTap: () {
           setState(() {
             _isOpened = !_isOpened;
           });
         },
-        child: Container(
+        child: Column(children: [Container(
             padding: EdgeInsets.all(20.0),
-            //margin: EdgeInsets.all(10.0),
             decoration: BoxDecoration(
-              color: Colors.white,
               borderRadius: BorderRadius.circular(5.0),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 1,
-                  blurRadius: 2,
-                  offset: Offset(0, 3), // changes position of shadow
-                ),
-              ],
+              color: Colors.white,
             ),
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -76,12 +82,108 @@ class _LessonDropdownState extends State<LessonDropdown> {
                     child: SizedBox(width: 1),
                   ),
                   Image.asset(
-                    _isOpened ? "assets/img/arrow_down.png" : "assets/img/arrow_up.png",
+                    _isOpened ? "assets/img/arrow_up.png" :  "assets/img/arrow_down.png",
                     width: 20,
                     key: UniqueKey(),
                   )
                 ])),
-      ),
+
+          //** DROP-DOWN **
+          if(_isOpened)
+                Container(
+                    padding: EdgeInsets.all(20.0),
+                    height: _dropDownHeight,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    child:Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children:[
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                          Image.asset(
+                            "assets/img/motivation_icon.png",
+                            height: 40,
+                            key: UniqueKey(),
+                          ),
+                          SizedBox(width: 20),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                            Text("Motivation",
+                                style: TextStyle(color: _titleColor,fontSize: _fontSize)
+                            ),
+                            Container(width: 250,
+                                child: Text(
+                                    widget.motivation.toString(),
+                                    style: TextStyle(fontSize: _fontSize)
+                                ))
+                          ],)
+                        ],),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              "assets/img/duration_icon.png",
+                              height: 40,
+                              key: UniqueKey(),
+                            ),
+                            SizedBox(width: 20),
+                            Text("Länge",
+                                style: TextStyle(color: _titleColor,fontSize: _fontSize)
+                            ),
+                            Expanded(child: SizedBox(width: 1)),
+                            Text(
+                                widget.duration.toString()+"'",
+                                style: TextStyle(fontSize: _fontSize)
+                            )
+                          ],),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                          Image.asset(
+                            "assets/img/difficulty_level_icon.png",
+                            height: 40,
+                            key: UniqueKey(),
+                          ),
+                          SizedBox(width: 20),
+                          Text("Difficulty", style: TextStyle(color: _titleColor,fontSize: _fontSize)),
+                          Expanded(child: SizedBox(width: 1)),
+                          Text(widget.difficulty.toString(),style: TextStyle(fontSize: _fontSize))
+                        ],),
+                        Row(mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 110.0,
+                              height: 40.0,
+                              child:
+                            OutlinedButton(
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                        (Set<MaterialState> states) {
+                                      if (states.contains(MaterialState.pressed))
+                                        return Theme.of(context).colorScheme.primary.withOpacity(0.5);
+                                      return Colors.green;
+                                    },
+                                  ),
+                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)))    ,
+                              ),
+                              onPressed: (){
+                                Navigator.pushNamed(
+                                context,
+                                HomeScreen.routeName,
+                                arguments: {'title': widget.title});
+                                },
+                              child: Text('Start',style: TextStyle(fontSize: 20, color: Colors.white)),
+                            ),
+                            )
+                          ])
+                      ])
+                )
+        ])
+        )
     );
   }
 }
