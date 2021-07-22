@@ -4,13 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:geiger_edu/widgets/lesson/LessonContainer.dart';
 
+import 'package:geiger_edu/globals.dart' as globals;
+
 class LessonScreen extends StatefulWidget {
   static const routeName = '/lessonscreen';
   static const bckColor = const Color(0xFF5dbcd2); //0xFFedb879
 
   final String lessonPath;
+  final int lessonSlideIndex;
 
-  LessonScreen({required this.lessonPath}) : super();
+  LessonScreen({required this.lessonPath, required this.lessonSlideIndex}) : super();
 
   @override
   _LessonScreenState createState() => _LessonScreenState();
@@ -41,7 +44,7 @@ class _LessonScreenState extends State<LessonScreen> {
       getSlidePaths(context);
       return new Container(color: Colors.white);
     } else {
-      return new LessonContainer(slidePaths: _slidePaths);
+      return new LessonContainer(lessonPath: widget.lessonPath, slidePaths: _slidePaths, initialPage: widget.lessonSlideIndex);
     }
   }
 }

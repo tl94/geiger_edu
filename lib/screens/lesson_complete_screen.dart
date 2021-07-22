@@ -2,8 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/parser.dart';
+import 'package:geiger_edu/widgets/lesson/quiz_slide.dart';
 
 class LessonCompleteSlide extends StatefulWidget {
+  final String lessonPath;
+
+  LessonCompleteSlide({required this.lessonPath});
+
   @override
   State<StatefulWidget> createState() => _LessonCompleteSlideState();
 }
@@ -20,6 +25,13 @@ class _LessonCompleteSlideState extends State<LessonCompleteSlide> {
     } catch (e) {
       print('SVG contains unsupported features');
     }
+  }
+
+  void _onPressed() {
+    Navigator.pushNamed(
+          context,
+          QuizSlide.routeName
+      );
   }
 
   Widget build(BuildContext context) {
@@ -82,7 +94,8 @@ class _LessonCompleteSlideState extends State<LessonCompleteSlide> {
             ],
           ),
           ElevatedButton(
-              onPressed: () => {}, child: const Text("Finish Lesson"))
+              onPressed: _onPressed,
+              child: const Text("Finish Lesson"))
         ],
       ),
     );

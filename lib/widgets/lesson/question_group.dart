@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:geiger_edu/widgets/lesson/question.dart';
+import 'package:geiger_edu/model/quiz/question.dart';
 
-import 'answer.dart';
+import '../../model/quiz/answer.dart';
 
 class QuestionGroup extends StatefulWidget {
 
   final int questionIndex;
   final Question question;
-  final Function(int, Answer) answerSelectedCallback;
+  final Function(int, int) answerSelectedCallback;
 
   QuestionGroup({required this.questionIndex, required this.question, required this.answerSelectedCallback});
 
@@ -36,8 +36,7 @@ class _QuestionGroup extends State<QuestionGroup> {
             onPressed: () {
               print(answer.answer);
               _selectionIndex = i;
-              print(_selectionIndex);
-              widget.answerSelectedCallback(i, answer);
+              widget.answerSelectedCallback(widget.questionIndex, _selectionIndex);
             },
             child: Text(answer.answer)
         );
