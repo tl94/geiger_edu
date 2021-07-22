@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geiger_edu/globals.dart' as globals;
 import 'package:geiger_edu/screens/home_screen.dart';
+import 'package:geiger_edu/screens/lesson_complete_screen.dart';
 import 'package:geiger_edu/screens/lesson_screen.dart';
 import 'package:geiger_edu/screens/lesson_selection_screen.dart';
 import 'package:geiger_edu/screens/profile_screen.dart';
@@ -20,15 +21,11 @@ class RouteGenerator {
       case LessonScreen.routeName:
         // MaterialPageRoute transitions to the new route using a platform specific animation.
         // TODO use dynamic lesson path
-        return MaterialPageRoute(builder: (context) => LessonScreen(lessonPath: globals.currentLessonPath, lessonSlideIndex: globals.currentLessonSlideIndex));
+        return MaterialPageRoute(builder: (context) => LessonScreen(lessonPath: globals.currentLessonPath, initialPage: globals.currentLessonSlideIndex));
 
-      case QuizSlide.routeName:
+      case LessonCompleteScreen.routeName:
       // MaterialPageRoute transitions to the new route using a platform specific animation.
-        return MaterialPageRoute(builder: (context) => QuizSlide(lesson: globals.currentLesson));
-
-      case QuizResultsScreen.routeName:
-      // MaterialPageRoute transitions to the new route using a platform specific animation.
-        return MaterialPageRoute(builder: (context) => QuizResultsScreen(answeredQuestions: globals.answeredQuestions, lesson: globals.currentLesson));
+        return MaterialPageRoute(builder: (context) => LessonCompleteScreen(lesson: globals.currentLesson, answeredQuestions: globals.answeredQuestions));
 
       case ProfileScreen.routeName:
         // MaterialPageRoute transitions to the new route using a platform specific animation.

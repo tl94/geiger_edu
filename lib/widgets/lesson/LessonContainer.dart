@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/shims/dart_ui.dart';
 import 'package:geiger_edu/widgets/lesson/SlideContainer.dart';
 import 'package:geiger_edu/screens/lesson_complete_screen.dart';
+import 'package:geiger_edu/widgets/lesson/quiz_slide.dart';
 import 'package:html/parser.dart';
 
 class LessonContainer extends StatefulWidget {
@@ -20,7 +21,7 @@ class _LessonContainerState extends State<LessonContainer> {
   var _slideIndex = 0;
   List<Widget> _slides = [];
   List<String> _slideTitles = [];
-  late final _pageController;
+  late final PageController _pageController;
   static const _buttonColor = Color.fromRGBO(0, 0, 0, 0.2);
 
   static const _kDuration = const Duration(milliseconds: 300);
@@ -46,7 +47,7 @@ class _LessonContainerState extends State<LessonContainer> {
       SlideContainer slide = new SlideContainer(slidePath: sp, title: 'dddd',);
       slides.add(slide);
     }
-    slides.add(new LessonCompleteSlide(lessonPath: widget.lessonPath));
+    slides.add(QuizSlide(lessonPath: widget.lessonPath));
     setState(() {
       _slides = slides;
     });
@@ -110,6 +111,13 @@ class _LessonContainerState extends State<LessonContainer> {
   }
 
   void _nextPage() async {
+    // TODO: don't allow this if the lesson has a quiz
+    if (_pageController.page!.toInt() + 1 == _slides.length) {
+      Navigator.pushNamed(
+          context,
+          LessonCompleteScreen.routeName
+      );
+    }
     await _pageController.nextPage(duration: _kDuration, curve: _kCurve);
   }
 

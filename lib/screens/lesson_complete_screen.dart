@@ -2,20 +2,27 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/parser.dart';
-import 'package:geiger_edu/widgets/lesson/quiz_slide.dart';
+import 'package:geiger_edu/globals.dart';
+import 'package:geiger_edu/model/lessonObj.dart';
+import 'package:geiger_edu/model/quiz/question.dart';
+import 'package:geiger_edu/screens/home_screen.dart';
+import 'package:geiger_edu/widgets/lesson/quiz_results_group.dart';
 
-class LessonCompleteSlide extends StatefulWidget {
-  final String lessonPath;
+class LessonCompleteScreen extends StatefulWidget {
+  static const routeName = '/lessoncompletescreen';
+  final Lesson lesson;
+  final List<Question>? answeredQuestions;
 
-  LessonCompleteSlide({required this.lessonPath});
+  LessonCompleteScreen({required this.lesson, this.answeredQuestions});
 
   @override
-  State<StatefulWidget> createState() => _LessonCompleteSlideState();
+  State<StatefulWidget> createState() => _LessonCompleteScreenState();
 }
 
-class _LessonCompleteSlideState extends State<LessonCompleteSlide> {
+class _LessonCompleteScreenState extends State<LessonCompleteScreen> {
   static const String icon1 = "assets/img/congratulations_icon.svg";
   static const String icon2 = "assets/img/trophy_icon.svg";
+  DateTime? _selectedDate;
 
   void checkSvg(String svgString) {
     final SvgParser parser = SvgParser();
@@ -27,76 +34,78 @@ class _LessonCompleteSlideState extends State<LessonCompleteSlide> {
     }
   }
 
-  void _onPressed() {
-    Navigator.pushNamed(
-          context,
-          QuizSlide.routeName
-      );
+  void _onFinishLessonPressed() {
+    Navigator.pushNamed(context, HomeScreen.routeName);
+  }
+
+  List<Widget> getQuizResultsGroups() {
+    List<Widget> quizResultsGroups = [];
+    // TODO: don't do this step if lesson has no quiz
+    for (var question in widget.answeredQuestions!) {
+      quizResultsGroups.add(QuizResultsGroup(answeredQuestion: question));
+    }
+    return quizResultsGroups;
+  }
+
+  Future<void> _selectDate() async {
+    final DateTime? selectedDate = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime.now(),
+        lastDate: DateTime.utc(2100, 12, 31));
+    if (selectedDate != null) {
+      setState(() {
+        _selectedDate = selectedDate;
+      });
+    }
   }
 
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Text("Congratulations!"),
+    List<Widget> quizResultsGroups = getQuizResultsGroups();
+
+    return Scaffold(
+      appBar: AppBar(leading: Container(), title: Text("Complete!")),
+      body: Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text("Congratulations!"),
+            SvgPicture.asset(
+              icon1,
+            ),
+            SvgPicture.asset(
+              icon2,
+            ),
+            Column(children: [
+              Center(child: Text("+25")),
+              Center(
+                child: Text("Learn-Score"),
               )
-            ],
-          ),
-          Row(
-            children: [
+            ]),
+            Text(
+                "If you now and in the future follow all the recommendations given in this tutorial your passwords will be safe."),
+            Text(
+                "It is recommended that you revisit this lesson in the future to keep practising."),
+            Text("Remind me:"),
+            ElevatedButton(
+                onPressed: _selectDate,
+                child: Text("Set Reminder")),
+            if (_selectedDate != null) Text(_selectedDate.toString()),
+            Center(
+                child: ElevatedButton(
+                    onPressed: _onFinishLessonPressed, child: const Text("Finish Lesson"))),
+            if (answeredQuestions.isNotEmpty)
               Expanded(
-                child: SvgPicture.asset(
-                  icon1,
-                ),
-              ),
-              Expanded(
-                child: SvgPicture.asset(
-                  icon2,
-                ),
-              ),
-              Column(children: [
-                Center(child: Text("+25")),
-                Center(
-                  child: Text("Learn-Score"),
-                )
-              ])
-            ],
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                    "If you now and in the future follow all the recommendations given in this tutorial your passwords will be safe."),
+                child: SizedBox(
+                    child: ListView.builder(
+                        itemCount: answeredQuestions.length,
+                        itemBuilder: (context, index) {
+                          return Center(child: quizResultsGroups[index]);
+                        })),
               )
-            ],
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                    "It is recommended that you revisit this lesson in the future to keep practising."),
-              )
-            ],
-          ),
-          Row(
-            children: [
-              Text("Remind me:"),
-              ElevatedButton(
-                  onPressed: () => showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime.now(),
-                      lastDate: DateTime.utc(2100, 12, 31)),
-                  child: Text("Set Reminder"))
-            ],
-          ),
-          ElevatedButton(
-              onPressed: _onPressed,
-              child: const Text("Finish Lesson"))
-        ],
+          ],
+        ),
       ),
     );
   }

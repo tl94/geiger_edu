@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:geiger_edu/model/lessonObj.dart';
 import 'package:geiger_edu/model/quiz/question.dart';
+import 'package:geiger_edu/screens/lesson_complete_screen.dart';
 import 'package:geiger_edu/screens/quiz_results_screen.dart';
 import 'package:geiger_edu/widgets/lesson/question_group.dart';
 import 'package:html/parser.dart';
@@ -12,10 +13,9 @@ import '../../model/quiz/answer.dart';
 import 'package:geiger_edu/globals.dart' as globals;
 
 class QuizSlide extends StatefulWidget {
-  static const routeName = '/quizscreen';
-  final Lesson lesson;
+  final String lessonPath;
 
-  QuizSlide({required this.lesson});
+  QuizSlide({required this.lessonPath});
 
   @override
   State<StatefulWidget> createState() => _QuizSlideState();
@@ -38,9 +38,9 @@ class _QuizSlideState extends State<QuizSlide> {
         await DefaultAssetBundle.of(context).loadString('AssetManifest.json');
     Map<String, dynamic> manifestMap = json.decode(manifestContent);
     RegExp regExp = RegExp("quiz\*");
-    print(widget.lesson.path);
+    print(widget.lessonPath);
     var filePaths = manifestMap.keys
-        .where((String key) => key.contains(widget.lesson.path))
+        .where((String key) => key.contains(widget.lessonPath))
         .where((String key) => regExp.hasMatch(key))
         .toList();
     print(filePaths);
@@ -126,56 +126,53 @@ class _QuizSlideState extends State<QuizSlide> {
   }
 
   void _finishQuiz() {
-    if (!widget.lesson.completed && _checkAnswers()) {
+    if (!globals.currentLesson.completed && _checkAnswers()) {
       var points = _evaluateAnswers();
       // TODO: write points and lesson completion to DB, also check if it was already completed before
       globals.answeredQuestions = _questions;
       Navigator.pushNamed(
           context,
-          QuizResultsScreen.routeName
+          LessonCompleteScreen.routeName
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-            leading: Container(),
-            title: Text("Quiz: " + widget.lesson.name)),
-        body: FutureBuilder<List<Widget>>(
-            future: _questionGroups,
-            builder:
-                (BuildContext context, AsyncSnapshot<List<Widget>> snapshot) {
-              List<Widget> children;
+    return Container(
+      child: FutureBuilder<List<Widget>>(
+          future: _questionGroups,
+          builder:
+              (BuildContext context, AsyncSnapshot<List<Widget>> snapshot) {
+            List<Widget> children;
 
-              if (snapshot.hasData) {
-                children = [
-                  Center(child: Text(_mainQuestion)),
-                  /* add QuestionGroups */
-                  for (var qg in snapshot.data!) qg,
-                  Spacer(),
-                  ElevatedButton(
-                      onPressed: _finishQuiz, child: Text("Finish Quiz"))
-                ];
-              } else {
-                children = const <Widget>[
-                  SizedBox(
-                    child: CircularProgressIndicator(),
-                    width: 60,
-                    height: 60,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 16),
-                    child: Text('Awaiting result...'),
-                  )
-                ];
-              }
-              return ListView.builder(
-                  itemCount: children.length,
-                  itemBuilder: (context, index) {
-                    return children[index];
-                  });
-            }));
+            if (snapshot.hasData) {
+              children = [
+                Center(child: Text(_mainQuestion)),
+                /* add QuestionGroups */
+                for (var qg in snapshot.data!) qg,
+                Spacer(),
+                ElevatedButton(
+                    onPressed: _finishQuiz, child: Text("Finish Quiz"))
+              ];
+            } else {
+              children = const <Widget>[
+                SizedBox(
+                  child: CircularProgressIndicator(),
+                  width: 60,
+                  height: 60,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 16),
+                  child: Text('Awaiting result...'),
+                )
+              ];
+            }
+            return ListView.builder(
+                itemCount: children.length,
+                itemBuilder: (context, index) {
+                  return children[index];
+                });
+          }));
   }
 }

@@ -11,9 +11,9 @@ class LessonScreen extends StatefulWidget {
   static const bckColor = const Color(0xFF5dbcd2); //0xFFedb879
 
   final String lessonPath;
-  final int lessonSlideIndex;
+  final int initialPage;
 
-  LessonScreen({required this.lessonPath, required this.lessonSlideIndex}) : super();
+  LessonScreen({required this.lessonPath, required this.initialPage}) : super();
 
   @override
   _LessonScreenState createState() => _LessonScreenState();
@@ -44,7 +44,7 @@ class _LessonScreenState extends State<LessonScreen> {
       getSlidePaths(context);
       return new Container(color: Colors.white);
     } else {
-      return new LessonContainer(lessonPath: widget.lessonPath, slidePaths: _slidePaths, initialPage: widget.lessonSlideIndex);
+      return new LessonContainer(lessonPath: widget.lessonPath, slidePaths: _slidePaths, initialPage: widget.initialPage);
     }
   }
 }
