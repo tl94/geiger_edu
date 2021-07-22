@@ -2,15 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/shims/dart_ui.dart';
 import 'package:geiger_edu/widgets/lesson/SlideContainer.dart';
-import 'package:geiger_edu/widgets/lesson/lesson_complete_slide.dart';
+import 'package:geiger_edu/screens/lesson_complete_screen.dart';
 import 'package:html/parser.dart';
 
 class LessonContainer extends StatefulWidget {
+  final String lessonPath;
   final List<String> slidePaths;
+  final int initialPage;
 
-  LessonContainer({required this.slidePaths}) : super();
+  LessonContainer({required this.lessonPath, required this.slidePaths, this.initialPage = 0}) : super();
 
-  _LessonContainerState createState() => _LessonContainerState();
+  _LessonContainerState createState() => _LessonContainerState(initialPage: initialPage);
 }
 
 class _LessonContainerState extends State<LessonContainer> {
@@ -18,15 +20,21 @@ class _LessonContainerState extends State<LessonContainer> {
   var _slideIndex = 0;
   List<Widget> _slides = [];
   List<String> _slideTitles = [];
-  final _pageController = new PageController();
+  late final _pageController;
   static const _buttonColor = Color.fromRGBO(0, 0, 0, 0.2);
 
   static const _kDuration = const Duration(milliseconds: 300);
   static const _kCurve = Curves.ease;
 
+  final int initialPage;
+  _LessonContainerState({this.initialPage = 0});
+
   @override
   initState() {
     super.initState();
+    _pageController = new PageController(
+        initialPage: initialPage
+    );
     _getSlideTitles();
     _getSlides();
   }
@@ -35,10 +43,10 @@ class _LessonContainerState extends State<LessonContainer> {
     List<String> slidePaths = widget.slidePaths;
     List<Widget> slides = [];
     for (var sp in slidePaths) {
-      SlideContainer slide = new SlideContainer(slidePath: sp);
+      SlideContainer slide = new SlideContainer(slidePath: sp, title: 'dddd',);
       slides.add(slide);
     }
-    slides.add(new LessonCompleteSlide());
+    slides.add(new LessonCompleteSlide(lessonPath: widget.lessonPath));
     setState(() {
       _slides = slides;
     });
@@ -82,7 +90,7 @@ class _LessonContainerState extends State<LessonContainer> {
     for (int i = 1; i < slidePaths.length; i++) {
       slideTitles.add(await _getSlideTitle(slidePaths[i]));
     }
-    slideTitles.add("Complete!");
+    slideTitles.add("Quiz");
     setState(() {
       _slideTitles = slideTitles;
       _title = slideTitles[0];

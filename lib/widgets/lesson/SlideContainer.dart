@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 class SlideContainer extends StatefulWidget {
+  final String title;
   final String slidePath;
 
-  SlideContainer({required this.slidePath}) : super();
+  SlideContainer({required this.title, required this.slidePath}) : super();
 
   _SlideContainerState createState() => _SlideContainerState();
 }
