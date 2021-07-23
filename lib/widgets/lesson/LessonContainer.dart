@@ -5,6 +5,7 @@ import 'package:geiger_edu/screens/lesson_complete_screen.dart';
 import 'package:geiger_edu/widgets/lesson/SlideContainer.dart';
 import 'package:geiger_edu/widgets/lesson/quiz_slide.dart';
 import 'package:html/parser.dart';
+import 'package:page_view_indicators/step_page_indicator.dart';
 
 class LessonContainer extends StatefulWidget {
   final String lessonPath;
@@ -27,6 +28,7 @@ class _LessonContainerState extends State<LessonContainer> {
   List<Widget> _slides = [];
   List<String> _slideTitles = [];
   late final PageController _pageController;
+  late final ValueNotifier<int> _currentPageNotifier;
   static const _buttonColor = Color.fromRGBO(0, 0, 0, 0.2);
 
   static const _kDuration = const Duration(milliseconds: 300);
@@ -39,8 +41,9 @@ class _LessonContainerState extends State<LessonContainer> {
   @override
   initState() {
     super.initState();
-    _pageController = new PageController(initialPage: initialPage);
     _slideIndex = initialPage;
+    _currentPageNotifier = ValueNotifier<int>(initialPage);
+    _pageController = PageController(initialPage: initialPage);
     _getSlideTitles();
     _getSlides();
   }
@@ -56,9 +59,7 @@ class _LessonContainerState extends State<LessonContainer> {
       slides.add(slide);
     }
     slides.add(QuizSlide(lessonPath: widget.lessonPath));
-    setState(() {
-      _slides = slides;
-    });
+    _slides = slides;
     return _slides;
   }
 
@@ -108,6 +109,7 @@ class _LessonContainerState extends State<LessonContainer> {
   }
 
   Future<VoidCallback?> _onSlideChanged(int page) async {
+    _currentPageNotifier.value = page;
     var title = _slideTitles[page];
     setState(() {
       _title = title;
@@ -115,15 +117,15 @@ class _LessonContainerState extends State<LessonContainer> {
   }
 
   bool _isOnFirstPage() {
-    return _slideIndex == 0;
+    return _currentPageNotifier.value == 0;
   }
 
   bool _isOnLastPage() {
-    return _slideIndex + 1 == _slides.length;
+    return _currentPageNotifier.value + 1 == _slides.length;
   }
 
   void _previousPage() async {
-    _slideIndex--;
+    _currentPageNotifier.value--;
     await _pageController.previousPage(duration: _kDuration, curve: _kCurve);
   }
 
@@ -132,51 +134,74 @@ class _LessonContainerState extends State<LessonContainer> {
     if (_isOnLastPage()) {
       Navigator.pushNamed(context, LessonCompleteScreen.routeName);
     }
-    _slideIndex++;
+    _currentPageNotifier.value++;
     await _pageController.nextPage(duration: _kDuration, curve: _kCurve);
   }
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(_title)),
-      body: Stack(
-        children: [
-          PageView(
-            controller: _pageController,
-            children: _slides,
-            onPageChanged: _onSlideChanged,
-            allowImplicitScrolling: true,
-          ),
-          if (!_isOnFirstPage())
-            Align(
-                alignment: Alignment.centerLeft,
-                child: Material(
-                    color: Colors.transparent,
-                    child: Ink(
-                        decoration: const ShapeDecoration(
-                          color: _buttonColor,
-                          shape: CircleBorder(),
-                        ),
-                        child: IconButton(
-                          icon: Icon(Icons.chevron_left),
-                          onPressed: () => _previousPage(),
-                        )))),
-          if (!_isOnLastPage())
-            Align(
-                alignment: Alignment.centerRight,
-                child: Material(
-                    color: Colors.transparent,
-                    child: Ink(
-                        decoration: const ShapeDecoration(
-                          color: _buttonColor,
-                          shape: CircleBorder(),
-                        ),
-                        child: IconButton(
-                          icon: Icon(Icons.chevron_right),
-                          onPressed: () => _nextPage(),
-                        ))))
-        ],
-      ),
-    );
+        appBar: AppBar(title: Text(_title)),
+        body: Container(
+            child: Column(children: [
+          Row(
+            children: [
+              Expanded(
+                  child: Container(
+                    color: Colors.white,
+                    padding: const EdgeInsets.all(16.0),
+                    child: StepPageIndicator(
+                      itemCount: _slides.length,
+                      currentPageNotifier: _currentPageNotifier,
+                      size: 16,
+                      onPageSelected: (int index) {
+                          _pageController.jumpToPage(index);
+                      },
+                    ),
+                  )
+              )
+            ],
+          )
+              ,
+          Expanded(
+              child: Stack(
+            children: [
+                PageView(
+                  controller: _pageController,
+                  children: _slides,
+                  onPageChanged: _onSlideChanged,
+                  allowImplicitScrolling: true,
+                )
+              ,
+              if (!_isOnFirstPage())
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Material(
+                        color: Colors.transparent,
+                        child: Ink(
+                            decoration: const ShapeDecoration(
+                              color: _buttonColor,
+                              shape: CircleBorder(),
+                            ),
+                            child: IconButton(
+                              icon: Icon(Icons.chevron_left),
+                              onPressed: () => _previousPage(),
+                            )))),
+              if (!_isOnLastPage())
+                Align(
+                    alignment: Alignment.centerRight,
+                    child: Material(
+                        color: Colors.transparent,
+                        child: Ink(
+                            decoration: const ShapeDecoration(
+                              color: _buttonColor,
+                              shape: CircleBorder(),
+                            ),
+                            child: IconButton(
+                              icon: Icon(Icons.chevron_right),
+                              onPressed: () => _nextPage(),
+                            )))),
+            ],
+          ))
+        ])));
   }
 }
