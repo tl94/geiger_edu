@@ -17,42 +17,48 @@ class LessonAdapter extends TypeAdapter<Lesson> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Lesson(
-      name: fields[0] as String,
-      recommended: fields[1] as bool,
-      motivation: fields[2] as String,
-      lengthInMinutes: fields[3] as int,
-      difficultyLevel: fields[4] as DifficultyLevel,
-      lastIndex: fields[5] as int,
-      maxIndex: fields[6] as int,
-      completed: fields[7] as bool,
-      path: fields[8] as String,
-      apiUrl: fields[9] as String,
+      lessonId: fields[0] as String,
+      name: fields[1] as String,
+      recommended: fields[2] as bool,
+      motivation: fields[3] as String,
+      duration: fields[4] as int,
+      difficulty: fields[5] as Difficulty,
+      lastIndex: fields[6] as int,
+      maxIndex: fields[7] as int,
+      hasQuiz: fields[8] as bool,
+      completed: fields[9] as bool,
+      path: fields[10] as String,
+      apiUrl: fields[11] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, Lesson obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(12)
       ..writeByte(0)
-      ..write(obj.name)
+      ..write(obj.lessonId)
       ..writeByte(1)
-      ..write(obj.recommended)
+      ..write(obj.name)
       ..writeByte(2)
-      ..write(obj.motivation)
+      ..write(obj.recommended)
       ..writeByte(3)
-      ..write(obj.lengthInMinutes)
+      ..write(obj.motivation)
       ..writeByte(4)
-      ..write(obj.difficultyLevel)
+      ..write(obj.duration)
       ..writeByte(5)
-      ..write(obj.lastIndex)
+      ..write(obj.difficulty)
       ..writeByte(6)
-      ..write(obj.maxIndex)
+      ..write(obj.lastIndex)
       ..writeByte(7)
-      ..write(obj.completed)
+      ..write(obj.maxIndex)
       ..writeByte(8)
-      ..write(obj.path)
+      ..write(obj.hasQuiz)
       ..writeByte(9)
+      ..write(obj.completed)
+      ..writeByte(10)
+      ..write(obj.path)
+      ..writeByte(11)
       ..write(obj.apiUrl);
   }
 

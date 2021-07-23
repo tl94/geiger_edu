@@ -1,0 +1,14 @@
+{
+  "lessonId": "LPW001",
+  "lessonName": {
+    "eng": "Password Safety",
+    "ger": "Passwortsicherheit"
+  },
+  "motivation": {
+    "eng": "Improve your password security!",
+    "ger": "Verbessere deine Passwortsicherheit!"
+  },
+  "duration": 3,
+  "difficulty": 1,
+  "hasQuiz": true
+}

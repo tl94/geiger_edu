@@ -29,8 +29,7 @@ List<Lesson> lessons = [];
 String currentLessonPath = "assets/lesson/password/password_safety/eng";
 int currentLessonSlideIndex = 0;
 String lessonTitle ='';
-Lesson currentLesson = Lesson(name: "Password Safety", completed: false, recommended: false, lastIndex: 0,maxIndex: 5, motivation: 'This is an easy beginner lesson', difficultyLevel: DifficultyLevel.beginner, lengthInMinutes: 5, apiUrl: '', path: "assets/lesson/password/password_safety/eng");
-
+Lesson currentLesson = Lesson(lessonId: "LPW001", name: "Password Safety", completed: true,recommended: false,lastIndex: 0,maxIndex: 5, motivation: 'This is an easy beginner lesson', difficulty: Difficulty.beginner, duration: 5, apiUrl: '', path: 'assets/lesson/password/password_safety/eng', hasQuiz: true);
 
 //** QUIZ STATE **
 List<Question> answeredQuestions = [];

@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:geiger_edu/screens/profile_screen.dart';
 import 'package:geiger_edu/screens/selection_screen.dart';
 import 'package:geiger_edu/screens/settings_screen.dart';
+import 'package:geiger_edu/services/lesson_loader.dart';
 import 'package:geiger_edu/widgets/Indicator.dart';
 import 'package:geiger_edu/widgets/NavigationContainer.dart';
 
@@ -33,6 +34,13 @@ class HomeScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    Container(child: ElevatedButton(
+                      child: Text("load lessons"),
+                      onPressed: () {
+                        // LessonLoader.test();
+                        LessonLoader.loadLessons(context);
+                      },
+                    )),
                 Container(
                     child: NavigationContainer(
                       imagePath: "assets/img/continue_lesson.png",

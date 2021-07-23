@@ -6,34 +6,34 @@ part of 'difficultyLevelObj.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class DifficultyLevelAdapter extends TypeAdapter<DifficultyLevel> {
+class DifficultyAdapter extends TypeAdapter<Difficulty> {
   @override
   final int typeId = 5;
 
   @override
-  DifficultyLevel read(BinaryReader reader) {
+  Difficulty read(BinaryReader reader) {
     switch (reader.readByte()) {
       case 0:
-        return DifficultyLevel.beginner;
+        return Difficulty.beginner;
       case 1:
-        return DifficultyLevel.advanced;
+        return Difficulty.advanced;
       case 2:
-        return DifficultyLevel.master;
+        return Difficulty.master;
       default:
-        return DifficultyLevel.beginner;
+        return Difficulty.beginner;
     }
   }
 
   @override
-  void write(BinaryWriter writer, DifficultyLevel obj) {
+  void write(BinaryWriter writer, Difficulty obj) {
     switch (obj) {
-      case DifficultyLevel.beginner:
+      case Difficulty.beginner:
         writer.writeByte(0);
         break;
-      case DifficultyLevel.advanced:
+      case Difficulty.advanced:
         writer.writeByte(1);
         break;
-      case DifficultyLevel.master:
+      case Difficulty.master:
         writer.writeByte(2);
         break;
     }
@@ -45,7 +45,7 @@ class DifficultyLevelAdapter extends TypeAdapter<DifficultyLevel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is DifficultyLevelAdapter &&
+      other is DifficultyAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

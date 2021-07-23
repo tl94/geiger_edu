@@ -3,6 +3,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:geiger_edu/route_generator.dart';
 import 'package:geiger_edu/screens/home_screen.dart';
 import 'package:geiger_edu/services/db.dart';
+import 'package:geiger_edu/services/lesson_loader.dart';
 import 'package:geiger_edu/widgets/LoadingAnimation.dart';
 
 InAppLocalhostServer localhostServer = new InAppLocalhostServer();
@@ -30,6 +31,10 @@ class _MyAppState extends State<MyApp>{
   @override
   void initState(){
     super.initState();
+
+    //** LOAD LESSON DATA **
+    LessonLoader.doEverything(context);
+
     Future.delayed(
         Duration(seconds: 5),
             (){Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));}
