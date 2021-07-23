@@ -14,16 +14,14 @@ class _IndicatorState extends State<Indicator> {
   late int maxLessons = 0;
   late double percentage = 0;
   late String label = '';
-  late int degree = 0;
 
   @override
   void initState() {
     super.initState();
     completedLessons = globals.completedLessons;
     maxLessons = globals.maxLessons;
-    //percentage = (completedLessons/maxLessons);
-    percentage = .33;
-    degree = 68;
+    percentage = (completedLessons/maxLessons);
+
     if(percentage<0.25 && percentage>0)
       label = 'low';
     if(percentage<0.5 && percentage>0.25)
