@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/shims/dart_ui.dart';
-import 'package:geiger_edu/widgets/lesson/SlideContainer.dart';
 import 'package:geiger_edu/screens/lesson_complete_screen.dart';
+import 'package:geiger_edu/widgets/lesson/SlideContainer.dart';
 import 'package:geiger_edu/widgets/lesson/quiz_slide.dart';
 import 'package:html/parser.dart';
 
@@ -11,9 +11,14 @@ class LessonContainer extends StatefulWidget {
   final List<String> slidePaths;
   final int initialPage;
 
-  LessonContainer({required this.lessonPath, required this.slidePaths, this.initialPage = 0}) : super();
+  LessonContainer(
+      {required this.lessonPath,
+      required this.slidePaths,
+      this.initialPage = 0})
+      : super();
 
-  _LessonContainerState createState() => _LessonContainerState(initialPage: initialPage);
+  _LessonContainerState createState() =>
+      _LessonContainerState(initialPage: initialPage);
 }
 
 class _LessonContainerState extends State<LessonContainer> {
@@ -28,14 +33,14 @@ class _LessonContainerState extends State<LessonContainer> {
   static const _kCurve = Curves.ease;
 
   final int initialPage;
+
   _LessonContainerState({this.initialPage = 0});
 
   @override
   initState() {
     super.initState();
-    _pageController = new PageController(
-        initialPage: initialPage
-    );
+    _pageController = new PageController(initialPage: initialPage);
+    _slideIndex = initialPage;
     _getSlideTitles();
     _getSlides();
   }
@@ -44,7 +49,10 @@ class _LessonContainerState extends State<LessonContainer> {
     List<String> slidePaths = widget.slidePaths;
     List<Widget> slides = [];
     for (var sp in slidePaths) {
-      SlideContainer slide = new SlideContainer(slidePath: sp, title: 'dddd',);
+      SlideContainer slide = new SlideContainer(
+        slidePath: sp,
+        title: 'dddd',
+      );
       slides.add(slide);
     }
     slides.add(QuizSlide(lessonPath: widget.lessonPath));
@@ -106,18 +114,25 @@ class _LessonContainerState extends State<LessonContainer> {
     });
   }
 
+  bool _isOnFirstPage() {
+    return _slideIndex == 0;
+  }
+
+  bool _isOnLastPage() {
+    return _slideIndex + 1 == _slides.length;
+  }
+
   void _previousPage() async {
+    _slideIndex--;
     await _pageController.previousPage(duration: _kDuration, curve: _kCurve);
   }
 
   void _nextPage() async {
     // TODO: don't allow this if the lesson has a quiz
-    if (_pageController.page!.toInt() + 1 == _slides.length) {
-      Navigator.pushNamed(
-          context,
-          LessonCompleteScreen.routeName
-      );
+    if (_isOnLastPage()) {
+      Navigator.pushNamed(context, LessonCompleteScreen.routeName);
     }
+    _slideIndex++;
     await _pageController.nextPage(duration: _kDuration, curve: _kCurve);
   }
 
@@ -132,32 +147,34 @@ class _LessonContainerState extends State<LessonContainer> {
             onPageChanged: _onSlideChanged,
             allowImplicitScrolling: true,
           ),
-          Align(
-              alignment: Alignment.centerLeft,
-              child: Material(
-                  color: Colors.transparent,
-                  child: Ink(
-                      decoration: const ShapeDecoration(
-                        color: _buttonColor,
-                        shape: CircleBorder(),
-                      ),
-                      child: IconButton(
-                        icon: Icon(Icons.chevron_left),
-                        onPressed: () => _previousPage(),
-                      )))),
-          Align(
-              alignment: Alignment.centerRight,
-              child: Material(
-                  color: Colors.transparent,
-                  child: Ink(
-                      decoration: const ShapeDecoration(
-                        color: _buttonColor,
-                        shape: CircleBorder(),
-                      ),
-                      child: IconButton(
-                        icon: Icon(Icons.chevron_right),
-                        onPressed: () => _nextPage(),
-                      ))))
+          if (!_isOnFirstPage())
+            Align(
+                alignment: Alignment.centerLeft,
+                child: Material(
+                    color: Colors.transparent,
+                    child: Ink(
+                        decoration: const ShapeDecoration(
+                          color: _buttonColor,
+                          shape: CircleBorder(),
+                        ),
+                        child: IconButton(
+                          icon: Icon(Icons.chevron_left),
+                          onPressed: () => _previousPage(),
+                        )))),
+          if (!_isOnLastPage())
+            Align(
+                alignment: Alignment.centerRight,
+                child: Material(
+                    color: Colors.transparent,
+                    child: Ink(
+                        decoration: const ShapeDecoration(
+                          color: _buttonColor,
+                          shape: CircleBorder(),
+                        ),
+                        child: IconButton(
+                          icon: Icon(Icons.chevron_right),
+                          onPressed: () => _nextPage(),
+                        ))))
         ],
       ),
     );
