@@ -79,6 +79,8 @@ flutter:
     - assets/img/loadingcircle/
     - assets/img/indicator/
     - assets/lesson/
+    - assets/lesson/password/
+    - assets/lesson/password/password_safety/
     - assets/lesson/password/password_safety/eng/
     - assets/lesson/password/password_safety/eng/img/
   # An image asset can refer to one or more resolution-specific "variants", see
