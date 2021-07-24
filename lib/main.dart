@@ -9,11 +9,12 @@ import 'package:geiger_edu/widgets/LoadingAnimation.dart';
 InAppLocalhostServer localhostServer = new InAppLocalhostServer();
 
 void main() async {
+
   //** INITIALISE DATABASE **
-  DB.init();
+  await DB.init();
 
   //** LESSON-SERVER **
-  localhostServer.start();
+  await localhostServer.start();
 
   runApp(MaterialApp(
     title: 'GEIGER mobile learning',

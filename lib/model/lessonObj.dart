@@ -1,4 +1,4 @@
-import 'package:geiger_edu/model/difficultyLevelObj.dart';
+import 'package:geiger_edu/model/difficultyObj.dart';
 import 'package:hive/hive.dart';
 
 part 'lessonObj.g.dart';
@@ -28,7 +28,7 @@ class Lesson {
   Difficulty difficulty;
 
   @HiveField(7)
-  int lastIndex = 0;
+  int lastIndex;
 
   @HiveField(8)
   int maxIndex;
@@ -54,10 +54,10 @@ class Lesson {
     required this.motivation,       //map with motivation for the lesson in all supported languages
     required this.duration,         //length of lesson in minutes
     required this.difficulty,       //difficulty level of lesson
-    required this.lastIndex,        //last index a user was on in this lesson
+    this.lastIndex = 0,             //last index a user was on in this lesson
     required this.maxIndex,         //max index of the whole lesson
     required this.hasQuiz,          //whether lesson has a quiz or not
-    required this.completed,        //lesson is completed
+    this.completed = false,         //whether lesson was completed before
     required this.path,             //path to physical location of lesson directory
     required this.apiUrl,           //URL provided by the geiger toolbox
   });

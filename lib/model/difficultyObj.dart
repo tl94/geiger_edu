@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 
-part 'difficultyLevelObj.g.dart';
+part 'difficultyObj.g.dart';
 
 @HiveType(typeId: 5)
 enum Difficulty {

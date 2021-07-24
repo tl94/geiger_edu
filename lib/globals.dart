@@ -3,7 +3,7 @@ library geiger_edu.globals;
 import 'package:flutter/cupertino.dart';
 import 'package:geiger_edu/model/quiz/question.dart';
 
-import 'model/difficultyLevelObj.dart';
+import 'model/difficultyObj.dart';
 import 'model/lessonObj.dart';
 
 final txtColor = const Color(0xff2f4858);

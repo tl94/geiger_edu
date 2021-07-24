@@ -17,7 +17,7 @@ class LessonCategoryAdapter extends TypeAdapter<LessonCategory> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return LessonCategory(
-      id: fields[0] as String,
+      lessonCategoryId: fields[0] as String,
       title: (fields[1] as Map).cast<String, String>(),
       path: fields[2] as String,
     );
@@ -28,7 +28,7 @@ class LessonCategoryAdapter extends TypeAdapter<LessonCategory> {
     writer
       ..writeByte(3)
       ..writeByte(0)
-      ..write(obj.id)
+      ..write(obj.lessonCategoryId)
       ..writeByte(1)
       ..write(obj.title)
       ..writeByte(2)

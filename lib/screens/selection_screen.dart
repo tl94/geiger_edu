@@ -76,7 +76,7 @@ class SelectionScreen extends StatelessWidget {
                     shrinkWrap: true,
                     itemCount: categories.length,
                     itemBuilder: (BuildContext context, int i) {
-                      var lessonSpecs = getCompleted(categories[i].id);
+                      var lessonSpecs = getCompleted(categories[i].lessonCategoryId);
                       return Container(
                         margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
                         child: NavigationContainer(
@@ -85,7 +85,7 @@ class SelectionScreen extends StatelessWidget {
                           passedRoute: LessonSelectionScreen.routeName,
                           currentValue: lessonSpecs["completed"]!,
                           maxValue: lessonSpecs["allLessons"]!,
-                          passedLessons: getLessonListForCategory(categories[i].id),
+                          passedLessons: getLessonListForCategory(categories[i].lessonCategoryId),
                         ),
                       );
                     }),

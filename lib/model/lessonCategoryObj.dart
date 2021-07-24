@@ -8,7 +8,7 @@ part 'lessonCategoryObj.g.dart';
 class LessonCategory {
 
   @HiveField(0)
-  String id;
+  String lessonCategoryId;
 
   @HiveField(1)
   Map<String, String> title;
@@ -17,8 +17,9 @@ class LessonCategory {
   String path;
 
   LessonCategory({
-    required this.id,       //unique id of the lesson category
+    required this.lessonCategoryId,       //unique id of the lesson category
     required this.title,    //map with lesson category titles for all supported languages
     required this.path,     //path to physical location of lesson category directory
   });
+
 }

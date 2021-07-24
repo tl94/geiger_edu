@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:geiger_edu/model/difficultyLevelObj.dart';
+import 'package:geiger_edu/model/difficultyObj.dart';
 import 'package:geiger_edu/model/lessonCategoryObj.dart';
 import 'package:geiger_edu/model/lessonObj.dart';
 import 'package:geiger_edu/model/settingObj.dart';
@@ -15,7 +15,7 @@ class DB {
   static Box<Lesson> lessonBox = Boxes.getLessons();
   static Box<LessonCategory> lessonCategoryBox = Boxes.getLessonCategories();
 
-  static void init() async {
+  static Future<void> init() async {
     //** Hive DB Setup **
     WidgetsFlutterBinding.ensureInitialized();
     //Initializes Hive with a valid directory in the app files
@@ -45,9 +45,10 @@ class DB {
 
     if(!lessonCategoriesIsOpen){ await Hive.openBox<LessonCategory>('lessonCategories'); }
     // if(DB.getLessonCategoryBox().keys.isEmpty)
+  print("LESSON CATEGORIES OPEN");
 
     if(!lessonsIsOpen) { await Hive.openBox<Lesson>('lessons'); }
-    if (getLessonBox().isEmpty) { createTestLessons(); }
+    // if (getLessonBox().isEmpty) { createTestLessons(); }
 
     runGeigerIndicator();
   }
@@ -104,11 +105,11 @@ class DB {
       DB.getLessonBox().put(lesson.lessonId, lesson);
     }
 
-    LessonCategory c1 = new LessonCategory(id: "CID001", title: {
+    LessonCategory c1 = new LessonCategory(lessonCategoryId: "CID001", title: {
       "eng":"Passwords",
       "ger":"Passwörter"
     }, path: "assets/lesson/password", );
-    getLessonCategoryBox().put(c1.id,c1);
+    getLessonCategoryBox().put(c1.lessonCategoryId,c1);
 
     Lesson k1 = new Lesson(lessonId: "LMW001", lessonCategoryId: "CID002", title: {
       "eng": "Password Safety",
@@ -137,11 +138,11 @@ class DB {
       DB.getLessonBox().put(lesson.lessonId, lesson);
     }
 
-    LessonCategory c2 = new LessonCategory(id: "CID002", title:{
+    LessonCategory c2 = new LessonCategory(lessonCategoryId: "CID002", title:{
       "eng":"Malware",
       "ger":"Malware"
     }, path: "assets/lesson/password");
-    getLessonCategoryBox().put(c2.id,c2);
+    getLessonCategoryBox().put(c2.lessonCategoryId,c2);
   }
 
   static Box<LessonCategory> getLessonCategoryBox(){ return lessonCategoryBox; }
