@@ -13,9 +13,12 @@ class Boxes {
   static Box<Setting> getSettings() =>
       Hive.box<Setting>('settings');
 
-  static Box<XApis> getxApis() =>
-      Hive.box<XApis>('xapis');
+  static Box<Lesson> getLessons() =>
+      Hive.box<Lesson>('lessons');
 
   static Box<LessonCategory> getLessonCategories() =>
       Hive.box<LessonCategory>('lessonCategories');
+
+  static Box<XApis> getxApis() =>
+      Hive.box<XApis>('xapis');
 }

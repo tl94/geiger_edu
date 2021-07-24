@@ -18,47 +18,50 @@ class LessonAdapter extends TypeAdapter<Lesson> {
     };
     return Lesson(
       lessonId: fields[0] as String,
-      name: fields[1] as String,
-      recommended: fields[2] as bool,
-      motivation: fields[3] as String,
-      duration: fields[4] as int,
-      difficulty: fields[5] as Difficulty,
-      lastIndex: fields[6] as int,
-      maxIndex: fields[7] as int,
-      hasQuiz: fields[8] as bool,
-      completed: fields[9] as bool,
-      path: fields[10] as String,
-      apiUrl: fields[11] as String,
+      lessonCategoryId: fields[1] as String,
+      title: (fields[2] as Map).cast<String, String>(),
+      recommended: fields[3] as bool,
+      motivation: (fields[4] as Map).cast<String, String>(),
+      duration: fields[5] as int,
+      difficulty: fields[6] as Difficulty,
+      lastIndex: fields[7] as int,
+      maxIndex: fields[8] as int,
+      hasQuiz: fields[9] as bool,
+      completed: fields[10] as bool,
+      path: fields[11] as String,
+      apiUrl: fields[12] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, Lesson obj) {
     writer
-      ..writeByte(12)
+      ..writeByte(13)
       ..writeByte(0)
       ..write(obj.lessonId)
       ..writeByte(1)
-      ..write(obj.name)
+      ..write(obj.lessonCategoryId)
       ..writeByte(2)
-      ..write(obj.recommended)
+      ..write(obj.title)
       ..writeByte(3)
-      ..write(obj.motivation)
+      ..write(obj.recommended)
       ..writeByte(4)
-      ..write(obj.duration)
+      ..write(obj.motivation)
       ..writeByte(5)
-      ..write(obj.difficulty)
+      ..write(obj.duration)
       ..writeByte(6)
-      ..write(obj.lastIndex)
+      ..write(obj.difficulty)
       ..writeByte(7)
-      ..write(obj.maxIndex)
+      ..write(obj.lastIndex)
       ..writeByte(8)
-      ..write(obj.hasQuiz)
+      ..write(obj.maxIndex)
       ..writeByte(9)
-      ..write(obj.completed)
+      ..write(obj.hasQuiz)
       ..writeByte(10)
-      ..write(obj.path)
+      ..write(obj.completed)
       ..writeByte(11)
+      ..write(obj.path)
+      ..writeByte(12)
       ..write(obj.apiUrl);
   }
 

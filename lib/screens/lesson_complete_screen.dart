@@ -24,16 +24,6 @@ class _LessonCompleteScreenState extends State<LessonCompleteScreen> {
   static const String icon2 = "assets/img/trophy_icon.svg";
   DateTime? _selectedDate;
 
-  void checkSvg(String svgString) {
-    final SvgParser parser = SvgParser();
-    try {
-      parser.parse(svgString, warningsAsErrors: true);
-      print('SVG is supported');
-    } catch (e) {
-      print('SVG contains unsupported features');
-    }
-  }
-
   void _onFinishLessonPressed() {
     Navigator.pushNamed(context, HomeScreen.routeName);
   }

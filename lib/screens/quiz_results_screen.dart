@@ -8,8 +8,9 @@ import 'package:geiger_edu/widgets/lesson/quiz_results_group.dart';
 import 'package:html/parser.dart';
 import 'package:string_validator/string_validator.dart';
 
-import '../model/quiz/answer.dart';
+import '../model/quiz/answer.dart';import 'package:geiger_edu/globals.dart' as globals;
 
+//TODO: UNUSED CLASS
 class QuizResultsScreen extends StatelessWidget {
   static const routeName = '/quizresultsscreen';
   final Lesson lesson;
@@ -29,7 +30,7 @@ class QuizResultsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var quizResultsGroups = getQuizResultsGroups();
     return Scaffold(
-        appBar: AppBar(title: Text("Quiz: " + lesson.name)),
+        appBar: AppBar(title: Text("Quiz: " + lesson.title[globals.language]!)),
         body: ListView.builder(
         itemCount: answeredQuestions.length,
         itemBuilder: (context, index) {

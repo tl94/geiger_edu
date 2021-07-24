@@ -12,8 +12,8 @@ class LessonSelectionScreen extends StatelessWidget {
   static const routeName = '/lessonSelection';
   static const bckColor = const Color(0xFF5dbcd2); //0xFFedb879
 
-  final String? title;
-  final List<Lesson>? lessons;
+  final String title;
+  final List<Lesson> lessons;
 
   const LessonSelectionScreen({
     Key? key,
@@ -21,19 +21,28 @@ class LessonSelectionScreen extends StatelessWidget {
     required this.lessons,
   }) : super(key: key);
 
-  Map<String, int> getCompleted(var key){
+
+  List<Lesson> getLessonList(var key) {
+    var lessonList = DB
+        .getLessonBox()
+        .values
+        .where((lesson) => lesson.lessonCategoryId == key)
+        .toList();
+    return lessonList;
+  }
+
+  Map<String, int> getCompleted(var key) {
     Map<String, int> result = {};
     int completedCount = 0;
 
-    var lessonList = DB.getLessonCategoryBox().get(key)!.lessonList;
+    var lessonList = getLessonList(key);
 
-    for(var lesson in lessonList ){
-      if(lesson.completed)
-        completedCount++;
+    for (var lesson in lessonList) {
+      if (lesson.completed) completedCount++;
     }
 
-    result["completed"]=completedCount;
-    result["allLessons"]=lessonList.length;
+    result["completed"] = completedCount;
+    result["allLessons"] = lessonList.length;
     return result;
   }
 
@@ -45,7 +54,7 @@ class LessonSelectionScreen extends StatelessWidget {
           icon: Icon(Icons.arrow_back),
           onPressed: () => Navigator.pushNamed(context, SelectionScreen.routeName),
         ),
-        title: Text(title!),
+        title: Text(title),
         centerTitle: true,
         backgroundColor: bckColor,
       ),
@@ -66,13 +75,13 @@ class LessonSelectionScreen extends StatelessWidget {
                     child: ListView.builder(
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
-                        itemCount: this.lessons!.length,
+                        itemCount: this.lessons.length,
                         itemBuilder: (BuildContext context, int i) {
                           return Container(
                               margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
                               child:LessonDropdown(
-                                title: this.lessons![i].name,
-                                completed: this.lessons![i].completed,
+                                title: this.lessons[i].title[globals.language]!,
+                                completed: this.lessons[i].completed,
                                 //TODO: ADD MISSING LESSON PARAMETERS
                               )
                           );

@@ -12,6 +12,7 @@ import 'package:geiger_edu/globals.dart' as globals;
 class DB {
   static Box<User> userBox = Boxes.getUsers();
   static Box<Setting> settingBox = Boxes.getSettings();
+  static Box<Lesson> lessonBox = Boxes.getLessons();
   static Box<LessonCategory> lessonCategoryBox = Boxes.getLessonCategories();
 
   static void init() async {
@@ -29,34 +30,35 @@ class DB {
 
     bool usersIsOpen = Hive.isBoxOpen('users');
     bool settingsIsOpen = Hive.isBoxOpen('settings');
-    bool lessonIsOpen = Hive.isBoxOpen('lessonCategories');
+    bool lessonsIsOpen = Hive.isBoxOpen('lessons');
+    bool lessonCategoriesIsOpen = Hive.isBoxOpen('lessonCategories');
 
     if(!usersIsOpen){
       await Hive.openBox<User>('users'); //user table
     }
-    if(DB.getUserBox().keys.isEmpty){ //if it doesnt exist
+    if (DB.getUserBox().keys.isEmpty){ //if it doesnt exist
       createDefaultUser();
     }
 
     if(!settingsIsOpen){ await Hive.openBox<Setting>('settings'); }
     if(DB.getSettingBox().keys.isEmpty){ createDefaultSettings(); }
 
-    if(!lessonIsOpen){ await Hive.openBox<LessonCategory>('lessonCategories'); }
-    if(DB.getLessonCategoryBox().keys.isEmpty){ createTestLessons(); }
+    if(!lessonCategoriesIsOpen){ await Hive.openBox<LessonCategory>('lessonCategories'); }
+    // if(DB.getLessonCategoryBox().keys.isEmpty)
+
+    if(!lessonsIsOpen) { await Hive.openBox<Lesson>('lessons'); }
+    if (getLessonBox().isEmpty) { createTestLessons(); }
 
     runGeigerIndicator();
   }
 
   static void runGeigerIndicator(){
     var tempCompletedLessons = 0;
-    var tempMaxLessons = 0;
+    var tempMaxLessons = getLessonBox().values.length;
 
-    for(var key in DB.lessonCategoryBox.keys){
-      var x = DB.getLessonCategoryBox().get(key)!.lessonList;
-      tempMaxLessons += x.length;
-      for(int i = 0; i< x.length ; i++){
-        if(x[i].completed)
-          tempCompletedLessons++;
+    for(var lesson in getLessonBox().values){
+      if (lesson.completed) {
+        tempCompletedLessons++;
       }
     }
 
@@ -75,31 +77,77 @@ class DB {
   static void createTestLessons(){
     //TODO: replace with updateLessonBox
 
-    Lesson l1 = new Lesson(lessonId: "LPW001", name: "Password Safety", completed: true,recommended: false,lastIndex: 0,maxIndex: 6, motivation: 'This is an easy beginner lesson', difficulty: Difficulty.beginner, duration: 5, apiUrl: '', path: '', hasQuiz: true);
-    Lesson l2 = new Lesson(lessonId: "LPW002", name: "L2", completed: false,recommended: false,lastIndex: 5,maxIndex: 8, motivation: 'This is a more difficult advanced lesson', difficulty: Difficulty.advanced, duration: 8, apiUrl: '', path: '', hasQuiz: false);
-    Lesson l3 = new Lesson(lessonId: "LPW003", name: "L3", completed: false,recommended: false,lastIndex: 2,maxIndex: 4, motivation: 'This is a lesson for masters', difficulty: Difficulty.master, duration: 10, apiUrl: '', path: '', hasQuiz: false);
+    Lesson l1 = new Lesson(lessonId: "LPW001", lessonCategoryId: "CID001", title: {
+      "eng": "Password Safety",
+      "ger": "Passwortsicherheit"
+    }, completed: true,recommended: false,lastIndex: 0,maxIndex: 6, motivation: {
+      "eng": "Improve your password security!",
+      "ger": "Verbessere deine Passwortsicherheit!"
+    }, difficulty: Difficulty.beginner, duration: 5, apiUrl: '', path: '', hasQuiz: true);
+    Lesson l2 = new Lesson(lessonId: "LPW002", lessonCategoryId: "CID001", title: {
+      "eng": "Password Safety",
+      "ger": "Passwortsicherheit"
+    }, completed: false,recommended: false,lastIndex: 5,maxIndex: 8, motivation: {
+      "eng": "Improve your password security!",
+      "ger": "Verbessere deine Passwortsicherheit!"
+    }, difficulty: Difficulty.advanced, duration: 8, apiUrl: '', path: '', hasQuiz: false);
+    Lesson l3 = new Lesson(lessonId: "LPW003", lessonCategoryId: "CID001", title: {
+      "eng": "Password Safety",
+      "ger": "Passwortsicherheit"
+    }, completed: false,recommended: false,lastIndex: 2,maxIndex: 4, motivation: {
+      "eng": "Improve your password security!",
+      "ger": "Verbessere deine Passwortsicherheit!"
+    }, difficulty: Difficulty.master, duration: 10, apiUrl: '', path: '', hasQuiz: false);
     List<Lesson> l = [l1,l2,l3];
 
-    LessonCategory c1 = new LessonCategory(name: "Passwords", lessonList: l);
-    getLessonCategoryBox().put(c1.name,c1);
+    for (var lesson in l) {
+      DB.getLessonBox().put(lesson.lessonId, lesson);
+    }
 
-    Lesson k1 = new Lesson(lessonId: "LMW001", name: "Password Safety", completed: false,recommended: false,lastIndex: 0,maxIndex: 6, motivation: 'This is an easy beginner lesson', difficulty: Difficulty.beginner, duration: 5, apiUrl: '', path: '', hasQuiz: true);
-    Lesson k2 = new Lesson(lessonId: "LMW002", name: "L2", completed: false,recommended: false,lastIndex: 5,maxIndex: 8, motivation: 'This is a more difficult advanced lesson', difficulty: Difficulty.advanced, duration: 8, apiUrl: '', path: '', hasQuiz: false);
-    Lesson k3 = new Lesson(lessonId: "LMW003", name: "L3", completed: false,recommended: false,lastIndex: 2,maxIndex: 4, motivation: 'This is a lesson for masters', difficulty: Difficulty.master, duration: 10, apiUrl: '', path: '', hasQuiz: false);
+    LessonCategory c1 = new LessonCategory(id: "CID001", title: {
+      "eng":"Passwords",
+      "ger":"Passwörter"
+    }, path: "assets/lesson/password", );
+    getLessonCategoryBox().put(c1.id,c1);
+
+    Lesson k1 = new Lesson(lessonId: "LMW001", lessonCategoryId: "CID002", title: {
+      "eng": "Password Safety",
+      "ger": "Passwortsicherheit"
+    }, completed: true,recommended: false,lastIndex: 0,maxIndex: 6, motivation: {
+      "eng": "Improve your password security!",
+      "ger": "Verbessere deine Passwortsicherheit!"
+    }, difficulty: Difficulty.beginner, duration: 5, apiUrl: '', path: '', hasQuiz: true);
+    Lesson k2 = new Lesson(lessonId: "LMW002", lessonCategoryId: "CID002", title: {
+      "eng": "Password Safety",
+      "ger": "Passwortsicherheit"
+    }, completed: false,recommended: false,lastIndex: 5,maxIndex: 8, motivation: {
+      "eng": "Improve your password security!",
+      "ger": "Verbessere deine Passwortsicherheit!"
+    }, difficulty: Difficulty.advanced, duration: 8, apiUrl: '', path: '', hasQuiz: false);
+    Lesson k3 = new Lesson(lessonId: "LMW003", lessonCategoryId: "CID002", title: {
+      "eng": "Password Safety",
+      "ger": "Passwortsicherheit"
+    }, completed: false,recommended: false,lastIndex: 2,maxIndex: 4, motivation: {
+      "eng": "Improve your password security!",
+      "ger": "Verbessere deine Passwortsicherheit!"
+    }, difficulty: Difficulty.master, duration: 10, apiUrl: '', path: '', hasQuiz: false);
     List<Lesson> k = [k1,k2,k3];
 
-    LessonCategory c2 = new LessonCategory(name: "Malware", lessonList: k);
-    getLessonCategoryBox().put(c2.name,c2);
+    for (var lesson in k) {
+      DB.getLessonBox().put(lesson.lessonId, lesson);
+    }
+
+    LessonCategory c2 = new LessonCategory(id: "CID002", title:{
+      "eng":"Malware",
+      "ger":"Malware"
+    }, path: "assets/lesson/password");
+    getLessonCategoryBox().put(c2.id,c2);
   }
 
   static Box<LessonCategory> getLessonCategoryBox(){ return lessonCategoryBox; }
 
-  static void wipeDB() async{
-    //delete the hive-boxes, clears the file content from the device
-    await Hive.deleteBoxFromDisk('users');
-    await Hive.deleteBoxFromDisk('settings');
-    await Hive.deleteBoxFromDisk('lessonCategories');
-  }
+  static Box<Lesson> getLessonBox() { return lessonBox; }
+
 
   static void createDefaultUser(){
     //add default user to box
@@ -162,4 +210,14 @@ class DB {
   }
 
   static Box<Setting> getSettingBox() {return settingBox;}
+
+
+  static void wipeDB() async{
+    //delete the hive-boxes, clears the file content from the device
+    await Hive.deleteBoxFromDisk('users');
+    await Hive.deleteBoxFromDisk('settings');
+    await Hive.deleteBoxFromDisk('lessons');
+    await Hive.deleteBoxFromDisk('lessonCategories');
+    // await Hive.deleteBoxFromDisk('xapis');
+  }
 }

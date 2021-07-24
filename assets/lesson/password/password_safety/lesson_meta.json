@@ -1,6 +1,7 @@
 {
   "lessonId": "LPW001",
-  "lessonName": {
+  "lessonCategoryId": "CID001",
+  "title": {
     "eng": "Password Safety",
     "ger": "Passwortsicherheit"
   },

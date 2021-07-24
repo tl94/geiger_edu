@@ -17,19 +17,22 @@ class LessonCategoryAdapter extends TypeAdapter<LessonCategory> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return LessonCategory(
-      name: fields[0] as String,
-      lessonList: (fields[1] as List).cast<Lesson>(),
+      id: fields[0] as String,
+      title: (fields[1] as Map).cast<String, String>(),
+      path: fields[2] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, LessonCategory obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
-      ..write(obj.name)
+      ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.lessonList);
+      ..write(obj.title)
+      ..writeByte(2)
+      ..write(obj.path);
   }
 
   @override

@@ -10,51 +10,55 @@ class Lesson {
   String lessonId;
 
   @HiveField(1)
-  String name;
+  String lessonCategoryId;
 
   @HiveField(2)
-  bool recommended;
+  Map<String, String> title;
 
   @HiveField(3)
-  String motivation;
+  bool recommended;
 
   @HiveField(4)
-  int duration;
+  Map<String, String> motivation;
 
   @HiveField(5)
-  Difficulty difficulty;
+  int duration;
 
   @HiveField(6)
-  int lastIndex = 0;
+  Difficulty difficulty;
 
   @HiveField(7)
-  int maxIndex;
+  int lastIndex = 0;
 
   @HiveField(8)
-  bool hasQuiz;
+  int maxIndex;
 
   @HiveField(9)
-  bool completed;
+  bool hasQuiz;
 
   @HiveField(10)
-  String path;
+  bool completed;
 
   @HiveField(11)
+  String path;
+
+  @HiveField(12)
   String apiUrl;
 
 
   Lesson({
     required this.lessonId,         //unique id of the lesson
-    required this.name,             //name of the lesson
+    required this.lessonCategoryId, //id of lesson category this lesson belongs to
+    required this.title,            //map with lesson titles for all supported languages
     this.recommended = false,       //lesson is recommended to the user
-    required this.motivation,       //motivation for the lesson
-    required this.duration,  //length of lesson in minutes
-    required this.difficulty,  //difficulty level of lesson
+    required this.motivation,       //map with motivation for the lesson in all supported languages
+    required this.duration,         //length of lesson in minutes
+    required this.difficulty,       //difficulty level of lesson
     required this.lastIndex,        //last index a user was on in this lesson
     required this.maxIndex,         //max index of the whole lesson
     required this.hasQuiz,          //whether lesson has a quiz or not
     required this.completed,        //lesson is completed
-    required this.path,             //path to physical files
+    required this.path,             //path to physical location of lesson directory
     required this.apiUrl,           //URL provided by the geiger toolbox
   });
 }

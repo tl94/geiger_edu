@@ -126,7 +126,7 @@ class _QuizSlideState extends State<QuizSlide> {
   }
 
   void _finishQuiz() {
-    if (!globals.currentLesson.completed && _checkAnswers()) {
+    if (_checkAnswers()) {
       var points = _evaluateAnswers();
       // TODO: write points and lesson completion to DB, also check if it was already completed before
       globals.answeredQuestions = _questions;
