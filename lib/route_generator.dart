@@ -21,7 +21,7 @@ class RouteGenerator {
       case LessonScreen.routeName:
         // MaterialPageRoute transitions to the new route using a platform specific animation.
         // TODO use dynamic lesson path
-        return MaterialPageRoute(builder: (context) => LessonScreen(lessonPath: globals.currentLessonPath, initialPage: globals.currentLessonSlideIndex));
+        return MaterialPageRoute(builder: (context) => LessonScreen(lesson: globals.currentLesson, initialPage: globals.currentLessonSlideIndex));
 
       case LessonCompleteScreen.routeName:
       // MaterialPageRoute transitions to the new route using a platform specific animation.
@@ -41,7 +41,7 @@ class RouteGenerator {
 
       case LessonSelectionScreen.routeName:
       // MaterialPageRoute transitions to the new route using a platform specific animation.
-        return MaterialPageRoute(builder: (context) => LessonSelectionScreen(title:globals.lessonTitle, lessons: globals.lessons));
+        return MaterialPageRoute(builder: (context) => LessonSelectionScreen(categoryTitle: globals.categoryTitle, lessons: globals.lessons));
 
       default:
         return MaterialPageRoute(builder: (context) => HomeScreen());

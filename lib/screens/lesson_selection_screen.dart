@@ -9,27 +9,28 @@ import 'lesson_screen.dart';
 import 'package:geiger_edu/globals.dart' as globals;
 
 class LessonSelectionScreen extends StatelessWidget {
-  static const routeName = '/lessonSelection';
+  static const routeName = '/lessonselection';
   static const bckColor = const Color(0xFF5dbcd2); //0xFFedb879
 
-  final String title;
+  final String categoryTitle;
   final List<Lesson> lessons;
 
   const LessonSelectionScreen({
     Key? key,
-    required this.title,
+    required this.categoryTitle,
     required this.lessons,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    print(categoryTitle);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () => Navigator.pushNamed(context, SelectionScreen.routeName),
         ),
-        title: Text(title),
+        title: Text(categoryTitle),
         centerTitle: true,
         backgroundColor: bckColor,
       ),
@@ -55,12 +56,13 @@ class LessonSelectionScreen extends StatelessWidget {
                           var lesson = this.lessons[i];
                           return Container(
                               margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                              child:LessonDropdown(
+                              child: LessonDropdown(
+                                lesson: lesson,
                                 title: lesson.title[globals.language]!,
                                 completed: lesson.completed,
                                 motivation: lesson.motivation[globals.language],
                                 duration: lesson.duration,
-                                difficulty: lesson.difficulty.toString()
+                                difficulty: lesson.difficulty.toString(),
                               )
                           );
                         }),

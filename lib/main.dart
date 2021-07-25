@@ -34,7 +34,7 @@ class _MyAppState extends State<MyApp>{
     super.initState();
 
     //** LOAD LESSON DATA **
-    LessonLoader.doEverything(context);
+    LessonLoader.loadLessonData(context);
 
     Future.delayed(
         Duration(seconds: 5),

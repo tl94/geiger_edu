@@ -81,7 +81,7 @@ class SelectionScreen extends StatelessWidget {
                         margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
                         child: NavigationContainer(
                           imagePath: "assets/img/password_icon.png",
-                          text: categories[i].title[globals.language].toString(),
+                          text: categories[i].title[globals.language]!,
                           passedRoute: LessonSelectionScreen.routeName,
                           currentValue: lessonSpecs["completed"]!,
                           maxValue: lessonSpecs["allLessons"]!,

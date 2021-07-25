@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:geiger_edu/model/lessonObj.dart';
+import 'package:geiger_edu/services/lesson_loader.dart';
 import 'package:geiger_edu/widgets/lesson/LessonContainer.dart';
 
 import 'package:geiger_edu/globals.dart' as globals;
@@ -10,10 +12,10 @@ class LessonScreen extends StatefulWidget {
   static const routeName = '/lessonscreen';
   static const bckColor = const Color(0xFF5dbcd2); //0xFFedb879
 
-  final String lessonPath;
+  final Lesson lesson;
   final int initialPage;
 
-  LessonScreen({required this.lessonPath, required this.initialPage}) : super();
+  LessonScreen({required this.lesson, required this.initialPage}) : super();
 
   @override
   _LessonScreenState createState() => _LessonScreenState();
@@ -23,19 +25,11 @@ class _LessonScreenState extends State<LessonScreen> {
   List<String> _slidePaths = [];
 
   Future<List<String>> getSlidePaths(BuildContext context) async {
-    List<String> filenames = [];
-    var manifestContent =
-        await DefaultAssetBundle.of(context).loadString('AssetManifest.json');
-    Map<String, dynamic> manifestMap = json.decode(manifestContent);
-    RegExp regExp = RegExp("slide_\*");
-    var filePaths = manifestMap.keys
-        .where((String key) => key.contains(widget.lessonPath))
-        .where((String key) => regExp.hasMatch(key))
-        .toList();
+    List<String> filePaths = await LessonLoader.getLessonSlidePaths(context, widget.lesson.path);
     setState(() {
       _slidePaths = filePaths;
     });
-    return filenames;
+    return filePaths;
   }
 
   @override
@@ -44,7 +38,7 @@ class _LessonScreenState extends State<LessonScreen> {
       getSlidePaths(context);
       return new Container(color: Colors.white);
     } else {
-      return new LessonContainer(lessonPath: widget.lessonPath, slidePaths: _slidePaths, initialPage: widget.initialPage);
+      return new LessonContainer(lesson: widget.lesson, slidePaths: _slidePaths, initialPage: widget.initialPage);
     }
   }
 }

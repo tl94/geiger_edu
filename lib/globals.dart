@@ -28,7 +28,7 @@ List<Lesson> lessons = [];
 //TODO: Fix currentLessonSlideIndex
 String currentLessonPath = "assets/lesson/password/password_safety/eng";
 int currentLessonSlideIndex = 0;
-String lessonTitle = '';
+String categoryTitle = '';
 Lesson currentLesson = Lesson(
     lessonId: "LPW001",
     lessonCategoryId: '',
@@ -51,4 +51,4 @@ Lesson currentLesson = Lesson(
 List<Question> answeredQuestions = [];
 
 //** LANGUAGE SETTING **
-String language = 'ger';
+String language = 'eng';

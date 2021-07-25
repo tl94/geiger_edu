@@ -6,10 +6,11 @@ import 'package:geiger_edu/model/lessonCategoryObj.dart';
 import 'package:geiger_edu/model/lessonObj.dart';
 import 'package:geiger_edu/services/db.dart';
 import 'package:geiger_edu/model/difficultyObj.dart';
+import 'package:geiger_edu/services/util.dart';
 
 class LessonLoader {
-  static void doEverything(BuildContext context) async {
-    print("DO EVERYTHING!");
+  static void loadLessonData(BuildContext context) async {
+    // print("loading lesson data");
 
     await loadLessons(context);
     await loadLessonCategories(context);
@@ -49,12 +50,13 @@ class LessonLoader {
       var duration = jsonData['duration'];
       var difficulty = Difficulty.values[jsonData['difficulty']];
 
-      var directoryPath = getDirectoryPath(path, 'lesson_meta.json');
+      var directoryPath = Util.getDirectoryFromFilePath(path, 'lesson_meta.json');
 
       var maxIndex = await getNumberOfLessonSlides(context, directoryPath);
       var hasQuiz = jsonData['hasQuiz'];
 
       var apiUrl = 'unknown';
+/*
 
       print(lessonId);
       print(lessonCategoryId);
@@ -66,6 +68,7 @@ class LessonLoader {
       print(maxIndex);
       print(hasQuiz);
       print(apiUrl);
+*/
 
       Lesson lesson = Lesson(
           lessonId: lessonId,
@@ -82,27 +85,28 @@ class LessonLoader {
     }
   }
 
-  static Future<int> getNumberOfLessonSlides(
-      BuildContext context, String lessonPath) async {
-    lessonPath = lessonPath + globals.language + '/';
-    RegExp regExp = RegExp(lessonPath + "slide_\*");
-    List<String> filePaths = await getDirectoryFilePaths(context, regExp);
-    return filePaths.length;
+  static String getLocalizedLessonPath(String lessonPath) {
+    return lessonPath + globals.language + '/';
   }
 
-  static Future<List<String>> getDirectoryFilePaths(
-      BuildContext context, RegExp regExp) async {
-    var manifestContent =
-        await DefaultAssetBundle.of(context).loadString('AssetManifest.json');
-    Map<String, dynamic> manifestMap = json.decode(manifestContent);
-    var filePaths =
-        manifestMap.keys.where((String key) => regExp.hasMatch(key)).toList();
+  static Future<List<String>> getLessonSlidePaths(BuildContext context, String lessonPath) async {
+    lessonPath = getLocalizedLessonPath(lessonPath);
+    RegExp regExp = RegExp(lessonPath + "slide_\*");
+    List<String> filePaths = await Util.getDirectoryFilePaths(context, regExp);
     return filePaths;
   }
 
-  static String getDirectoryPath(String filePath, String fileName) {
-    String directory = filePath.replaceFirst(RegExp(fileName), '');
-    return directory;
+  static Future<List<String>> getQuizPath(BuildContext context, String lessonPath) async {
+    lessonPath = getLocalizedLessonPath(lessonPath);
+    RegExp regExp = RegExp(lessonPath + "quiz\*");
+    List<String> filePaths = await Util.getDirectoryFilePaths(context, regExp);
+    return filePaths;
+  }
+
+  static Future<int> getNumberOfLessonSlides(
+      BuildContext context, String lessonPath) async {
+    var slidePaths = await getLessonSlidePaths(context, lessonPath);
+    return slidePaths.length;
   }
 
   /* loads lesson categories from lesson_category_meta.json files */
@@ -114,7 +118,7 @@ class LessonLoader {
       var jsonData = await json.decode(file);
       var lessonCategoryId = jsonData['lessonCategoryId'];
       var title = Map<String, String>.from(jsonData['title']);
-      var directoryPath = getDirectoryPath(path, 'lesson_category_meta.json');
+      var directoryPath = Util.getDirectoryFromFilePath(path, 'lesson_category_meta.json');
       LessonCategory lc = LessonCategory(
           lessonCategoryId: lessonCategoryId,
           title: title,

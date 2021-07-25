@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/shims/dart_ui.dart';
+import 'package:geiger_edu/model/lessonObj.dart';
 import 'package:geiger_edu/screens/lesson_complete_screen.dart';
 import 'package:geiger_edu/widgets/lesson/SlideContainer.dart';
 import 'package:geiger_edu/widgets/lesson/quiz_slide.dart';
@@ -8,12 +9,12 @@ import 'package:html/parser.dart';
 import 'package:page_view_indicators/step_page_indicator.dart';
 
 class LessonContainer extends StatefulWidget {
-  final String lessonPath;
+  final Lesson lesson;
   final List<String> slidePaths;
   final int initialPage;
 
   LessonContainer(
-      {required this.lessonPath,
+      {required this.lesson,
       required this.slidePaths,
       this.initialPage = 0})
       : super();
@@ -31,8 +32,8 @@ class _LessonContainerState extends State<LessonContainer> {
   late final ValueNotifier<int> _currentPageNotifier;
   static const _buttonColor = Color.fromRGBO(0, 0, 0, 0.2);
 
-  static const _kDuration = const Duration(milliseconds: 300);
-  static const _kCurve = Curves.ease;
+  final _kDuration = const Duration(milliseconds: 300);
+  final _kCurve = Curves.ease;
 
   final int initialPage;
 
@@ -58,7 +59,7 @@ class _LessonContainerState extends State<LessonContainer> {
       );
       slides.add(slide);
     }
-    slides.add(QuizSlide(lessonPath: widget.lessonPath));
+    slides.add(QuizSlide(lesson: widget.lesson));
     _slides = slides;
     return _slides;
   }

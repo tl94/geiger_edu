@@ -5,6 +5,7 @@ import 'package:geiger_edu/model/lessonObj.dart';
 import 'package:geiger_edu/model/quiz/question.dart';
 import 'package:geiger_edu/screens/lesson_complete_screen.dart';
 import 'package:geiger_edu/screens/quiz_results_screen.dart';
+import 'package:geiger_edu/services/lesson_loader.dart';
 import 'package:geiger_edu/widgets/lesson/question_group.dart';
 import 'package:html/parser.dart';
 import 'package:string_validator/string_validator.dart';
@@ -13,9 +14,9 @@ import '../../model/quiz/answer.dart';
 import 'package:geiger_edu/globals.dart' as globals;
 
 class QuizSlide extends StatefulWidget {
-  final String lessonPath;
+  final Lesson lesson;
 
-  QuizSlide({required this.lessonPath});
+  QuizSlide({required this.lesson});
 
   @override
   State<StatefulWidget> createState() => _QuizSlideState();
@@ -34,15 +35,7 @@ class _QuizSlideState extends State<QuizSlide> {
   }
 
   Future<List<String>> _getQuizPath() async {
-    var manifestContent =
-        await DefaultAssetBundle.of(context).loadString('AssetManifest.json');
-    Map<String, dynamic> manifestMap = json.decode(manifestContent);
-    RegExp regExp = RegExp("quiz\*");
-    print(widget.lessonPath);
-    var filePaths = manifestMap.keys
-        .where((String key) => key.contains(widget.lessonPath))
-        .where((String key) => regExp.hasMatch(key))
-        .toList();
+    var filePaths = LessonLoader.getQuizPath(context, widget.lesson.path);
     print(filePaths);
     return filePaths;
   }

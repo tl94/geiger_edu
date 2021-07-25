@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:geiger_edu/globals.dart';
+import 'package:geiger_edu/model/lessonObj.dart';
 import 'package:geiger_edu/screens/home_screen.dart';
+import 'package:geiger_edu/screens/lesson_screen.dart';
+
+import 'package:geiger_edu/globals.dart' as globals;
 
 class LessonDropdown extends StatefulWidget {
+
+  Lesson lesson;
+
   final String title;
   final bool completed;
 
@@ -12,7 +19,8 @@ class LessonDropdown extends StatefulWidget {
   final String? difficulty;
 
   LessonDropdown(
-      {required this.title,
+      { required this.lesson,
+        required this.title,
         required this.completed,
         this.motivation = "-",
         this.duration = 0,
@@ -170,10 +178,14 @@ class _LessonDropdownState extends State<LessonDropdown> {
                                   ),
                                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)))    ,
                               ),
-                              onPressed: (){
+                              onPressed: () {
+                                //TODO: Put this in its own function
+                                print("SETTING LESSON TO: " + widget.lesson.title[globals.language]!);
+                                globals.currentLesson = widget.lesson;
+                                globals.currentLessonSlideIndex = 0;
                                 Navigator.pushNamed(
                                 context,
-                                HomeScreen.routeName,
+                                LessonScreen.routeName,
                                 arguments: {'title': widget.title});
                                 },
                               child: Text('Start',style: TextStyle(fontSize: 20, color: Colors.white)),

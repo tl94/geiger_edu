@@ -43,7 +43,7 @@ class _NavigationContainerState extends State<NavigationContainer> {
       child: new GestureDetector(
         onTap: () {
           if(widget.passedLessons!= null){
-            globals.lessonTitle = widget.text;
+            globals.categoryTitle = widget.text;
             globals.lessons = widget.passedLessons!;
           }
           Navigator.pushNamed(
