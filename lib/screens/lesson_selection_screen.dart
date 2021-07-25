@@ -21,31 +21,6 @@ class LessonSelectionScreen extends StatelessWidget {
     required this.lessons,
   }) : super(key: key);
 
-
-  List<Lesson> getLessonList(var key) {
-    var lessonList = DB
-        .getLessonBox()
-        .values
-        .where((lesson) => lesson.lessonCategoryId == key)
-        .toList();
-    return lessonList;
-  }
-
-  Map<String, int> getCompleted(var key) {
-    Map<String, int> result = {};
-    int completedCount = 0;
-
-    var lessonList = getLessonList(key);
-
-    for (var lesson in lessonList) {
-      if (lesson.completed) completedCount++;
-    }
-
-    result["completed"] = completedCount;
-    result["allLessons"] = lessonList.length;
-    return result;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,12 +52,15 @@ class LessonSelectionScreen extends StatelessWidget {
                         shrinkWrap: true,
                         itemCount: this.lessons.length,
                         itemBuilder: (BuildContext context, int i) {
+                          var lesson = this.lessons[i];
                           return Container(
                               margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
                               child:LessonDropdown(
-                                title: this.lessons[i].title[globals.language]!,
-                                completed: this.lessons[i].completed,
-                                //TODO: ADD MISSING LESSON PARAMETERS
+                                title: lesson.title[globals.language]!,
+                                completed: lesson.completed,
+                                motivation: lesson.motivation[globals.language],
+                                duration: lesson.duration,
+                                difficulty: lesson.difficulty.toString()
                               )
                           );
                         }),
