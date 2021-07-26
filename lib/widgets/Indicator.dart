@@ -20,7 +20,7 @@ class _IndicatorState extends State<Indicator> {
     super.initState();
     completedLessons = globals.completedLessons;
     maxLessons = globals.maxLessons;
-    percentage = (completedLessons/maxLessons);
+    percentage = (completedLessons/maxLessons)*100;
 
     if(percentage<0.25 && percentage>0)
       label = 'low';
