@@ -81,8 +81,14 @@ class LessonLoader {
           hasQuiz: hasQuiz,
           path: directoryPath,
           apiUrl: apiUrl);
-      DB.getLessonBox().put(lesson.lessonId, lesson);
+      if (!isLessonPresent(lesson)) {
+        DB.getLessonBox().put(lesson.lessonId, lesson);
+      }
     }
+  }
+
+  static bool isLessonPresent(Lesson lesson) {
+    return DB.getLessonBox().containsKey(lesson.lessonId);
   }
 
   static String getLocalizedLessonPath(String lessonPath) {
@@ -96,17 +102,17 @@ class LessonLoader {
     return filePaths;
   }
 
+  static Future<int> getNumberOfLessonSlides(
+      BuildContext context, String lessonPath) async {
+    var slidePaths = await getLessonSlidePaths(context, lessonPath);
+    return slidePaths.length;
+  }
+
   static Future<List<String>> getQuizPath(BuildContext context, String lessonPath) async {
     lessonPath = getLocalizedLessonPath(lessonPath);
     RegExp regExp = RegExp(lessonPath + "quiz\*");
     List<String> filePaths = await Util.getDirectoryFilePaths(context, regExp);
     return filePaths;
-  }
-
-  static Future<int> getNumberOfLessonSlides(
-      BuildContext context, String lessonPath) async {
-    var slidePaths = await getLessonSlidePaths(context, lessonPath);
-    return slidePaths.length;
   }
 
   /* loads lesson categories from lesson_category_meta.json files */
