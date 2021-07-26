@@ -55,7 +55,7 @@ class SelectionScreen extends StatelessWidget {
           icon: Icon(Icons.arrow_back),
           onPressed: () => Navigator.pushNamed(context, HomeScreen.routeName),
         ),
-        title: Text("GEIGER Mobile Learning"),
+        title: Text("Topic Selection"),
         centerTitle: true,
         backgroundColor: bckColor,
       ),

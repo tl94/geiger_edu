@@ -135,7 +135,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                                   )
                                 ]),
                                 SizedBox(height: 40),
-                                Text("The Lessonscore can help you indentify other peoples overall progress and knowledge base on the discussion-plattform. Share your score with your co-workers to see who is the furthest.                            Improve your score by finishing lessons.", style: TextStyle(fontSize: 20),)
+                                Text("The Lessonscore can help you indentify other peoples overall progress and knowledge base on the discussion-plattform. Share your score with your co-workers to see who is the furthest.\n\nImprove your score by finishing lessons.", style: TextStyle(fontSize: 20),)
                               ]),
 
                           //** USER PROGRESS EXPORT **

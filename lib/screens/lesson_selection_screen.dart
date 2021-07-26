@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:geiger_edu/model/lessonObj.dart';
@@ -33,7 +34,6 @@ class LessonSelectionScreen extends StatelessWidget {
         backgroundColor: bckColor,
       ),
       body: Container(
-        margin: EdgeInsets.fromLTRB(20, 20, 20, 20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -41,9 +41,10 @@ class LessonSelectionScreen extends StatelessWidget {
             Flexible(
                 child: Row(children: [
                   Container(
-                    width: MediaQuery.of(context).size.width-40,
+                    width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height,
                     child: ListView.builder(
+                        padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
                         itemCount: this.lessons.length,
