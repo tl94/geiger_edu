@@ -18,7 +18,6 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen>{
 
   static const bckColor = const Color(0xFF5dbcd2);
-
   bool isSwitched = false; //0xFFedb879
 
   switchDarkmode(){
