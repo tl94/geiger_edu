@@ -18,6 +18,9 @@ class _IndicatorState extends State<Indicator> {
   @override
   void initState() {
     super.initState();
+  }
+
+  void updateIndicator() {
     completedLessons = globals.completedLessons;
     maxLessons = globals.maxLessons;
     percentage = (completedLessons / maxLessons);
@@ -30,6 +33,7 @@ class _IndicatorState extends State<Indicator> {
 
   @override
   Widget build(BuildContext context) {
+    updateIndicator();
     return
       Container(
         height: 200,

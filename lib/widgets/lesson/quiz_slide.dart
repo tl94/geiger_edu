@@ -130,6 +130,7 @@ class _QuizSlideState extends State<QuizSlide> {
       lesson.completed = true;
       DB.getLessonBox().put(lesson.lessonId, lesson);
       DB.modifyUserScore(score);
+      globals.completedLessons++;
 
       Navigator.pushNamed(
           context,
