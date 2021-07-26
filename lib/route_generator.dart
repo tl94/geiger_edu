@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geiger_edu/globals.dart' as globals;
+import 'package:geiger_edu/screens/comments_screen.dart';
 import 'package:geiger_edu/screens/home_screen.dart';
 import 'package:geiger_edu/screens/lesson_complete_screen.dart';
 import 'package:geiger_edu/screens/lesson_screen.dart';
@@ -38,6 +39,10 @@ class RouteGenerator {
       case SettingsScreen.routeName:
         // MaterialPageRoute transitions to the new route using a platform specific animation.
         return MaterialPageRoute(builder: (context) => SettingsScreen());
+
+      case CommentsScreen.routeName:
+      // MaterialPageRoute transitions to the new route using a platform specific animation.
+        return MaterialPageRoute(builder: (context) => CommentsScreen());
 
       case LessonSelectionScreen.routeName:
       // MaterialPageRoute transitions to the new route using a platform specific animation.

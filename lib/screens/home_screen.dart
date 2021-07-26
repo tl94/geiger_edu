@@ -7,6 +7,7 @@ import 'package:geiger_edu/services/lesson_loader.dart';
 import 'package:geiger_edu/widgets/Indicator.dart';
 import 'package:geiger_edu/widgets/NavigationContainer.dart';
 
+import 'comments_screen.dart';
 import 'lesson_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -38,35 +39,33 @@ class HomeScreen extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
-                                  Container(
-                                      child: NavigationContainer(
+                                  NavigationContainer(
                                         imagePath: "assets/img/continue_lesson.png",
                                         text: "Current Lesson",
-                                        passedRoute: LessonScreen.routeName,
-                                      )
+                                        passedRoute: LessonScreen.routeName
                                   ),
-                                  Container(
-                                      child: NavigationContainer(
+                                  NavigationContainer(
                                         imagePath: "assets/img/select_lesson.png",
                                         text: "Select Lesson",
-                                        passedRoute: SelectionScreen.routeName,
-                                      )
+                                        passedRoute: SelectionScreen.routeName
+                                  ),
+                                  NavigationContainer(
+                                      imagePath: "assets/img/my_comments.png",
+                                      text: "My Comments",
+                                      passedRoute: CommentsScreen.routeName
                                   ),
                                   SizedBox(height: 50),
-                                  Container(
-                                      child: NavigationContainer(
+                                  NavigationContainer(
                                         imagePath: "assets/img/profile/user_icon.png",
                                         text: "Profile",
-                                        passedRoute: ProfileScreen.routeName,
-                                      )
+                                        passedRoute: ProfileScreen.routeName
                                   ),
-                                  Container(
-                                      child: NavigationContainer(
+                                  NavigationContainer(
                                         imagePath: "assets/img/settings_icon.png",
                                         text: "Settings",
-                                        passedRoute: SettingsScreen.routeName,
+                                        passedRoute: SettingsScreen.routeName
                                       )
-                                  ),]
+                                  ]
                             )
                         )
                       ],),

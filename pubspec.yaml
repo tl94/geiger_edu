@@ -72,7 +72,6 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/
-    - assets/logo/
     - assets/img/
     - assets/img/profile/
     - assets/img/splashscreen/
