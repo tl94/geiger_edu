@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:geiger_edu/model/commentObj.dart';
 import 'package:geiger_edu/model/lessonCategoryObj.dart';
 import 'package:geiger_edu/model/lessonObj.dart';
 import 'package:geiger_edu/model/settingObj.dart';
@@ -18,6 +19,9 @@ class Boxes {
 
   static Box<LessonCategory> getLessonCategories() =>
       Hive.box<LessonCategory>('lessonCategories');
+
+  static Box<Comment> getComments() =>
+      Hive.box<Comment>('comments');
 
   static Box<XApis> getxApis() =>
       Hive.box<XApis>('xapis');
