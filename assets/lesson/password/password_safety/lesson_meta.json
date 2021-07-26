@@ -1,0 +1,15 @@
+{
+  "lessonId": "LPW001",
+  "lessonCategoryId": "CID001",
+  "title": {
+    "eng": "Password Safety",
+    "ger": "Passwortsicherheit"
+  },
+  "motivation": {
+    "eng": "Improve your password security!",
+    "ger": "Verbessere deine Passwortsicherheit!"
+  },
+  "duration": 3,
+  "difficulty": 0,
+  "hasQuiz": true
+}

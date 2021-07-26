@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geiger_edu/globals.dart';
+import 'package:geiger_edu/model/lessonObj.dart';
+import 'package:geiger_edu/globals.dart' as globals;
 
 class NavigationContainer extends StatefulWidget {
   final String passedRoute;
@@ -9,12 +11,15 @@ class NavigationContainer extends StatefulWidget {
   final int currentValue;
   final int maxValue;
 
+  final List<Lesson>? passedLessons;
+
   NavigationContainer(
       {required this.passedRoute,
       required this.text,
       required this.imagePath,
       this.currentValue = -1,
-      this.maxValue = -1})
+      this.maxValue = -1,
+      this.passedLessons})
       : super();
 
   _NavigationContainerState createState() => _NavigationContainerState();
@@ -34,9 +39,14 @@ class _NavigationContainerState extends State<NavigationContainer> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 80,
+      height: 75,
+      margin: EdgeInsets.fromLTRB(20, 5, 20, 5),
       child: new GestureDetector(
         onTap: () {
+          if(widget.passedLessons!= null){
+            globals.categoryTitle = widget.text;
+            globals.lessons = widget.passedLessons!;
+          }
           Navigator.pushNamed(
             context,
             widget.passedRoute,

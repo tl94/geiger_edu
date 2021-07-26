@@ -3,15 +3,18 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:geiger_edu/route_generator.dart';
 import 'package:geiger_edu/screens/home_screen.dart';
 import 'package:geiger_edu/services/db.dart';
+import 'package:geiger_edu/services/lesson_loader.dart';
+import 'package:geiger_edu/widgets/LoadingAnimation.dart';
 
 InAppLocalhostServer localhostServer = new InAppLocalhostServer();
 
 void main() async {
+
   //** INITIALISE DATABASE **
-  DB.init();
+  await DB.init();
 
   //** LESSON-SERVER **
-  localhostServer.start();
+  await localhostServer.start();
 
   runApp(MaterialApp(
     title: 'GEIGER mobile learning',
@@ -29,8 +32,12 @@ class _MyAppState extends State<MyApp>{
   @override
   void initState(){
     super.initState();
+
+    //** LOAD LESSON DATA **
+    LessonLoader.loadLessonData(context);
+
     Future.delayed(
-        Duration(seconds: 3),
+        Duration(seconds: 5),
             (){Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));}
     );
   }
@@ -40,9 +47,20 @@ class _MyAppState extends State<MyApp>{
     return Scaffold(
       body: Center(
           child: Container(
-              height: 300,
-              child: Image.asset("assets/logo/test.jpg", fit: BoxFit.fitHeight))
-      ),
+          margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
+          width: MediaQuery
+              .of(context)
+              .size
+              .width/2,
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset("assets/img/splashscreen/splashscreen_logo.png", fit: BoxFit.fitWidth),
+                SizedBox(height: 40),
+                LoadingAnimation(width: 140)
+              ])
+          )
+      )
     );
   }
 }

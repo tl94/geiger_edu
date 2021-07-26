@@ -23,14 +23,15 @@ class _LabeledTextFieldState extends State<LabeledTextField>{
             SizedBox(width: 10),
             Text(widget.label, style: TextStyle(fontSize: 20)),
             SizedBox(width: 60),
-            new Flexible(child: SizedBox( width: 200, child: TextField(
-                controller: new TextEditingController(text: widget.text),
+            Flexible(child: SizedBox( width: 200, child: TextField(
+                //TODO: BUG - click on text field causes many redraws of selection screen
+                controller: TextEditingController(text: widget.text),
                 decoration: InputDecoration(
                   //hintText: 'username',
                   //labelText: 'username'
                 ),
                 maxLines: 1,
-                //maxLength: 14,
+                maxLength: 32,
                 onSubmitted:(text) { widget.onSubmitted(text); })
             ))
           ]),]);

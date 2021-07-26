@@ -1,46 +1,46 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:geiger_edu/model/lessonObj.dart';
+import 'package:geiger_edu/services/lesson_loader.dart';
 import 'package:geiger_edu/widgets/lesson/LessonContainer.dart';
 
 class LessonScreen extends StatefulWidget {
   static const routeName = '/lessonscreen';
   static const bckColor = const Color(0xFF5dbcd2); //0xFFedb879
 
-  final String lessonPath;
+  final Lesson lesson;
+  final int initialPage;
 
-  LessonScreen({required this.lessonPath}) : super();
+  LessonScreen({required this.lesson, required this.initialPage}) : super();
 
   @override
   _LessonScreenState createState() => _LessonScreenState();
 }
 
 class _LessonScreenState extends State<LessonScreen> {
-  List<String> _slidePaths = [];
+  late Future<List<String>> _slidePaths;
+
+  initState() {
+    super.initState();
+    _slidePaths = getSlidePaths(context);
+  }
 
   Future<List<String>> getSlidePaths(BuildContext context) async {
-    List<String> filenames = [];
-    var manifestContent =
-        await DefaultAssetBundle.of(context).loadString('AssetManifest.json');
-    Map<String, dynamic> manifestMap = json.decode(manifestContent);
-    var filePaths = manifestMap.keys
-        .where((String key) => key.contains(widget.lessonPath))
-        .where((String key) => key.contains('.html'))
-        .toList();
-    setState(() {
-      _slidePaths = filePaths;
-    });
-    return filenames;
+    List<String> filePaths =
+        await LessonLoader.getLessonSlidePaths(context, widget.lesson.path);
+    return filePaths;
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_slidePaths.isEmpty) {
-      getSlidePaths(context);
-      return new Container(color: Colors.white);
-    } else {
-      return new LessonContainer(slidePaths: _slidePaths);
-    }
+    return FutureBuilder<List<String>>(
+        future: _slidePaths,
+        builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
+          if (snapshot.hasData) {
+            return LessonContainer(
+                lesson: widget.lesson, slidePaths: snapshot.data!);
+          } else
+            return Container(color: Colors.white);
+        });
   }
 }

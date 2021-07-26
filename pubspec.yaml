@@ -43,8 +43,9 @@ dependencies:
   hive_flutter: ^1.0.0
   hive_listener: ^1.2.1
 
-  #to load svg images
-  flutter_svg: ^0.22.0
+  flutter_svg: ^0.22.0  # to load svg images
+  string_validator: ^0.3.0
+  page_view_indicators: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -71,12 +72,58 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/
-    - assets/logo/
     - assets/img/
     - assets/img/profile/
+    - assets/img/splashscreen/
+    - assets/img/loadingcircle/
+    - assets/img/indicator/
     - assets/lesson/
+    - assets/lesson/password/
+    - assets/lesson/password/password_safety/
     - assets/lesson/password/password_safety/eng/
     - assets/lesson/password/password_safety/eng/img/
+    - assets/lesson/password/password_safety/ger/
+    - assets/lesson/password/password_safety/ger/img/
+
+
+      # DUMMY LESSON FILES FOR TESTING
+    - assets/lesson/password/dummy/
+    - assets/lesson/password/dummy/eng/
+    - assets/lesson/password/dummy/eng/img/
+    - assets/lesson/password/dummy/ger/
+    - assets/lesson/password/dummy/ger/img/
+
+    - assets/lesson/password/dummyNoQuiz/
+    - assets/lesson/password/dummyNoQuiz/eng/
+    - assets/lesson/password/dummyNoQuiz/eng/img/
+    - assets/lesson/password/dummyNoQuiz/ger/
+    - assets/lesson/password/dummyNoQuiz/ger/img/
+
+    - assets/lesson/dummy_category/
+    - assets/lesson/dummy_category/dummy/
+    - assets/lesson/dummy_category/dummy/eng/
+    - assets/lesson/dummy_category/dummy/eng/img/
+    - assets/lesson/dummy_category/dummy/ger/
+    - assets/lesson/dummy_category/dummy/ger/img/
+
+    - assets/lesson/dummy_category/dummy2/
+    - assets/lesson/dummy_category/dummy2/eng/
+    - assets/lesson/dummy_category/dummy2/eng/img/
+    - assets/lesson/dummy_category/dummy2/ger/
+    - assets/lesson/dummy_category/dummy2/ger/img/
+
+    - assets/lesson/dummy_category/dummy3/
+    - assets/lesson/dummy_category/dummy3/eng/
+    - assets/lesson/dummy_category/dummy3/eng/img/
+    - assets/lesson/dummy_category/dummy3/ger/
+    - assets/lesson/dummy_category/dummy3/ger/img/
+
+    - assets/lesson/dummy_category/dummy4/
+    - assets/lesson/dummy_category/dummy4/eng/
+    - assets/lesson/dummy_category/dummy4/eng/img/
+    - assets/lesson/dummy_category/dummy4/ger/
+    - assets/lesson/dummy_category/dummy4/ger/img/
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

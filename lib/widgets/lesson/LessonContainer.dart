@@ -1,16 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/shims/dart_ui.dart';
+import 'package:geiger_edu/model/lessonObj.dart';
+import 'package:geiger_edu/screens/lesson_complete_screen.dart';
 import 'package:geiger_edu/widgets/lesson/SlideContainer.dart';
-import 'package:geiger_edu/widgets/lesson/lesson_complete_slide.dart';
+import 'package:geiger_edu/widgets/lesson/quiz_slide.dart';
 import 'package:html/parser.dart';
+import 'package:page_view_indicators/step_page_indicator.dart';
 
 class LessonContainer extends StatefulWidget {
+  final Lesson lesson;
   final List<String> slidePaths;
+  final int initialPage;
 
-  LessonContainer({required this.slidePaths}) : super();
+  LessonContainer(
+      {required this.lesson, required this.slidePaths, this.initialPage = 0})
+      : super();
 
-  _LessonContainerState createState() => _LessonContainerState();
+  _LessonContainerState createState() =>
+      _LessonContainerState(initialPage: initialPage);
 }
 
 class _LessonContainerState extends State<LessonContainer> {
@@ -18,15 +26,23 @@ class _LessonContainerState extends State<LessonContainer> {
   var _slideIndex = 0;
   List<Widget> _slides = [];
   List<String> _slideTitles = [];
-  final _pageController = new PageController();
+  late final PageController _pageController;
+  late final ValueNotifier<int> _currentPageNotifier;
   static const _buttonColor = Color.fromRGBO(0, 0, 0, 0.2);
 
-  static const _kDuration = const Duration(milliseconds: 300);
-  static const _kCurve = Curves.ease;
+  final _kDuration = const Duration(milliseconds: 300);
+  final _kCurve = Curves.ease;
+
+  final int initialPage;
+
+  _LessonContainerState({this.initialPage = 0});
 
   @override
   initState() {
     super.initState();
+    _slideIndex = initialPage;
+    _currentPageNotifier = ValueNotifier<int>(initialPage);
+    _pageController = PageController(initialPage: initialPage);
     _getSlideTitles();
     _getSlides();
   }
@@ -35,13 +51,16 @@ class _LessonContainerState extends State<LessonContainer> {
     List<String> slidePaths = widget.slidePaths;
     List<Widget> slides = [];
     for (var sp in slidePaths) {
-      SlideContainer slide = new SlideContainer(slidePath: sp);
+      SlideContainer slide = new SlideContainer(
+        slidePath: sp,
+        title: 'dddd',
+      );
       slides.add(slide);
     }
-    slides.add(new LessonCompleteSlide());
-    setState(() {
-      _slides = slides;
-    });
+    if (widget.lesson.hasQuiz) {
+      slides.add(QuizSlide(lesson: widget.lesson));
+    }
+    _slides = slides;
     return _slides;
   }
 
@@ -82,7 +101,7 @@ class _LessonContainerState extends State<LessonContainer> {
     for (int i = 1; i < slidePaths.length; i++) {
       slideTitles.add(await _getSlideTitle(slidePaths[i]));
     }
-    slideTitles.add("Complete!");
+    slideTitles.add("Quiz");
     setState(() {
       _slideTitles = slideTitles;
       _title = slideTitles[0];
@@ -91,59 +110,96 @@ class _LessonContainerState extends State<LessonContainer> {
   }
 
   Future<VoidCallback?> _onSlideChanged(int page) async {
+    _currentPageNotifier.value = page;
     var title = _slideTitles[page];
     setState(() {
       _title = title;
     });
   }
 
+  bool _isOnFirstPage() {
+    return _currentPageNotifier.value == 0;
+  }
+
+  bool _isOnLastPage() {
+    return _currentPageNotifier.value + 1 == _slides.length;
+  }
+
   void _previousPage() async {
+    _currentPageNotifier.value--;
     await _pageController.previousPage(duration: _kDuration, curve: _kCurve);
   }
 
   void _nextPage() async {
+    // TODO: don't allow this if the lesson has a quiz
+    if (_isOnLastPage() && !widget.lesson.hasQuiz) {
+      Navigator.pushNamed(context, LessonCompleteScreen.routeName);
+    }
+    _currentPageNotifier.value++;
     await _pageController.nextPage(duration: _kDuration, curve: _kCurve);
   }
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(_title)),
-      body: Stack(
-        children: [
-          PageView(
-            controller: _pageController,
-            children: _slides,
-            onPageChanged: _onSlideChanged,
-            allowImplicitScrolling: true,
+        appBar: AppBar(title: Text(_title)),
+        body: Container(
+            child: Column(children: [
+          Row(
+            children: [
+              Expanded(
+                  child: Container(
+                color: Colors.white,
+                padding: const EdgeInsets.all(16.0),
+                child: StepPageIndicator(
+                  itemCount: _slides.length,
+                  currentPageNotifier: _currentPageNotifier,
+                  size: 16,
+                  onPageSelected: (int index) {
+                    _pageController.jumpToPage(index);
+                  },
+                ),
+              ))
+            ],
           ),
-          Align(
-              alignment: Alignment.centerLeft,
-              child: Material(
-                  color: Colors.transparent,
-                  child: Ink(
-                      decoration: const ShapeDecoration(
-                        color: _buttonColor,
-                        shape: CircleBorder(),
-                      ),
-                      child: IconButton(
-                        icon: Icon(Icons.chevron_left),
-                        onPressed: () => _previousPage(),
-                      )))),
-          Align(
-              alignment: Alignment.centerRight,
-              child: Material(
-                  color: Colors.transparent,
-                  child: Ink(
-                      decoration: const ShapeDecoration(
-                        color: _buttonColor,
-                        shape: CircleBorder(),
-                      ),
-                      child: IconButton(
-                        icon: Icon(Icons.chevron_right),
-                        onPressed: () => _nextPage(),
-                      ))))
-        ],
-      ),
-    );
+          Expanded(
+              child: Stack(
+            children: [
+              PageView(
+                controller: _pageController,
+                children: _slides,
+                onPageChanged: _onSlideChanged,
+                allowImplicitScrolling: true,
+              ),
+              if (!_isOnFirstPage())
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Material(
+                        color: Colors.transparent,
+                        child: Ink(
+                            decoration: const ShapeDecoration(
+                              color: _buttonColor,
+                              shape: CircleBorder(),
+                            ),
+                            child: IconButton(
+                              icon: Icon(Icons.chevron_left),
+                              onPressed: () => _previousPage(),
+                            )))),
+              if (!_isOnLastPage())
+                Align(
+                    alignment: Alignment.centerRight,
+                    child: Material(
+                        color: Colors.transparent,
+                        child: Ink(
+                            decoration: const ShapeDecoration(
+                              color: _buttonColor,
+                              shape: CircleBorder(),
+                            ),
+                            child: IconButton(
+                              icon: Icon(Icons.chevron_right),
+                              onPressed: () => _nextPage(),
+                            )))),
+            ],
+          ))
+        ])));
   }
 }

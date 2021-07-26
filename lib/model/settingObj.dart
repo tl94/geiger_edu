@@ -6,17 +6,21 @@ part 'settingObj.g.dart';
 class Setting {
 
   @HiveField(0)
-  final bool darkmode;
+  bool darkmode;
 
   @HiveField(1)
-  final bool showAlias;
+  bool showAlias;
 
   @HiveField(2)
-  final bool showScore;
+  bool showScore;
+
+  @HiveField(3)
+  String language;
 
   Setting({
     required this.darkmode,
     required this.showAlias,
     required this.showScore,
+    required this.language
   });
 }

@@ -1,0 +1,15 @@
+{
+  "lessonId": "LPW003",
+  "lessonCategoryId": "CID001",
+  "title": {
+    "eng": "Dummy English without Quiz",
+    "ger": "Dummy Deutsch ohne Quiz"
+  },
+  "motivation": {
+    "eng": "This is a dummy lesson from category passwords",
+    "ger": "Das ist eine Dummy-Lektion in der Passwörter-Kategorie"
+  },
+  "duration": 8,
+  "difficulty": 0,
+  "hasQuiz": false
+}
