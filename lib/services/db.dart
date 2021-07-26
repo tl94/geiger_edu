@@ -178,7 +178,7 @@ class DB {
     userBox.put("default", tempUser);
   }
 
-  static void editDefaultSetting(bool? darkmode, bool? showAlias, bool? showScore){
+  static void editDefaultSetting(bool? darkmode, bool? showAlias, bool? showScore, String? language){
     Setting? tempSetting = getDefaultSetting();
 
     if(tempSetting!.darkmode != darkmode && null != darkmode)
@@ -189,6 +189,10 @@ class DB {
 
     if(tempSetting.showScore != showScore && null != showScore)
       tempSetting.showScore = showScore;
+
+    if(tempSetting.language != language && null != language) {
+      tempSetting.language = language;
+    }
 
     //persist modified Settings object to database
     settingBox.put("default", tempSetting);
@@ -202,7 +206,7 @@ class DB {
 
   static void createDefaultSettings(){
     //add default settings to box
-    Setting defaultSetting = new Setting(darkmode: false, showAlias: true, showScore: false);
+    Setting defaultSetting = new Setting(darkmode: false, showAlias: true, showScore: false, language: 'ger');
     settingBox.put("default", defaultSetting);
   }
 

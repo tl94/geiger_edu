@@ -20,19 +20,22 @@ class SettingAdapter extends TypeAdapter<Setting> {
       darkmode: fields[0] as bool,
       showAlias: fields[1] as bool,
       showScore: fields[2] as bool,
+      language: fields[3] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, Setting obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.darkmode)
       ..writeByte(1)
       ..write(obj.showAlias)
       ..writeByte(2)
-      ..write(obj.showScore);
+      ..write(obj.showScore)
+      ..writeByte(3)
+      ..write(obj.language);
   }
 
   @override

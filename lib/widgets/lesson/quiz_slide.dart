@@ -129,8 +129,7 @@ class _QuizSlideState extends State<QuizSlide> {
       var lesson = widget.lesson;
       lesson.completed = true;
       DB.getLessonBox().put(lesson.lessonId, lesson);
-      var user = DB.getUserBox().values.single;
-      user.userScore += score;
+      DB.modifyUserScore(score);
 
       Navigator.pushNamed(
           context,
