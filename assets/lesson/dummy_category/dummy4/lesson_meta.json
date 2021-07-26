@@ -1,0 +1,15 @@
+{
+  "lessonId": "LDM004",
+  "lessonCategoryId": "CID002",
+  "title": {
+    "eng": "Dummy English",
+    "ger": "Dummy Deutsch"
+  },
+  "motivation": {
+    "eng": "This is a dummy lesson from category passwords",
+    "ger": "Das ist eine Dummy-Lektion in der Passwörter-Kategorie"
+  },
+  "duration": 8,
+  "difficulty": 0,
+  "hasQuiz": true
+}

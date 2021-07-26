@@ -85,6 +85,45 @@ flutter:
     - assets/lesson/password/password_safety/ger/
     - assets/lesson/password/password_safety/ger/img/
 
+
+      # DUMMY LESSON FILES FOR TESTING
+    - assets/lesson/password/dummy/
+    - assets/lesson/password/dummy/eng/
+    - assets/lesson/password/dummy/eng/img/
+    - assets/lesson/password/dummy/ger/
+    - assets/lesson/password/dummy/ger/img/
+
+    - assets/lesson/password/dummyNoQuiz/
+    - assets/lesson/password/dummyNoQuiz/eng/
+    - assets/lesson/password/dummyNoQuiz/eng/img/
+    - assets/lesson/password/dummyNoQuiz/ger/
+    - assets/lesson/password/dummyNoQuiz/ger/img/
+
+    - assets/lesson/dummy_category/
+    - assets/lesson/dummy_category/dummy/
+    - assets/lesson/dummy_category/dummy/eng/
+    - assets/lesson/dummy_category/dummy/eng/img/
+    - assets/lesson/dummy_category/dummy/ger/
+    - assets/lesson/dummy_category/dummy/ger/img/
+
+    - assets/lesson/dummy_category/dummy2/
+    - assets/lesson/dummy_category/dummy2/eng/
+    - assets/lesson/dummy_category/dummy2/eng/img/
+    - assets/lesson/dummy_category/dummy2/ger/
+    - assets/lesson/dummy_category/dummy2/ger/img/
+
+    - assets/lesson/dummy_category/dummy3/
+    - assets/lesson/dummy_category/dummy3/eng/
+    - assets/lesson/dummy_category/dummy3/eng/img/
+    - assets/lesson/dummy_category/dummy3/ger/
+    - assets/lesson/dummy_category/dummy3/ger/img/
+
+    - assets/lesson/dummy_category/dummy4/
+    - assets/lesson/dummy_category/dummy4/eng/
+    - assets/lesson/dummy_category/dummy4/eng/img/
+    - assets/lesson/dummy_category/dummy4/ger/
+    - assets/lesson/dummy_category/dummy4/ger/img/
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
