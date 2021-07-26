@@ -5,6 +5,7 @@ import 'package:geiger_edu/model/lessonObj.dart';
 import 'package:geiger_edu/model/quiz/question.dart';
 import 'package:geiger_edu/screens/lesson_complete_screen.dart';
 import 'package:geiger_edu/screens/quiz_results_screen.dart';
+import 'package:geiger_edu/services/db.dart';
 import 'package:geiger_edu/services/lesson_loader.dart';
 import 'package:geiger_edu/widgets/lesson/question_group.dart';
 import 'package:html/parser.dart';
@@ -27,6 +28,7 @@ class _QuizSlideState extends State<QuizSlide> {
   var _mainQuestion = "";
   late Future<List<Widget>> _questionGroups;
   List<Answer> _selectedAnswers = [];
+  int _score = 0;
 
   @override
   initState() {
@@ -107,22 +109,28 @@ class _QuizSlideState extends State<QuizSlide> {
     return true;
   }
 
-  /* evaluate answers based on */
+  /* evaluate answers */
   int _evaluateAnswers() {
-    var points = 0;
     for (var answer in _selectedAnswers) {
       if (answer.value) {
-        points += 25;
+        _score += 25;
       }
     }
-    return points;
+    return _score;
   }
 
+
   void _finishQuiz() {
-    if (_checkAnswers()) {
-      var points = _evaluateAnswers();
-      // TODO: write points and lesson completion to DB, also check if it was already completed before
-      globals.answeredQuestions = _questions;
+    if (!widget.lesson.completed && _checkAnswers()) {
+      var score = _evaluateAnswers();
+       globals.answeredQuestions = _questions;
+
+      // TODO: PUT IN DEDICATED FUNCTIONS: write points and lesson completion to DB, also check if it was already completed before
+      var lesson = widget.lesson;
+      lesson.completed = true;
+      DB.getLessonBox().put(lesson.lessonId, lesson);
+      DB.modifyUserScore(score);
+
       Navigator.pushNamed(
           context,
           LessonCompleteScreen.routeName

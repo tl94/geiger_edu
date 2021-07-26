@@ -45,7 +45,7 @@ Lesson currentLesson = Lesson(
     difficulty: Difficulty.beginner,
     duration: 5,
     apiUrl: '',
-    path: 'assets/lesson/password/password_safety/eng',
+    path: 'assets/lesson/password/password_safety/',
     hasQuiz: true);
 
 //** QUIZ STATE **

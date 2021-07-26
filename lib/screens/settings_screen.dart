@@ -21,15 +21,20 @@ class _SettingsScreenState extends State<SettingsScreen>{
   bool isSwitched = false; //0xFFedb879
 
   switchDarkmode(){
-    DB.editDefaultSetting(!DB.getDefaultSetting()!.darkmode, null, null);
+    DB.editDefaultSetting(!DB.getDefaultSetting()!.darkmode, null, null, null);
   }
 
   switchShowAlias(){
-    DB.editDefaultSetting(null, !DB.getDefaultSetting()!.showAlias, null);
+    DB.editDefaultSetting(null, !DB.getDefaultSetting()!.showAlias, null, null);
   }
 
   switchShowScore(){
-    DB.editDefaultSetting(null, null, !DB.getDefaultSetting()!.showScore);
+    DB.editDefaultSetting(null, null, !DB.getDefaultSetting()!.showScore, null);
+  }
+
+  // TODO: use this function
+  changeLanguage(){
+    DB.editDefaultSetting(null, null, null, null);
   }
 
   @override

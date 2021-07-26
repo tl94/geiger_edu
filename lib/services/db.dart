@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:geiger_edu/globals.dart' as globals;
 import 'package:geiger_edu/model/difficultyObj.dart';
 import 'package:geiger_edu/model/lessonCategoryObj.dart';
 import 'package:geiger_edu/model/lessonObj.dart';
@@ -7,7 +8,6 @@ import 'package:geiger_edu/model/userObj.dart';
 import 'package:geiger_edu/providers/boxes.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:geiger_edu/globals.dart' as globals;
 
 class DB {
   static Box<User> userBox = Boxes.getUsers();
@@ -45,7 +45,6 @@ class DB {
 
     if(!lessonCategoriesIsOpen){ await Hive.openBox<LessonCategory>('lessonCategories'); }
     // if(DB.getLessonCategoryBox().keys.isEmpty)
-  print("LESSON CATEGORIES OPEN");
 
     if(!lessonsIsOpen) { await Hive.openBox<Lesson>('lessons'); }
     // if (getLessonBox().isEmpty) { createTestLessons(); }
@@ -69,6 +68,12 @@ class DB {
 
   static void incrementGeigerIndicator(){
     globals.completedLessons++;
+  }
+
+  static Future<bool> databaseExists() async {
+    print("DATABASE EXISTS?");
+    return await Hive.boxExists('users') && await Hive.boxExists('settings')
+    && await Hive.boxExists('lessons') && await Hive.boxExists('lessonCategories');
   }
 
   static void updateLessonBox(){
@@ -178,7 +183,7 @@ class DB {
     userBox.put("default", tempUser);
   }
 
-  static void editDefaultSetting(bool? darkmode, bool? showAlias, bool? showScore){
+  static void editDefaultSetting(bool? darkmode, bool? showAlias, bool? showScore, String? language){
     Setting? tempSetting = getDefaultSetting();
 
     if(tempSetting!.darkmode != darkmode && null != darkmode)
@@ -189,6 +194,10 @@ class DB {
 
     if(tempSetting.showScore != showScore && null != showScore)
       tempSetting.showScore = showScore;
+
+    if(tempSetting.language != language && null != language) {
+      tempSetting.language = language;
+    }
 
     //persist modified Settings object to database
     settingBox.put("default", tempSetting);
@@ -202,7 +211,7 @@ class DB {
 
   static void createDefaultSettings(){
     //add default settings to box
-    Setting defaultSetting = new Setting(darkmode: false, showAlias: true, showScore: false);
+    Setting defaultSetting = new Setting(darkmode: false, showAlias: true, showScore: false, language: 'ger');
     settingBox.put("default", defaultSetting);
   }
 

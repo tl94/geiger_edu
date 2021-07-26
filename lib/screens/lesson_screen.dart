@@ -1,12 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:geiger_edu/model/lessonObj.dart';
 import 'package:geiger_edu/services/lesson_loader.dart';
 import 'package:geiger_edu/widgets/lesson/LessonContainer.dart';
-
-import 'package:geiger_edu/globals.dart' as globals;
 
 class LessonScreen extends StatefulWidget {
   static const routeName = '/lessonscreen';
@@ -22,23 +18,29 @@ class LessonScreen extends StatefulWidget {
 }
 
 class _LessonScreenState extends State<LessonScreen> {
-  List<String> _slidePaths = [];
+  late Future<List<String>> _slidePaths;
+
+  initState() {
+    super.initState();
+    _slidePaths = getSlidePaths(context);
+  }
 
   Future<List<String>> getSlidePaths(BuildContext context) async {
-    List<String> filePaths = await LessonLoader.getLessonSlidePaths(context, widget.lesson.path);
-    setState(() {
-      _slidePaths = filePaths;
-    });
+    List<String> filePaths =
+        await LessonLoader.getLessonSlidePaths(context, widget.lesson.path);
     return filePaths;
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_slidePaths.isEmpty) {
-      getSlidePaths(context);
-      return new Container(color: Colors.white);
-    } else {
-      return new LessonContainer(lesson: widget.lesson, slidePaths: _slidePaths, initialPage: widget.initialPage);
-    }
+    return FutureBuilder<List<String>>(
+        future: _slidePaths,
+        builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
+          if (snapshot.hasData) {
+            return LessonContainer(
+                lesson: widget.lesson, slidePaths: snapshot.data!);
+          } else
+            return Container(color: Colors.white);
+        });
   }
 }
