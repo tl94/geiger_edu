@@ -41,10 +41,7 @@ class LessonSelectionScreen extends StatelessWidget {
             Flexible(
                 child: Row(children: [
                   Container(
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width-40,
+                    width: MediaQuery.of(context).size.width-40,
                     height: MediaQuery.of(context).size.height,
                     child: ListView.builder(
                         scrollDirection: Axis.vertical,

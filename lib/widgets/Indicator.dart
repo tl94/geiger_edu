@@ -3,7 +3,9 @@ import 'package:geiger_edu/globals.dart' as globals;
 
 class Indicator extends StatefulWidget {
 
-  Indicator() : super();
+  final double height;
+
+  Indicator({required this.height}) : super();
 
   _IndicatorState createState() => _IndicatorState();
 }
@@ -37,7 +39,7 @@ class _IndicatorState extends State<Indicator> {
     return Column(children: [
         Text("Your Progress", style: TextStyle(fontSize: 20, color: globals.txtColor)),
         SizedBox(height: 10),
-        Container(height: 150, child: Stack(alignment: Alignment.center,children: [
+        Container(width: widget.height, child: Stack(alignment: Alignment.center,children: [
           Align(alignment: Alignment(0,-.4),child: Text((percentage*100).toStringAsFixed(0)+"%", style: TextStyle(fontSize: 20, color: globals.txtColor))),
           new RotationTransition(
             turns: new AlwaysStoppedAnimation(percentage*0.49), //0.49 is the value for the indicator to reach the other side

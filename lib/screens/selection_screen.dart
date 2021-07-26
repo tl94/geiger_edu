@@ -60,7 +60,7 @@ class SelectionScreen extends StatelessWidget {
         backgroundColor: bckColor,
       ),
       body: Container(
-        margin: EdgeInsets.fromLTRB(20, 20, 20, 20),
+        margin: EdgeInsets.fromLTRB(0, 15, 0, 15),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -68,7 +68,7 @@ class SelectionScreen extends StatelessWidget {
             Flexible(
                 child: Row(children: [
               Container(
-                width: MediaQuery.of(context).size.width - 40,
+                width: MediaQuery.of(context).size.width,
                 child: ListView.builder(
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
