@@ -24,50 +24,57 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: bckColor,
       ),
       body: Container(
-        margin: EdgeInsets.fromLTRB(20, 20, 20, 20),
-        child: Stack(children: [
-              Align(alignment: Alignment.center,child: Indicator()),
-              Container(
-                  margin: EdgeInsets.fromLTRB(0, 140, 0, 0),
-                  child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+          child: new SingleChildScrollView(
+              child:new Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
+                  children: <Widget>[
+                    Stack(children: [
+                      Align(alignment: Alignment.center,child: Indicator()),
                       Container(
-                    child: NavigationContainer(
-                      imagePath: "assets/img/continue_lesson.png",
-                      text: "Current Lesson",
-                      passedRoute: LessonScreen.routeName,
-                    )
-                ),
-                SizedBox(height: 10),
-                Container(
-                    child: NavigationContainer(
-                      imagePath: "assets/img/select_lesson.png",
-                      text: "Select Lesson",
-                      passedRoute: SelectionScreen.routeName,
-                    )
-                ),
-                Spacer(),
-                Container(
-                    child: NavigationContainer(
-                      imagePath: "assets/img/profile/user_icon.png",
-                      text: "Profile",
-                      passedRoute: ProfileScreen.routeName,
-                    )
-                ),
-                SizedBox(height: 10),
-                Container(
-                    child: NavigationContainer(
-                      imagePath: "assets/img/settings_icon.png",
-                      text: "Settings",
-                      passedRoute: SettingsScreen.routeName,
-                    )
-                )
-              ])
+                          margin: EdgeInsets.fromLTRB(0, 130, 0, 0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Container(
+                                  child: NavigationContainer(
+                                    imagePath: "assets/img/continue_lesson.png",
+                                    text: "Current Lesson",
+                                    passedRoute: LessonScreen.routeName,
+                                  )
+                              ),
+                              Container(
+                                  child: NavigationContainer(
+                                    imagePath: "assets/img/select_lesson.png",
+                                    text: "Select Lesson",
+                                    passedRoute: SelectionScreen.routeName,
+                                  )
+                              ),
+                              SizedBox(height: 50),
+                              Container(
+                                  child: NavigationContainer(
+                                    imagePath: "assets/img/profile/user_icon.png",
+                                    text: "Profile",
+                                    passedRoute: ProfileScreen.routeName,
+                                  )
+                              ),
+                              Container(
+                                  child: NavigationContainer(
+                                    imagePath: "assets/img/settings_icon.png",
+                                    text: "Settings",
+                                    passedRoute: SettingsScreen.routeName,
+                                  )
+                              ),]
+                          )
+                      )
+                    ],),
+                  ])
               )
-            ])
-        ),
+
+
+
+      ),
       );
   }
 }

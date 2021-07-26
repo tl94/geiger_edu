@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:geiger_edu/model/lessonObj.dart';
 import 'package:geiger_edu/screens/selection_screen.dart';
-import 'package:geiger_edu/services/db.dart';
 import 'package:geiger_edu/widgets/LessonDropdown.dart';
 
-import 'lesson_screen.dart';
 import 'package:geiger_edu/globals.dart' as globals;
 
 class LessonSelectionScreen extends StatelessWidget {
@@ -37,7 +35,7 @@ class LessonSelectionScreen extends StatelessWidget {
       body: Container(
         margin: EdgeInsets.fromLTRB(20, 20, 20, 20),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Flexible(
@@ -67,10 +65,8 @@ class LessonSelectionScreen extends StatelessWidget {
                           );
                         }),
                   )])),
-
           ],
         ),
-
       ),
     );
   }

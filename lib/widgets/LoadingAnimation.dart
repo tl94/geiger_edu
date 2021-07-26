@@ -33,7 +33,10 @@ class _LoadingAnimationState extends State<LoadingAnimation> with TickerProvider
 
   @override
   Widget build(BuildContext context) {
-    return Container(child:
+    return Container(
+        width: 200,
+        height: 200,
+        child:
         Stack(alignment: Alignment.center, children: [
           AnimatedBuilder(
             animation: _controller,

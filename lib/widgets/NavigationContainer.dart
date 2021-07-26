@@ -39,7 +39,8 @@ class _NavigationContainerState extends State<NavigationContainer> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 80,
+      height: 75,
+      margin: EdgeInsets.fromLTRB(20, 5, 20, 5),
       child: new GestureDetector(
         onTap: () {
           if(widget.passedLessons!= null){

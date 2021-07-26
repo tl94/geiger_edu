@@ -123,7 +123,7 @@ class _LessonDropdownState extends State<LessonDropdown> {
                             Text("Motivation",
                                 style: TextStyle(color: _titleColor,fontSize: _fontSize)
                             ),
-                            Container(width: 250,
+                            Container(width: 200,
                                 child: Text(
                                     widget.motivation.toString(),
                                     style: TextStyle(fontSize: _fontSize)

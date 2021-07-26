@@ -21,8 +21,6 @@ class SelectionScreen extends StatelessWidget {
   }
 
   List<Lesson> getLessonListForCategory(String lessonCategoryId) {
-    /*print(lessonCategoryId);
-    print(DB.getLessonBox().values.toList());*/
     var lessonList = DB
         .getLessonBox()
         .values
@@ -64,7 +62,7 @@ class SelectionScreen extends StatelessWidget {
       body: Container(
         margin: EdgeInsets.fromLTRB(20, 20, 20, 20),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Flexible(
