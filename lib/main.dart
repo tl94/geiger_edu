@@ -47,21 +47,18 @@ class _MyAppState extends State<MyApp>{
     return Scaffold(
       body: Center(
           child: Container(
-              height: MediaQuery
-                  .of(context)
-                  .size
-                  .height,
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width/2,
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset("assets/img/splashscreen/splashscreen_logo.png", fit: BoxFit.fitWidth),
-                    SizedBox(height: 50),
-                    LoadingAnimation()
-                  ])
+          margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
+          width: MediaQuery
+              .of(context)
+              .size
+              .width/2,
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset("assets/img/splashscreen/splashscreen_logo.png", fit: BoxFit.fitWidth),
+                SizedBox(height: 40),
+                LoadingAnimation(width: 140)
+              ])
           )
       )
     );

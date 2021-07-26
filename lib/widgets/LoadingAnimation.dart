@@ -5,7 +5,9 @@ import 'dart:math' as math;
 
 class LoadingAnimation extends StatefulWidget {
 
-  LoadingAnimation() : super();
+  final double width;
+
+  LoadingAnimation({required this.width}) : super();
 
   _LoadingAnimationState createState() => _LoadingAnimationState();
 }
@@ -34,8 +36,6 @@ class _LoadingAnimationState extends State<LoadingAnimation> with TickerProvider
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: 200,
-        height: 200,
         child:
         Stack(alignment: Alignment.center, children: [
           AnimatedBuilder(
@@ -46,7 +46,7 @@ class _LoadingAnimationState extends State<LoadingAnimation> with TickerProvider
                 child: child,
               );
             },
-            child: Image.asset("assets/img/loadingcircle/inner.png",width: 140)
+            child: Image.asset("assets/img/loadingcircle/inner.png",width: widget.width-40)
           ),
 
           AnimatedBuilder(
@@ -57,7 +57,7 @@ class _LoadingAnimationState extends State<LoadingAnimation> with TickerProvider
                 child: child,
               );
             },
-            child: Image.asset("assets/img/loadingcircle/center.png",width: 170)
+            child: Image.asset("assets/img/loadingcircle/center.png",width: widget.width-20)
           ),
 
           AnimatedBuilder(
@@ -68,7 +68,7 @@ class _LoadingAnimationState extends State<LoadingAnimation> with TickerProvider
                   child: child,
                 );
               },
-              child: Image.asset("assets/img/loadingcircle/outer.png",width: 200)
+              child: Image.asset("assets/img/loadingcircle/outer.png",width: widget.width)
           ),
         ],)
     );

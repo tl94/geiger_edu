@@ -5,6 +5,7 @@ import 'package:geiger_edu/screens/selection_screen.dart';
 import 'package:geiger_edu/screens/settings_screen.dart';
 import 'package:geiger_edu/services/lesson_loader.dart';
 import 'package:geiger_edu/widgets/Indicator.dart';
+import 'package:geiger_edu/widgets/LoadingAnimation.dart';
 import 'package:geiger_edu/widgets/NavigationContainer.dart';
 
 import 'comments_screen.dart';
@@ -23,7 +24,8 @@ class HomeScreen extends StatelessWidget {
         centerTitle: true,
         backgroundColor: bckColor,
       ),
-      body: Container(
+      body:
+      Container(
           child: SingleChildScrollView(
             child:Container(
                 margin: EdgeInsets.fromLTRB(0, 15, 0, 15),
@@ -65,10 +67,9 @@ class HomeScreen extends StatelessWidget {
                                         text: "Settings",
                                         passedRoute: SettingsScreen.routeName
                                       )
-                                  ]
-                            )
+                                  ])
                         )
-                      ],),
+                      ]),
                     ])
             )
           )
