@@ -14,9 +14,7 @@ class LessonContainer extends StatefulWidget {
   final int initialPage;
 
   LessonContainer(
-      {required this.lesson,
-      required this.slidePaths,
-      this.initialPage = 0})
+      {required this.lesson, required this.slidePaths, this.initialPage = 0})
       : super();
 
   _LessonContainerState createState() =>
@@ -134,7 +132,7 @@ class _LessonContainerState extends State<LessonContainer> {
 
   void _nextPage() async {
     // TODO: don't allow this if the lesson has a quiz
-    if (_isOnLastPage()) {
+    if (_isOnLastPage() && !widget.lesson.hasQuiz) {
       Navigator.pushNamed(context, LessonCompleteScreen.routeName);
     }
     _currentPageNotifier.value++;
@@ -150,31 +148,28 @@ class _LessonContainerState extends State<LessonContainer> {
             children: [
               Expanded(
                   child: Container(
-                    color: Colors.white,
-                    padding: const EdgeInsets.all(16.0),
-                    child: StepPageIndicator(
-                      itemCount: _slides.length,
-                      currentPageNotifier: _currentPageNotifier,
-                      size: 16,
-                      onPageSelected: (int index) {
-                          _pageController.jumpToPage(index);
-                      },
-                    ),
-                  )
-              )
+                color: Colors.white,
+                padding: const EdgeInsets.all(16.0),
+                child: StepPageIndicator(
+                  itemCount: _slides.length,
+                  currentPageNotifier: _currentPageNotifier,
+                  size: 16,
+                  onPageSelected: (int index) {
+                    _pageController.jumpToPage(index);
+                  },
+                ),
+              ))
             ],
-          )
-              ,
+          ),
           Expanded(
               child: Stack(
             children: [
-                PageView(
-                  controller: _pageController,
-                  children: _slides,
-                  onPageChanged: _onSlideChanged,
-                  allowImplicitScrolling: true,
-                )
-              ,
+              PageView(
+                controller: _pageController,
+                children: _slides,
+                onPageChanged: _onSlideChanged,
+                allowImplicitScrolling: true,
+              ),
               if (!_isOnFirstPage())
                 Align(
                     alignment: Alignment.centerLeft,
