@@ -8,7 +8,6 @@ import 'package:geiger_edu/widgets/Indicator.dart';
 import 'package:geiger_edu/widgets/NavigationContainer.dart';
 
 import 'lesson_screen.dart';
-import 'package:geiger_edu/globals.dart';
 
 class HomeScreen extends StatelessWidget {
   static const routeName = '/homescreen';
@@ -34,14 +33,7 @@ class HomeScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Container(child: ElevatedButton(
-                      child: Text("load lessons"),
-                      onPressed: () {
-                        // LessonLoader.test();
-                        LessonLoader.loadLessons(context);
-                      },
-                    )),
-                Container(
+                      Container(
                     child: NavigationContainer(
                       imagePath: "assets/img/continue_lesson.png",
                       text: "Current Lesson",
