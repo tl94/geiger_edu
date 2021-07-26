@@ -26,7 +26,7 @@ String userImg = "assets/img/profile/user_icon.png";
 //** LESSON SELECTION **
 List<Lesson> lessons = [];
 //TODO: Fix currentLessonSlideIndex
-String currentLessonPath = "assets/lesson/password/password_safety/eng";
+String currentLessonPath = "assets/lesson/password/password_safety/";
 int currentLessonSlideIndex = 0;
 String categoryTitle = '';
 Lesson currentLesson = Lesson(
