@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:geiger_edu/model/commentObj.dart';
 import 'package:geiger_edu/globals.dart' as globals;
 import 'package:geiger_edu/model/difficultyObj.dart';
 import 'package:geiger_edu/model/lessonCategoryObj.dart';
@@ -14,6 +15,7 @@ class DB {
   static Box<Setting> settingBox = Boxes.getSettings();
   static Box<Lesson> lessonBox = Boxes.getLessons();
   static Box<LessonCategory> lessonCategoryBox = Boxes.getLessonCategories();
+  static Box<Comment> commentBox = Boxes.getComments();
 
   static Future<void> init() async {
     //** Hive DB Setup **
@@ -27,10 +29,12 @@ class DB {
     Hive.registerAdapter(LessonAdapter());
     Hive.registerAdapter(LessonCategoryAdapter());
     Hive.registerAdapter(DifficultyAdapter());
+    Hive.registerAdapter(CommentAdapter());
 
     bool usersIsOpen = Hive.isBoxOpen('users');
     bool settingsIsOpen = Hive.isBoxOpen('settings');
     bool lessonsIsOpen = Hive.isBoxOpen('lessons');
+    bool commentsIsOpen = Hive.isBoxOpen('comments');
     bool lessonCategoriesIsOpen = Hive.isBoxOpen('lessonCategories');
 
     if(!usersIsOpen){
@@ -45,9 +49,13 @@ class DB {
 
     if(!lessonCategoriesIsOpen){ await Hive.openBox<LessonCategory>('lessonCategories'); }
     // if(DB.getLessonCategoryBox().keys.isEmpty)
+    print("LESSON CATEGORIES OPEN");
 
     if(!lessonsIsOpen) { await Hive.openBox<Lesson>('lessons'); }
     // if (getLessonBox().isEmpty) { createTestLessons(); }
+
+    if(!commentsIsOpen){ await Hive.openBox<Comment>('comments'); }
+    if(DB.getCommentBox().keys.isEmpty){ createTestComments(); }
 
     runGeigerIndicator();
   }
@@ -61,7 +69,6 @@ class DB {
         tempCompletedLessons++;
       }
     }
-
     globals.maxLessons = tempMaxLessons;
     globals.completedLessons = tempCompletedLessons;
   }
@@ -80,9 +87,18 @@ class DB {
     //TODO: validate lesson box on start check files for new lessons add them tho the lesson category
   }
 
+  static void createTestComments(){
+    addComment(Comment(id: "C001", text: "Gibt es ein Programm welches mir meine EMail bereinigt?", dateTime: DateTime.now(), lessonId: "LPW001"));
+    addComment(Comment(id: "C002", text: "Hab mir das neue Office geholt, ist das sicher?", dateTime: DateTime.now(), lessonId: "LPW001"));
+    addComment(Comment(id: "C003", text: "Wie habt ihr das gelöst mit der Verankerung des neuen Kaspersky-Cleaner??", dateTime: DateTime.now(), lessonId: "LPW001"));
+  }
+
+  static void addComment(Comment c){
+    getCommentBox().put(c.id, c);
+  }
+
   static void createTestLessons(){
     //TODO: replace with updateLessonBox
-
     Lesson l1 = new Lesson(lessonId: "LPW001", lessonCategoryId: "CID001", title: {
       "eng": "Password Safety",
       "ger": "Passwortsicherheit"
@@ -221,6 +237,7 @@ class DB {
 
   static Box<Setting> getSettingBox() {return settingBox;}
 
+  static Box<Comment> getCommentBox() {return commentBox;}
 
   static void wipeDB() async{
     //delete the hive-boxes, clears the file content from the device
@@ -228,6 +245,7 @@ class DB {
     await Hive.deleteBoxFromDisk('settings');
     await Hive.deleteBoxFromDisk('lessons');
     await Hive.deleteBoxFromDisk('lessonCategories');
+    await Hive.deleteBoxFromDisk('comments');
     // await Hive.deleteBoxFromDisk('xapis');
   }
 }
