@@ -40,7 +40,6 @@ class _LabeledSwitchState extends State<LabeledSwitch>{
         Text("ON", style: TextStyle(fontSize: 15))
       else
         Text("OFF", style: TextStyle(fontSize: 15))
-
     ]);
   }
 }
