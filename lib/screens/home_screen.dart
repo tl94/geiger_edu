@@ -11,7 +11,6 @@ import 'lesson_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   static const routeName = '/homescreen';
-
   static const bckColor = const Color(0xFF5dbcd2); //0xFFedb879
 
   @override

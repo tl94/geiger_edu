@@ -23,7 +23,10 @@ class _LabeledSwitchState extends State<LabeledSwitch>{
   @override
   Widget build(BuildContext context){
     return Row(children: [
-      Text(widget.label, style: TextStyle(fontSize: 18)),
+      Container(
+        width: MediaQuery.of(context).size.width * 0.6,
+        child: Text(widget.label, style: TextStyle(fontSize: 16)),
+      ),
       Spacer(),
       Switch(
         value: widget.isSelected,

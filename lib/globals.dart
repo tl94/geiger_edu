@@ -2,11 +2,12 @@ library geiger_edu.globals;
 
 import 'package:flutter/cupertino.dart';
 import 'package:geiger_edu/model/quiz/question.dart';
-
 import 'model/difficultyObj.dart';
 import 'model/lessonObj.dart';
 
 final txtColor = const Color(0xff2f4858);
+
+final appVersion = "0.3.210725"; //current version of the app
 
 bool appRunning = false;
 bool isOnline = false;
