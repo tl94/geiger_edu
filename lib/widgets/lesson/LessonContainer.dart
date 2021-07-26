@@ -59,7 +59,9 @@ class _LessonContainerState extends State<LessonContainer> {
       );
       slides.add(slide);
     }
-    slides.add(QuizSlide(lesson: widget.lesson));
+    if (widget.lesson.hasQuiz) {
+      slides.add(QuizSlide(lesson: widget.lesson));
+    }
     _slides = slides;
     return _slides;
   }
