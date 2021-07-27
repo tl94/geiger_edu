@@ -1,41 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:geiger_edu/controller/settings_controller.dart';
 import 'package:geiger_edu/services/db.dart';
 import 'package:geiger_edu/widgets/LabledSwitch.dart';
+import 'package:get/get.dart';
 import 'package:hive_listener/hive_listener.dart';
 import '../globals.dart' as globals;
 import 'home_screen.dart';
 
-class SettingsScreen extends StatefulWidget {
+class SettingsScreen extends StatelessWidget {
   static const routeName = '/settings';
+
+  final SettingsController settingsController = Get.find();
 
   static const bckColor = const Color(0xFF5dbcd2); //0xFFedb879
   static const borderColor = const Color(0xff0085ff);
-
-  _SettingsScreenState createState() => _SettingsScreenState();
-}
-
-class _SettingsScreenState extends State<SettingsScreen>{
-
-  static const bckColor = const Color(0xFF5dbcd2);
-  bool isSwitched = false; //0xFFedb879
-
-  switchDarkmode(){
-    DB.editDefaultSetting(!DB.getDefaultSetting()!.darkmode, null, null, null);
-  }
-
-  switchShowAlias(){
-    DB.editDefaultSetting(null, !DB.getDefaultSetting()!.showAlias, null, null);
-  }
-
-  switchShowScore(){
-    DB.editDefaultSetting(null, null, !DB.getDefaultSetting()!.showScore, null);
-  }
-
-  // TODO: use this function
-  changeLanguage(){
-    DB.editDefaultSetting(null, null, null, null);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +45,7 @@ class _SettingsScreenState extends State<SettingsScreen>{
                             return LabeledSwitch(
                               label: "Darkmode",
                               isSelected: DB.getDefaultSetting()!.darkmode,
-                              onChanged: switchDarkmode,
+                              onChanged: settingsController.switchDarkMode,
                             );
                           },
                         ),
@@ -81,7 +60,7 @@ class _SettingsScreenState extends State<SettingsScreen>{
                             return LabeledSwitch(
                               label: "Display your alias on the discussion platform",
                               isSelected: DB.getDefaultSetting()!.showAlias,
-                              onChanged: switchShowAlias,
+                              onChanged: settingsController.switchShowAlias,
                             );
                           },
                         ),
@@ -93,7 +72,7 @@ class _SettingsScreenState extends State<SettingsScreen>{
                             return LabeledSwitch(
                               label: "Display your own score on the discussion platform",
                               isSelected: DB.getDefaultSetting()!.showScore,
-                              onChanged: switchShowScore,
+                              onChanged: settingsController.switchShowScore,
                             );
                           },
                         ),
@@ -103,7 +82,7 @@ class _SettingsScreenState extends State<SettingsScreen>{
           ),
           Container(
             margin: EdgeInsets.fromLTRB(20, 20, 20, 20),
-            child: Text("Mobile Learning v"+globals.appVersion, style: TextStyle(fontSize: 20, color: Colors.grey)),
+            child: Text("Mobile Learning v" + settingsController.appVersion, style: TextStyle(fontSize: 20, color: Colors.grey)),
           )
         ])
         ),

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:geiger_edu/controller/settings_controller.dart';
-import 'package:geiger_edu/model/difficultyObj.dart';
+import 'package:geiger_edu/model/lessonCategoryObj.dart';
 import 'package:geiger_edu/model/lessonObj.dart';
 import 'package:geiger_edu/model/quiz/question.dart';
 import 'package:geiger_edu/screens/home_screen.dart';
@@ -14,10 +14,7 @@ import 'package:geiger_edu/widgets/lesson/quiz_slide.dart';
 import 'package:get/get.dart';
 import 'package:html/parser.dart';
 
-import 'global_controller.dart';
-
 class LessonController extends GetxController {
-
   SettingsController settingsController = Get.put(SettingsController());
 
   //** LESSON SELECTION **
@@ -26,6 +23,9 @@ class LessonController extends GetxController {
   //** GEIGER INDICATOR **
   int completedLessons = 0;
   int maxLessons = 0;
+
+  //** LESSON CATEGORIES **
+  late List<LessonCategory> lessonCategories;
 
   //** LESSON STATE **
   String categoryTitle = '';
@@ -55,7 +55,6 @@ class LessonController extends GetxController {
 
   DateTime? selectedDate;
 
-
   //** Functions **
   Lesson getLesson() {
     return currentLesson;
@@ -83,7 +82,8 @@ class LessonController extends GetxController {
 
   ///
   Future<List<String>> getSlidePaths(BuildContext context) async {
-    List<String> filePaths = await getLessonSlidePaths(context, currentLesson.path);
+    List<String> filePaths =
+        await getLessonSlidePaths(context, currentLesson.path);
     return filePaths;
   }
 
@@ -103,10 +103,10 @@ class LessonController extends GetxController {
   Future<List<String>> getDirectoryFilePaths(
       BuildContext context, RegExp regExp) async {
     var manifestContent =
-    await DefaultAssetBundle.of(context).loadString('AssetManifest.json');
+        await DefaultAssetBundle.of(context).loadString('AssetManifest.json');
     Map<String, dynamic> manifestMap = json.decode(manifestContent);
     var filePaths =
-    manifestMap.keys.where((String key) => regExp.hasMatch(key)).toList();
+        manifestMap.keys.where((String key) => regExp.hasMatch(key)).toList();
     return filePaths;
   }
 
@@ -114,6 +114,34 @@ class LessonController extends GetxController {
       BuildContext context, String lessonPath) async {
     var slidePaths = await getLessonSlidePaths(context, lessonPath);
     return slidePaths.length;
+  }
+
+  //** LESSON CATEGORIES **
+
+  Map<String, int> getCompletedLessonsForCategory(String lessonCategoryId) {
+    Map<String, int> result = {};
+    int completedCount = 0;
+
+    var lessonList = getLessonListForCategory(lessonCategoryId);
+
+    for (var lesson in lessonList) {
+      if (lesson.completed) completedCount++;
+    }
+    result["completed"] = completedCount;
+    result["allLessons"] = lessonList.length;
+    return result;
+  }
+
+  List<Lesson> getLessonListForCategory(String lessonCategoryId) {
+    return DB
+        .getLessonBox()
+        .values
+        .where((lesson) => lesson.lessonCategoryId == lessonCategoryId)
+        .toList();
+  }
+
+  List<LessonCategory> getLessonCategories() {
+    return DB.getLessonCategoryBox().values.toList();
   }
 
   //** LESSON CONTAINER **
@@ -144,7 +172,7 @@ class LessonController extends GetxController {
   Future<String> getLessonTitle(BuildContext context) async {
     var firstSlidePath = slidePaths.first;
     var doc =
-    parse(await DefaultAssetBundle.of(context).loadString(firstSlidePath));
+        parse(await DefaultAssetBundle.of(context).loadString(firstSlidePath));
     var elems = doc.getElementsByTagName("meta");
     var title;
     for (var e in elems) {
@@ -212,19 +240,15 @@ class LessonController extends GetxController {
     // TODO: don't allow this if the lesson has a quiz
     currentPageNotifier.value++;
     currentLessonSlideIndex++;
-    if (isOnLastSlide.value &&
-        !currentLesson.hasQuiz) {
+    if (isOnLastSlide.value && !currentLesson.hasQuiz) {
       Get.to(LessonCompleteScreen());
       // Navigator.pushNamed(context, LessonCompleteScreen.routeName);
     }
     await pageController.nextPage(duration: _kDuration, curve: _kCurve);
   }
 
-
-
   //** LESSON COMPLETE SCREEN **
   void onFinishLessonPressed() {
-
     Get.to(() => HomeScreen());
   }
 
@@ -237,8 +261,6 @@ class LessonController extends GetxController {
     return quizResultsGroups;
   }
 
-
-
   Future<void> selectDate(BuildContext context) async {
     final DateTime? newSelectedDate = await showDatePicker(
         context: context,
@@ -246,28 +268,18 @@ class LessonController extends GetxController {
         firstDate: DateTime.now(),
         lastDate: DateTime.utc(2100, 12, 31));
     if (selectedDate != null) {
-        selectedDate = newSelectedDate;
+      selectedDate = newSelectedDate;
     }
   }
-
-
-
 
   //** LESSON NUMBERS **
-  void runGeigerIndicator(){
-    var tempCompletedLessons = 0;
-    var tempMaxLessons = DB.getLessonBox().values.length;
-
-    for(var lesson in DB.getLessonBox().values){
-      if (lesson.completed) {
-        tempCompletedLessons++;
-      }
-    }
-    maxLessons = tempMaxLessons;
-    completedLessons = tempCompletedLessons;
+  void calculateCompletedLessons() {
+    maxLessons = DB.getLessonBox().values.length;
+    completedLessons =
+        DB.getLessonBox().values.where((lesson) => lesson.completed).length;
   }
 
-  void incrementGeigerIndicator(){
+  void incrementGeigerIndicator() {
     completedLessons++;
   }
 }

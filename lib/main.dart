@@ -45,6 +45,8 @@ class _MyAppState extends State<MyApp>{
     //** LOAD LESSON DATA **
     LessonLoader.loadLessonData(context);
 
+    widget.lessonController.calculateCompletedLessons();
+
     Future.delayed(
         Duration(seconds: 5),
             (){Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));}

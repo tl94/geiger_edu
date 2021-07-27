@@ -20,7 +20,6 @@ class QuizResultsScreen extends StatelessWidget {
   final LessonController lessonController = Get.find();
   final SettingsController settingsController = Get.find();
 
-
   final Lesson lesson;
   final List<Question> answeredQuestions;
 

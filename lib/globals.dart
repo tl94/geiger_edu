@@ -7,7 +7,7 @@ import 'model/lessonObj.dart';
 
 final txtColor = const Color(0xff2f4858);
 
-final appVersion = "0.3.210725"; //current version of the app
+// final appVersion = "0.3.210725"; //current version of the app
 
 bool appRunning = false;
 bool isOnline = false;
