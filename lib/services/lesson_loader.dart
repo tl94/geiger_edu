@@ -1,14 +1,19 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:geiger_edu/controller/lesson_controller.dart';
 import 'package:geiger_edu/globals.dart' as globals;
 import 'package:geiger_edu/model/lessonCategoryObj.dart';
 import 'package:geiger_edu/model/lessonObj.dart';
 import 'package:geiger_edu/services/db.dart';
 import 'package:geiger_edu/model/difficultyObj.dart';
 import 'package:geiger_edu/services/util.dart';
+import 'package:get/get.dart';
 
 class LessonLoader {
+
+  static LessonController lessonController = Get.find();
+
   static void loadLessonData(BuildContext context) async {
     // print("loading lesson data");
 
@@ -52,7 +57,7 @@ class LessonLoader {
 
       var directoryPath = Util.getDirectoryFromFilePath(path, 'lesson_meta.json');
 
-      var maxIndex = await getNumberOfLessonSlides(context, directoryPath);
+      var maxIndex = await lessonController.getNumberOfLessonSlides(context, directoryPath);
       var hasQuiz = jsonData['hasQuiz'];
 
       var apiUrl = 'unknown';
@@ -91,27 +96,22 @@ class LessonLoader {
     return DB.getLessonBox().containsKey(lesson.lessonId);
   }
 
-  static String getLocalizedLessonPath(String lessonPath) {
+/*  static String getLocalizedLessonPath(String lessonPath) {
     return lessonPath + globals.language + '/';
-  }
+  }*/
 
-  static Future<List<String>> getLessonSlidePaths(BuildContext context, String lessonPath) async {
+/*  static Future<List<String>> getLessonSlidePaths(BuildContext context, String lessonPath) async {
     lessonPath = getLocalizedLessonPath(lessonPath);
     RegExp regExp = RegExp(lessonPath + "slide_\*");
     List<String> filePaths = await Util.getDirectoryFilePaths(context, regExp);
     return filePaths;
-  }
+  }*/
 
-  static Future<int> getNumberOfLessonSlides(
-      BuildContext context, String lessonPath) async {
-    var slidePaths = await getLessonSlidePaths(context, lessonPath);
-    return slidePaths.length;
-  }
 
   static Future<List<String>> getQuizPath(BuildContext context, String lessonPath) async {
-    lessonPath = getLocalizedLessonPath(lessonPath);
+    lessonPath = lessonController.getLocalizedLessonPath(lessonPath);
     RegExp regExp = RegExp(lessonPath + "quiz\*");
-    List<String> filePaths = await Util.getDirectoryFilePaths(context, regExp);
+    List<String> filePaths = await lessonController.getDirectoryFilePaths(context, regExp);
     return filePaths;
   }
 

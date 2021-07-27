@@ -15,7 +15,7 @@ class Util {
     }
   }
 
-  static Future<List<String>> getDirectoryFilePaths(
+/*  static Future<List<String>> getDirectoryFilePaths(
       BuildContext context, RegExp regExp) async {
     var manifestContent =
     await DefaultAssetBundle.of(context).loadString('AssetManifest.json');
@@ -23,7 +23,7 @@ class Util {
     var filePaths =
     manifestMap.keys.where((String key) => regExp.hasMatch(key)).toList();
     return filePaths;
-  }
+  }*/
 
   static String getDirectoryFromFilePath(String filePath, String fileName) {
     String directory = filePath.replaceFirst(RegExp(fileName), '');

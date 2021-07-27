@@ -21,7 +21,7 @@ class RouteGenerator {
 
       case LessonScreen.routeName:
         // MaterialPageRoute transitions to the new route using a platform specific animation.
-        return MaterialPageRoute(builder: (context) => LessonScreen(lesson: globals.currentLesson, initialPage: globals.currentLessonSlideIndex));
+        return MaterialPageRoute(builder: (context) => LessonScreen());
 
       case LessonCompleteScreen.routeName:
       // MaterialPageRoute transitions to the new route using a platform specific animation.
