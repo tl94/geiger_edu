@@ -5,7 +5,7 @@
 # Table of Contents
 - [What is GEIGER Mobile Learning?](#what-is-geiger-mobile-learning)
 - [Advantages](#advantages)
-- [Code-Convention](#code-conventions)
+- [Code Convention](#code-conventions)
 - [Basic Structure](#basic-structure)
 - [Documentation](#documentation)
 
@@ -21,7 +21,7 @@ The half structured communication channel further enhances the exchange experien
 # Code Conventions
 *Branch naming convention:*
 
-image:docs/img/convention.png[UXPROCESS, 100%]
+![Alt text](geiger_edu/docs/img/convention.png?raw=true "Title")
 
 0xx - basic issue / appstructure
 1xx - Lesson
