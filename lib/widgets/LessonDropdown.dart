@@ -185,12 +185,10 @@ class _LessonDropdownState extends State<LessonDropdown> {
                                   ),
                                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)))    ,
                               ),
-                              onPressed: () {
+                              onPressed: () async {
                                 //TODO: Put this in its own function
                                 print("SETTING LESSON TO: " + widget.lesson.title[widget.settingsController.language]!);
-                                widget.lessonController.setLesson(context, widget.lesson);
-                                widget.lessonController.currentLessonSlideIndex = 0;
-                                widget.lessonController.getSlideTitles(context);
+                                await widget.lessonController.setLesson(context, widget.lesson);
                                 Navigator.pushNamed(
                                 context,
                                 LessonScreen.routeName,

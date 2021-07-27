@@ -25,7 +25,7 @@ class LessonController extends GetxController {
   int maxLessons = 0;
 
   //** LESSON STATE **
-  int currentLessonSlideIndex = 0;
+  RxInt currentLessonSlideIndex = 0.obs;
 
   String categoryTitle = '';
 
@@ -53,15 +53,20 @@ class LessonController extends GetxController {
   RxString currentTitle = ''.obs;
   int currentSlideIndex = 0;
   List<String> slideTitles = [];
+  RxBool isOnFirstSlide = false.obs;
+  RxBool isOnLastSlide = false.obs;
 
   Lesson getLesson() {
     return currentLesson;
   }
 
-  void setLesson(BuildContext context, Lesson lesson) {
+  Future<void> setLesson(BuildContext context, Lesson lesson) async {
     currentLesson = lesson;
-    getSlidePaths(context);
-    getSlideTitles(context);
+    currentLessonSlideIndex.value = 0;
+    isOnFirstSlide.value = isOnFirstPage();
+    isOnLastSlide.value = isOnLastPage();
+    await getSlidePaths(context);
+    await getSlideTitles(context);
     getSlides();
   }
 
@@ -72,10 +77,6 @@ class LessonController extends GetxController {
   void setLessons(List<Lesson> lessons) {
     this.lessons = lessons;
   }
-
-
-//** QUIZ STATE **
-  List<Question> answeredQuestions = [];
 
   ///
   Future<List<String>> getSlidePaths(BuildContext context) async {
@@ -112,7 +113,7 @@ class LessonController extends GetxController {
     return slidePaths.length;
   }
 
-  ///LESSON CONTAINER
+  //** LESSON CONTAINER **
   List<Widget> getSlides() {
     List<Widget> newSlides = [];
     for (var sp in slidePaths) {
@@ -124,9 +125,9 @@ class LessonController extends GetxController {
     }
     print("HASQUIZ: " + currentLesson.hasQuiz.toString());
     if (currentLesson.hasQuiz) {
-      slides.add(QuizSlide(lesson: currentLesson));
-      print(slides.length);
+      newSlides.add(QuizSlide(lesson: currentLesson));
     }
+    print(slides.length);
     slides = newSlides;
     return slides;
   }
@@ -173,6 +174,28 @@ class LessonController extends GetxController {
     return slideTitles;
   }
 
+  PageController getLessonPageController() {
+    print(currentLessonSlideIndex.value);
+    return PageController(initialPage: currentLessonSlideIndex.value);
+  }
+
+  bool isOnFirstPage() {
+    return currentLessonSlideIndex.value == 0;
+  }
+
+  bool isOnLastPage() {
+    return currentLessonSlideIndex.value + 1 == slides.length;
+  }
+
+  void updateNavigatorButtons() {
+    isOnFirstSlide.value = isOnFirstPage();
+    isOnLastSlide.value = isOnLastPage();
+  }
+
+
+
+//** QUIZ STATE **
+  List<Question> answeredQuestions = [];
 
 
 
