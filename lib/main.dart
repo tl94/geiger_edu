@@ -21,7 +21,7 @@ void main() async {
   //** LESSON-SERVER **
   await localhostServer.start();
 
-  runApp(MaterialApp(
+  runApp(GetMaterialApp(
     title: 'GEIGER mobile learning',
     theme: ThemeData(primaryColor: Color(0xFF5dbcd2)),
     home: MyApp(),

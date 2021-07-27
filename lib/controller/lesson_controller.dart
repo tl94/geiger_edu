@@ -5,8 +5,11 @@ import 'package:geiger_edu/controller/settings_controller.dart';
 import 'package:geiger_edu/model/difficultyObj.dart';
 import 'package:geiger_edu/model/lessonObj.dart';
 import 'package:geiger_edu/model/quiz/question.dart';
+import 'package:geiger_edu/screens/home_screen.dart';
+import 'package:geiger_edu/screens/lesson_complete_screen.dart';
 import 'package:geiger_edu/services/db.dart';
 import 'package:geiger_edu/widgets/lesson/SlideContainer.dart';
+import 'package:geiger_edu/widgets/lesson/quiz_results_group.dart';
 import 'package:geiger_edu/widgets/lesson/quiz_slide.dart';
 import 'package:get/get.dart';
 import 'package:html/parser.dart';
@@ -25,42 +28,35 @@ class LessonController extends GetxController {
   int maxLessons = 0;
 
   //** LESSON STATE **
-  RxInt currentLessonSlideIndex = 0.obs;
-
   String categoryTitle = '';
 
-  Lesson currentLesson = Lesson(
-      lessonId: "LPW001",
-      lessonCategoryId: '',
-      title: {"eng": "Password Safety", "ger": "Passwortsicherheit"},
-      completed: true,
-      recommended: false,
-      lastIndex: 0,
-      maxIndex: 5,
-      motivation: {
-        "eng": "Improve your password security!",
-        "ger": "Verbessere deine Passwortsicherheit!"
-      },
-      difficulty: Difficulty.beginner,
-      duration: 5,
-      apiUrl: '',
-      path: 'assets/lesson/password/password_safety/',
-      hasQuiz: true);
+  late Lesson currentLesson;
 
-  // LessonContainer state
+  // LessonContainer State
   final _kDuration = const Duration(milliseconds: 300);
   final _kCurve = Curves.ease;
 
   late PageController pageController;
   late ValueNotifier<int> currentPageNotifier;
+  RxInt currentLessonSlideIndex = 0.obs;
   List<String> slidePaths = [];
   List<Widget> slides = [];
   RxString currentTitle = ''.obs;
-  int currentSlideIndex = 0;
   List<String> slideTitles = [];
   RxBool isOnFirstSlide = false.obs;
   RxBool isOnLastSlide = false.obs;
 
+  //** Quiz State **
+  List<Question> answeredQuestions = [];
+
+  //** LessonCompleteScreen State **
+  final String icon1 = "assets/img/congratulations_icon.svg";
+  final String icon2 = "assets/img/trophy_icon.svg";
+
+  DateTime? selectedDate;
+
+
+  //** Functions **
   Lesson getLesson() {
     return currentLesson;
   }
@@ -218,6 +214,7 @@ class LessonController extends GetxController {
     currentLessonSlideIndex++;
     if (isOnLastSlide.value &&
         !currentLesson.hasQuiz) {
+      Get.to(LessonCompleteScreen());
       // Navigator.pushNamed(context, LessonCompleteScreen.routeName);
     }
     await pageController.nextPage(duration: _kDuration, curve: _kCurve);
@@ -225,15 +222,33 @@ class LessonController extends GetxController {
 
 
 
+  //** LESSON COMPLETE SCREEN **
+  void onFinishLessonPressed() {
+
+    Get.to(() => HomeScreen());
+  }
+
+  List<Widget> getQuizResultsGroups() {
+    List<Widget> quizResultsGroups = [];
+    // TODO: don't do this step if lesson has no quiz
+    for (var question in answeredQuestions) {
+      quizResultsGroups.add(QuizResultsGroup(answeredQuestion: question));
+    }
+    return quizResultsGroups;
+  }
 
 
 
-
-
-
-//** QUIZ STATE **
-  List<Question> answeredQuestions = [];
-
+  Future<void> selectDate(BuildContext context) async {
+    final DateTime? newSelectedDate = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime.now(),
+        lastDate: DateTime.utc(2100, 12, 31));
+    if (selectedDate != null) {
+        selectedDate = newSelectedDate;
+    }
+  }
 
 
 

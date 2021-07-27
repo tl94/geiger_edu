@@ -10,50 +10,13 @@ import 'package:geiger_edu/screens/home_screen.dart';
 import 'package:geiger_edu/widgets/lesson/quiz_results_group.dart';
 import 'package:get/get.dart';
 
-class LessonCompleteScreen extends StatefulWidget {
+class LessonCompleteScreen extends StatelessWidget {
   static const routeName = '/lessoncompletescreen';
 
   final LessonController lessonController = Get.find();
 
-  LessonCompleteScreen();
-
-  @override
-  State<StatefulWidget> createState() => _LessonCompleteScreenState();
-}
-
-class _LessonCompleteScreenState extends State<LessonCompleteScreen> {
-  static const String icon1 = "assets/img/congratulations_icon.svg";
-  static const String icon2 = "assets/img/trophy_icon.svg";
-  DateTime? _selectedDate;
-
-  void _onFinishLessonPressed() {
-    Navigator.pushNamed(context, HomeScreen.routeName);
-  }
-
-  List<Widget> getQuizResultsGroups() {
-    List<Widget> quizResultsGroups = [];
-    // TODO: don't do this step if lesson has no quiz
-    for (var question in widget.lessonController.answeredQuestions) {
-      quizResultsGroups.add(QuizResultsGroup(answeredQuestion: question));
-    }
-    return quizResultsGroups;
-  }
-
-  Future<void> _selectDate() async {
-    final DateTime? selectedDate = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime.now(),
-        lastDate: DateTime.utc(2100, 12, 31));
-    if (selectedDate != null) {
-      setState(() {
-        _selectedDate = selectedDate;
-      });
-    }
-  }
-
   Widget build(BuildContext context) {
-    List<Widget> quizResultsGroups = getQuizResultsGroups();
+    List<Widget> quizResultsGroups = lessonController.getQuizResultsGroups();
 
     return Scaffold(
       appBar: AppBar(leading: Container(), title: Text("Complete!")),
@@ -64,10 +27,10 @@ class _LessonCompleteScreenState extends State<LessonCompleteScreen> {
           children: [
             Text("Congratulations!"),
             SvgPicture.asset(
-              icon1,
+              lessonController.icon1,
             ),
             SvgPicture.asset(
-              icon2,
+              lessonController.icon2,
             ),
             Column(children: [
               Center(child: Text("+25")),
@@ -81,17 +44,17 @@ class _LessonCompleteScreenState extends State<LessonCompleteScreen> {
                 "It is recommended that you revisit this lesson in the future to keep practising."),
             Text("Remind me:"),
             ElevatedButton(
-                onPressed: _selectDate,
+                onPressed: () => lessonController.selectDate(context),
                 child: Text("Set Reminder")),
-            if (_selectedDate != null) Text(_selectedDate.toString()),
+            if (lessonController.selectedDate != null) Text(lessonController.selectDate.toString()),
             Center(
                 child: ElevatedButton(
-                    onPressed: _onFinishLessonPressed, child: const Text("Finish Lesson"))),
-            if (widget.lessonController.answeredQuestions.isNotEmpty)
+                    onPressed: lessonController.onFinishLessonPressed, child: const Text("Finish Lesson"))),
+            if (lessonController.answeredQuestions.isNotEmpty)
               Expanded(
                 child: SizedBox(
                     child: ListView.builder(
-                        itemCount: widget.lessonController.answeredQuestions.length,
+                        itemCount: lessonController.answeredQuestions.length,
                         itemBuilder: (context, index) {
                           return Center(child: quizResultsGroups[index]);
                         })),
