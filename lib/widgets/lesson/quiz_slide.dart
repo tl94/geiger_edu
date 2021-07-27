@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:geiger_edu/controller/lesson_controller.dart';
 import 'package:geiger_edu/model/lessonObj.dart';
 import 'package:geiger_edu/model/quiz/question.dart';
 import 'package:geiger_edu/screens/lesson_complete_screen.dart';
@@ -8,6 +9,7 @@ import 'package:geiger_edu/screens/quiz_results_screen.dart';
 import 'package:geiger_edu/services/db.dart';
 import 'package:geiger_edu/services/lesson_loader.dart';
 import 'package:geiger_edu/widgets/lesson/question_group.dart';
+import 'package:get/get.dart';
 import 'package:html/parser.dart';
 import 'package:string_validator/string_validator.dart';
 
@@ -16,6 +18,8 @@ import 'package:geiger_edu/globals.dart' as globals;
 
 class QuizSlide extends StatefulWidget {
   final Lesson lesson;
+
+  final LessonController lessonController = Get.find();
 
   QuizSlide({required this.lesson});
 
@@ -123,14 +127,14 @@ class _QuizSlideState extends State<QuizSlide> {
   void _finishQuiz() {
     if (!widget.lesson.completed && _checkAnswers()) {
       var score = _evaluateAnswers();
-       globals.answeredQuestions = _questions;
+      widget.lessonController.answeredQuestions = _questions;
 
       // TODO: PUT IN DEDICATED FUNCTIONS: write points and lesson completion to DB, also check if it was already completed before
       var lesson = widget.lesson;
       lesson.completed = true;
       DB.getLessonBox().put(lesson.lessonId, lesson);
       DB.modifyUserScore(score);
-      globals.completedLessons++;
+      widget.lessonController.completedLessons++;
 
       Navigator.pushNamed(
           context,

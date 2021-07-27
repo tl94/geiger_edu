@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geiger_edu/controller/lesson_controller.dart';
+import 'package:geiger_edu/controller/settings_controller.dart';
 import 'package:geiger_edu/globals.dart';
 import 'package:geiger_edu/model/lessonObj.dart';
 import 'package:geiger_edu/screens/home_screen.dart';
@@ -12,6 +13,7 @@ import 'package:get/get.dart';
 class LessonDropdown extends StatefulWidget {
 
   final LessonController lessonController = Get.find();
+  final SettingsController settingsController = Get.find();
 
   Lesson lesson;
 
@@ -185,10 +187,10 @@ class _LessonDropdownState extends State<LessonDropdown> {
                               ),
                               onPressed: () {
                                 //TODO: Put this in its own function
-                                print("SETTING LESSON TO: " + widget.lesson.title[globals.language]!);
-                                widget.lessonController.currentLesson = widget.lesson;
-                                globals.currentLesson = widget.lesson;
-                                globals.currentLessonSlideIndex = 0;
+                                print("SETTING LESSON TO: " + widget.lesson.title[widget.settingsController.language]!);
+                                widget.lessonController.setLesson(context, widget.lesson);
+                                widget.lessonController.currentLessonSlideIndex = 0;
+                                widget.lessonController.getSlideTitles(context);
                                 Navigator.pushNamed(
                                 context,
                                 LessonScreen.routeName,

@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:geiger_edu/controller/lesson_controller.dart';
 import 'package:geiger_edu/globals.dart';
 import 'package:geiger_edu/model/lessonObj.dart';
 import 'package:geiger_edu/globals.dart' as globals;
+import 'package:get/get.dart';
 
 class NavigationContainer extends StatefulWidget {
+
+  final LessonController lessonController = Get.find();
+
   final String passedRoute;
   final String text;
   final String imagePath;
@@ -44,8 +49,8 @@ class _NavigationContainerState extends State<NavigationContainer> {
       child: new GestureDetector(
         onTap: () {
           if(widget.passedLessons!= null){
-            globals.categoryTitle = widget.text;
-            globals.lessons = widget.passedLessons!;
+            widget.lessonController.categoryTitle = widget.text;
+            widget.lessonController.setLessons(widget.passedLessons!);
           }
           Navigator.pushNamed(
             context,

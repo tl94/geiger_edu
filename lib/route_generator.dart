@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geiger_edu/controller/lesson_controller.dart';
 import 'package:geiger_edu/globals.dart' as globals;
 import 'package:geiger_edu/screens/comments_screen.dart';
 import 'package:geiger_edu/screens/home_screen.dart';
@@ -10,9 +11,14 @@ import 'package:geiger_edu/screens/quiz_results_screen.dart';
 import 'package:geiger_edu/widgets/lesson/quiz_slide.dart';
 import 'package:geiger_edu/screens/selection_screen.dart';
 import 'package:geiger_edu/screens/settings_screen.dart';
+import 'package:get/get.dart';
 
 class RouteGenerator {
+
   static Route<dynamic> generateRoute(RouteSettings settings) {
+
+    final LessonController lessonController = Get.find();
+
     switch (settings.name) {
 
       case HomeScreen.routeName:
@@ -25,7 +31,7 @@ class RouteGenerator {
 
       case LessonCompleteScreen.routeName:
       // MaterialPageRoute transitions to the new route using a platform specific animation.
-        return MaterialPageRoute(builder: (context) => LessonCompleteScreen(lesson: globals.currentLesson, answeredQuestions: globals.answeredQuestions));
+        return MaterialPageRoute(builder: (context) => LessonCompleteScreen(lesson: lessonController.getLesson(), answeredQuestions: lessonController.answeredQuestions));
 
       case ProfileScreen.routeName:
         // MaterialPageRoute transitions to the new route using a platform specific animation.
@@ -45,7 +51,7 @@ class RouteGenerator {
 
       case LessonSelectionScreen.routeName:
       // MaterialPageRoute transitions to the new route using a platform specific animation.
-        return MaterialPageRoute(builder: (context) => LessonSelectionScreen(categoryTitle: globals.categoryTitle, lessons: globals.lessons));
+        return MaterialPageRoute(builder: (context) => LessonSelectionScreen(categoryTitle: lessonController.categoryTitle, lessons: lessonController.getLessons()));
 
       default:
         return MaterialPageRoute(builder: (context) => HomeScreen());

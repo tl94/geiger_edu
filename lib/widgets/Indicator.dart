@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:geiger_edu/controller/lesson_controller.dart';
 import 'package:geiger_edu/globals.dart' as globals;
+import 'package:get/get.dart';
 
 class Indicator extends StatefulWidget {
+
+  final LessonController lessonController = Get.find();
+
   final double height;
 
   Indicator({required this.height}) : super();
@@ -21,8 +26,8 @@ class _IndicatorState extends State<Indicator> {
   }
 
   void updateIndicator() {
-    completedLessons = globals.completedLessons;
-    maxLessons = globals.maxLessons;
+    completedLessons = widget.lessonController.completedLessons;
+    maxLessons = widget.lessonController.maxLessons;
     percentage = (completedLessons / maxLessons);
 
     if (percentage < 0.25 && percentage > 0) label = 'low';

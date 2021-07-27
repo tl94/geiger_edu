@@ -1,14 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/shims/dart_ui.dart';
+import 'package:geiger_edu/controller/lesson_controller.dart';
 import 'package:geiger_edu/model/lessonObj.dart';
 import 'package:geiger_edu/screens/lesson_complete_screen.dart';
 import 'package:geiger_edu/widgets/lesson/SlideContainer.dart';
 import 'package:geiger_edu/widgets/lesson/quiz_slide.dart';
+import 'package:get/get.dart';
 import 'package:html/parser.dart';
 import 'package:page_view_indicators/step_page_indicator.dart';
 
 class LessonContainer extends StatefulWidget {
+  final LessonController lessonController = Get.find();
+
   final Lesson lesson;
   final List<String> slidePaths;
   final int initialPage;
@@ -18,14 +22,10 @@ class LessonContainer extends StatefulWidget {
       : super();
 
   _LessonContainerState createState() =>
-      _LessonContainerState(initialPage: initialPage);
+      _LessonContainerState();
 }
 
 class _LessonContainerState extends State<LessonContainer> {
-  var _title = "";
-  var _slideIndex = 0;
-  List<Widget> _slides = [];
-  List<String> _slideTitles = [];
   late final PageController _pageController;
   late final ValueNotifier<int> _currentPageNotifier;
   static const _buttonColor = Color.fromRGBO(0, 0, 0, 0.2);
@@ -33,21 +33,16 @@ class _LessonContainerState extends State<LessonContainer> {
   final _kDuration = const Duration(milliseconds: 300);
   final _kCurve = Curves.ease;
 
-  final int initialPage;
-
-  _LessonContainerState({this.initialPage = 0});
+  _LessonContainerState();
 
   @override
   initState() {
     super.initState();
-    _slideIndex = initialPage;
-    _currentPageNotifier = ValueNotifier<int>(initialPage);
-    _pageController = PageController(initialPage: initialPage);
-    _getSlideTitles();
-    _getSlides();
+    _currentPageNotifier = ValueNotifier<int>(widget.lessonController.currentLessonSlideIndex);
+    _pageController = PageController(initialPage: widget.lessonController.currentLessonSlideIndex);
   }
 
-  List<Widget> _getSlides() {
+ /* List<Widget> _getSlides() {
     List<String> slidePaths = widget.slidePaths;
     List<Widget> slides = [];
     for (var sp in slidePaths) {
@@ -62,15 +57,10 @@ class _LessonContainerState extends State<LessonContainer> {
     }
     _slides = slides;
     return _slides;
-  }
+  }*/
 
-  String _getCurrentSlidePath() {
-    var pageNumber = _slideIndex;
-    var currentSlide = widget.slidePaths[pageNumber];
-    return currentSlide;
-  }
 
-  Future<String> _getLessonTitle(BuildContext context) async {
+/*  Future<String> _getLessonTitle(BuildContext context) async {
     var firstSlidePath = widget.slidePaths.first;
     var doc =
         parse(await DefaultAssetBundle.of(context).loadString(firstSlidePath));
@@ -81,9 +71,9 @@ class _LessonContainerState extends State<LessonContainer> {
       if (content != null) title = content;
     }
     return title;
-  }
+  }*/
 
-  Future<String> _getSlideTitle(String slidePath) async {
+/*  Future<String> _getSlideTitle(String slidePath) async {
     var doc = parse(await DefaultAssetBundle.of(context).loadString(slidePath));
     var elems = doc.getElementsByTagName("title");
     var title;
@@ -92,9 +82,9 @@ class _LessonContainerState extends State<LessonContainer> {
       title = content;
     }
     return title;
-  }
+  }*/
 
-  Future<List<String>> _getSlideTitles() async {
+/*  Future<List<String>> _getSlideTitles() async {
     List<String> slideTitles = [];
     var slidePaths = widget.slidePaths;
     slideTitles.add(await _getLessonTitle(context));
@@ -107,14 +97,11 @@ class _LessonContainerState extends State<LessonContainer> {
       _title = slideTitles[0];
     });
     return slideTitles;
-  }
+  }*/
 
   Future<VoidCallback?> _onSlideChanged(int page) async {
     _currentPageNotifier.value = page;
-    var title = _slideTitles[page];
-    setState(() {
-      _title = title;
-    });
+    widget.lessonController.currentTitle(widget.lessonController.slideTitles[page]);
   }
 
   bool _isOnFirstPage() {
@@ -122,7 +109,7 @@ class _LessonContainerState extends State<LessonContainer> {
   }
 
   bool _isOnLastPage() {
-    return _currentPageNotifier.value + 1 == _slides.length;
+    return _currentPageNotifier.value + 1 == widget.lessonController.slides.length;
   }
 
   void _previousPage() async {
@@ -132,7 +119,7 @@ class _LessonContainerState extends State<LessonContainer> {
 
   void _nextPage() async {
     // TODO: don't allow this if the lesson has a quiz
-    if (_isOnLastPage() && !widget.lesson.hasQuiz) {
+    if (_isOnLastPage() && !widget.lessonController.currentLesson.hasQuiz) {
       Navigator.pushNamed(context, LessonCompleteScreen.routeName);
     }
     _currentPageNotifier.value++;
@@ -141,7 +128,7 @@ class _LessonContainerState extends State<LessonContainer> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text(_title)),
+        appBar: AppBar(title: Obx (() => Text(widget.lessonController.currentTitle.value))),
         body: Container(
             child: Column(children: [
           Row(
@@ -151,7 +138,7 @@ class _LessonContainerState extends State<LessonContainer> {
                 color: Colors.white,
                 padding: const EdgeInsets.all(16.0),
                 child: StepPageIndicator(
-                  itemCount: _slides.length,
+                  itemCount: widget.lessonController.slides.length,
                   currentPageNotifier: _currentPageNotifier,
                   size: 16,
                   onPageSelected: (int index) {
@@ -166,7 +153,7 @@ class _LessonContainerState extends State<LessonContainer> {
             children: [
               PageView(
                 controller: _pageController,
-                children: _slides,
+                children: widget.lessonController.slides,
                 onPageChanged: _onSlideChanged,
                 allowImplicitScrolling: true,
               ),

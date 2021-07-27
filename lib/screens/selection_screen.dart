@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:geiger_edu/controller/settings_controller.dart';
 import 'package:geiger_edu/globals.dart' as globals;
 import 'package:geiger_edu/model/lessonCategoryObj.dart';
 import 'package:geiger_edu/model/lessonObj.dart';
@@ -7,9 +8,12 @@ import 'package:geiger_edu/screens/home_screen.dart';
 import 'package:geiger_edu/screens/lesson_selection_screen.dart';
 import 'package:geiger_edu/services/db.dart';
 import 'package:geiger_edu/widgets/NavigationContainer.dart';
+import 'package:get/get.dart';
 
 class SelectionScreen extends StatelessWidget {
   static const routeName = '/selection';
+
+  final SettingsController settingsController = Get.find();
 
   static const bckColor = const Color(0xFF5dbcd2); //0xFFedb879
 
@@ -79,7 +83,7 @@ class SelectionScreen extends StatelessWidget {
                         margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
                         child: NavigationContainer(
                           imagePath: "assets/img/password_icon.png",
-                          text: categories[i].title[globals.language]!,
+                          text: categories[i].title[settingsController.language]!,
                           passedRoute: LessonSelectionScreen.routeName,
                           currentValue: lessonSpecs["completed"]!,
                           maxValue: lessonSpecs["allLessons"]!,

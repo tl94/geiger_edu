@@ -2,14 +2,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/parser.dart';
+import 'package:geiger_edu/controller/lesson_controller.dart';
 import 'package:geiger_edu/globals.dart';
 import 'package:geiger_edu/model/lessonObj.dart';
 import 'package:geiger_edu/model/quiz/question.dart';
 import 'package:geiger_edu/screens/home_screen.dart';
 import 'package:geiger_edu/widgets/lesson/quiz_results_group.dart';
+import 'package:get/get.dart';
 
 class LessonCompleteScreen extends StatefulWidget {
   static const routeName = '/lessoncompletescreen';
+
+  final LessonController lessonController = Get.find();
+
   final Lesson lesson;
   final List<Question>? answeredQuestions;
 
@@ -85,11 +90,11 @@ class _LessonCompleteScreenState extends State<LessonCompleteScreen> {
             Center(
                 child: ElevatedButton(
                     onPressed: _onFinishLessonPressed, child: const Text("Finish Lesson"))),
-            if (answeredQuestions.isNotEmpty)
+            if (widget.lessonController.answeredQuestions.isNotEmpty)
               Expanded(
                 child: SizedBox(
                     child: ListView.builder(
-                        itemCount: answeredQuestions.length,
+                        itemCount: widget.lessonController.answeredQuestions.length,
                         itemBuilder: (context, index) {
                           return Center(child: quizResultsGroups[index]);
                         })),

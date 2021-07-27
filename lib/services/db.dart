@@ -57,24 +57,6 @@ class DB {
     if(!commentsIsOpen){ await Hive.openBox<Comment>('comments'); }
     if(DB.getCommentBox().keys.isEmpty){ createTestComments(); }
 
-    runGeigerIndicator();
-  }
-
-  static void runGeigerIndicator(){
-    var tempCompletedLessons = 0;
-    var tempMaxLessons = getLessonBox().values.length;
-
-    for(var lesson in getLessonBox().values){
-      if (lesson.completed) {
-        tempCompletedLessons++;
-      }
-    }
-    globals.maxLessons = tempMaxLessons;
-    globals.completedLessons = tempCompletedLessons;
-  }
-
-  static void incrementGeigerIndicator(){
-    globals.completedLessons++;
   }
 
   static Future<bool> databaseExists() async {

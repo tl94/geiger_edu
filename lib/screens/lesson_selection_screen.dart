@@ -1,20 +1,28 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:geiger_edu/controller/lesson_controller.dart';
+import 'package:geiger_edu/controller/settings_controller.dart';
 import 'package:geiger_edu/model/lessonObj.dart';
 import 'package:geiger_edu/screens/selection_screen.dart';
 import 'package:geiger_edu/widgets/LessonDropdown.dart';
 
 import 'package:geiger_edu/globals.dart' as globals;
+import 'package:get/get.dart';
 
 class LessonSelectionScreen extends StatelessWidget {
   static const routeName = '/lessonselection';
   static const bckColor = const Color(0xFF5dbcd2); //0xFFedb879
 
+
+  final LessonController lessonController = Get.find();
+  final SettingsController settingsController = Get.find();
+
+
   final String categoryTitle;
   final List<Lesson> lessons;
 
-  const LessonSelectionScreen({
+  LessonSelectionScreen({
     Key? key,
     required this.categoryTitle,
     required this.lessons,
@@ -54,9 +62,9 @@ class LessonSelectionScreen extends StatelessWidget {
                               margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
                               child: LessonDropdown(
                                 lesson: lesson,
-                                title: lesson.title[globals.language]!,
+                                title: lesson.title[settingsController.language]!,
                                 completed: lesson.completed,
-                                motivation: lesson.motivation[globals.language],
+                                motivation: lesson.motivation[settingsController.language],
                                 duration: lesson.duration,
                                 difficulty: lesson.difficulty.toString(),
                               )
