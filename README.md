@@ -23,7 +23,6 @@ The half structured communication channel further enhances the exchange experien
 
 ![Alt text](./docs/img/convention.png?raw=true "Title")
 
-|===
 | #   | Desrciption
 | 0xx | basic issue / appstructure
 | 1xx | Lesson
@@ -33,10 +32,12 @@ The half structured communication channel further enhances the exchange experien
 | 5xx | Settings
 | 6xx | Bugs
 | 7xx | Testing
-|===
+
 Before making a new branch or working on an issue make sure relevant issue is tagged as "inProgress" on the Kanban-board. Use here the issue numbers like seen above.
 
 *Inline commenting convention:*
 As system comments made by the compiler are indistinguishable from ours the comment style will be defined as follows:
+
 comment:  //\*\* COMMENT \*\*
+
 todo:     //TODO:
