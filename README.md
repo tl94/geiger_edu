@@ -27,7 +27,7 @@ The half structured communication channel further enhances the exchange experien
 | ------------- | -----:|
 | 0xx | basic issue / appstructure |
 | 1xx | Lesson |
-| 2xx | Lesson selection / Contignue Lesson |
+| 2xx | Lesson selection / Continue Lesson |
 | 3xx | Discussion-plattform |
 | 4xx | Profile |
 | 5xx | Settings |
@@ -39,5 +39,5 @@ Before making a new branch or working on an issue make sure relevant issue is ta
 *Inline commenting convention:*
 As system comments made by the compiler are indistinguishable from ours the comment style will be defined as follows:
 
-comment:  //\*\* COMMENT \*\*\n
+comment:  //\*\* COMMENT \*\*
 todo:     //TODO:
