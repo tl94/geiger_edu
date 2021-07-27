@@ -47,8 +47,13 @@ class LessonController extends GetxController {
       path: 'assets/lesson/password/password_safety/',
       hasQuiz: true);
 
-  List<String> slidePaths = [];
+  // LessonContainer state
+  final _kDuration = const Duration(milliseconds: 300);
+  final _kCurve = Curves.ease;
 
+  late PageController pageController;
+  late ValueNotifier<int> currentPageNotifier;
+  List<String> slidePaths = [];
   List<Widget> slides = [];
   RxString currentTitle = ''.obs;
   int currentSlideIndex = 0;
@@ -67,6 +72,8 @@ class LessonController extends GetxController {
     isOnLastSlide.value = isOnLastPage();
     await getSlidePaths(context);
     await getSlideTitles(context);
+    pageController = getLessonPageController();
+    currentPageNotifier = ValueNotifier<int>(currentLessonSlideIndex.value);
     getSlides();
   }
 
@@ -191,6 +198,36 @@ class LessonController extends GetxController {
     isOnFirstSlide.value = isOnFirstPage();
     isOnLastSlide.value = isOnLastPage();
   }
+
+  Future<VoidCallback?> onSlideChanged(int page) async {
+    currentPageNotifier.value = page;
+    currentLessonSlideIndex.value = page;
+    currentTitle(slideTitles[page]);
+    updateNavigatorButtons();
+  }
+
+  void previousPage() async {
+    currentLessonSlideIndex--;
+    currentPageNotifier.value--;
+    await pageController.previousPage(duration: _kDuration, curve: _kCurve);
+  }
+
+  void nextPage() async {
+    // TODO: don't allow this if the lesson has a quiz
+    currentPageNotifier.value++;
+    currentLessonSlideIndex++;
+    if (isOnLastSlide.value &&
+        !currentLesson.hasQuiz) {
+      // Navigator.pushNamed(context, LessonCompleteScreen.routeName);
+    }
+    await pageController.nextPage(duration: _kDuration, curve: _kCurve);
+  }
+
+
+
+
+
+
 
 
 

@@ -20,8 +20,7 @@ class LessonScreen extends StatelessWidget {
         future: lessonController.getSlidePaths(context),
         builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
           if (snapshot.hasData) {
-            return LessonContainer(
-                lesson: lessonController.currentLesson, slidePaths: snapshot.data!);
+            return LessonContainer();
           } else
             return Container(color: Colors.white);
         });

@@ -15,10 +15,7 @@ class LessonCompleteScreen extends StatefulWidget {
 
   final LessonController lessonController = Get.find();
 
-  final Lesson lesson;
-  final List<Question>? answeredQuestions;
-
-  LessonCompleteScreen({required this.lesson, this.answeredQuestions});
+  LessonCompleteScreen();
 
   @override
   State<StatefulWidget> createState() => _LessonCompleteScreenState();
@@ -36,7 +33,7 @@ class _LessonCompleteScreenState extends State<LessonCompleteScreen> {
   List<Widget> getQuizResultsGroups() {
     List<Widget> quizResultsGroups = [];
     // TODO: don't do this step if lesson has no quiz
-    for (var question in widget.answeredQuestions!) {
+    for (var question in widget.lessonController.answeredQuestions) {
       quizResultsGroups.add(QuizResultsGroup(answeredQuestion: question));
     }
     return quizResultsGroups;

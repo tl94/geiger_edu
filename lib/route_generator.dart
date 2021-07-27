@@ -31,7 +31,7 @@ class RouteGenerator {
 
       case LessonCompleteScreen.routeName:
       // MaterialPageRoute transitions to the new route using a platform specific animation.
-        return MaterialPageRoute(builder: (context) => LessonCompleteScreen(lesson: lessonController.getLesson(), answeredQuestions: lessonController.answeredQuestions));
+        return MaterialPageRoute(builder: (context) => LessonCompleteScreen());
 
       case ProfileScreen.routeName:
         // MaterialPageRoute transitions to the new route using a platform specific animation.
