@@ -25,9 +25,4 @@ class GlobalController extends GetxController {
 //** ICONS **
   String userImg = "assets/img/profile/user_icon.png";
 
-
-
-//TODO: Fix currentLessonSlideIndex
-
-
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:geiger_edu/controller/lesson_controller.dart';
+import 'package:geiger_edu/controller/profile_controller.dart';
 import 'package:geiger_edu/controller/settings_controller.dart';
 import 'package:geiger_edu/route_generator.dart';
 import 'package:geiger_edu/screens/home_screen.dart';
@@ -31,8 +32,9 @@ void main() async {
 
 class MyApp extends StatefulWidget{
   final globalController = Get.put(GlobalController());
-  final lessonController = Get.put(LessonController());
   final settingsController = Get.put(SettingsController());
+  final lessonController = Get.put(LessonController());
+  final profileController = Get.put(ProfileController());
 
   _MyAppState createState() => _MyAppState();
 }

@@ -1,47 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:geiger_edu/controller/profile_controller.dart';
 import 'package:geiger_edu/providers/boxes.dart';
 import 'package:geiger_edu/services/db.dart';
 import 'package:geiger_edu/widgets/ImageSelector.dart';
 import 'package:geiger_edu/widgets/LabeledTextField.dart';
+import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hive_listener/hive_listener.dart';
 
 import 'home_screen.dart';
 import '../globals.dart';
 
-class ProfileScreen extends StatefulWidget {
+class ProfileScreen extends StatelessWidget {
   static const routeName = '/profilescreen';
+
+  ProfileController profileController = Get.find();
 
   static const bckColor = const Color(0xFF5dbcd2); //0xFFedb879
   static const borderColor = const Color(0xff0085ff);
-
-  _ProfileScreenState createState() => _ProfileScreenState();
-}
-
-class _ProfileScreenState extends State<ProfileScreen>{
-  bool _isVisible = false;
-  final List<String> _imagePaths = ["assets/img/profile/default.png",
-    "assets/img/profile/user-01.png",
-    "assets/img/profile/user-02.png",
-    "assets/img/profile/user-03.png",
-    "assets/img/profile/user-05.png",
-    "assets/img/profile/user-06.png",
-    "assets/img/profile/user-07.png",
-    "assets/img/profile/user-08.png",
-    "assets/img/profile/user-09.png",
-    "assets/img/profile/user-04.png",
-    "assets/img/profile/user-10.png"];
-
-  displaySelection(String s){
-    setState(() {
-      _isVisible = !_isVisible;
-      if(DB.getDefaultUser()!.userImagePath != s){
-        DB.editDefaultUser(null, s, null);
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +53,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                           //** USER IMAGE **
                           SizedBox(height: 40),
                           GestureDetector(
-                              onTap: ()=>displaySelection(DB.getDefaultUser()!.userImagePath),
+                              onTap: () => profileController.displayImageSelector(),
                               child:Column( children: <Widget>[
                                 Container(
                                     height: 150,
@@ -159,11 +137,13 @@ class _ProfileScreenState extends State<ProfileScreen>{
                           SizedBox(height: 40),
                         ]
                     ),
-                    if(_isVisible)
-                      ImageSelector(crossAxisCount: 3,
-                          imagePaths: _imagePaths,
-                          onTap: displaySelection
-                      )
+                    Obx(() {
+                      if (profileController.isVisible.value) {
+                        return ImageSelector(
+                        );
+                      } else return SizedBox.shrink();
+                    })
+
                   ])
               ])
           )

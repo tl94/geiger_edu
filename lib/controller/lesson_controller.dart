@@ -15,7 +15,7 @@ import 'package:get/get.dart';
 import 'package:html/parser.dart';
 
 class LessonController extends GetxController {
-  SettingsController settingsController = Get.put(SettingsController());
+  SettingsController settingsController = Get.find();
 
   //** LESSON SELECTION **
   List<Lesson> lessons = [];
