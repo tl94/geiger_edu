@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:geiger_edu/controller/lesson_category_selection_controller.dart';
 import 'package:geiger_edu/controller/lesson_controller.dart';
+import 'package:geiger_edu/controller/lesson_selection_controller.dart';
 import 'package:geiger_edu/globals.dart';
 import 'package:geiger_edu/model/lessonObj.dart';
-import 'package:geiger_edu/globals.dart' as globals;
 import 'package:get/get.dart';
 
-class NavigationContainer extends StatefulWidget {
+class NavigationContainer extends StatelessWidget {
 
-  final LessonController lessonController = Get.find();
+  final LessonSelectionController lessonSelectionController = Get.find();
+  final LessonCategorySelectionController lessonCategorySelectionController =
+      Get.find();
 
   final String passedRoute;
   final String text;
@@ -18,6 +21,8 @@ class NavigationContainer extends StatefulWidget {
 
   final List<Lesson>? passedLessons;
 
+  final double _indicatorHeight = 10;
+
   NavigationContainer(
       {required this.passedRoute,
       required this.text,
@@ -27,20 +32,6 @@ class NavigationContainer extends StatefulWidget {
       this.passedLessons})
       : super();
 
-  _NavigationContainerState createState() => _NavigationContainerState();
-}
-
-class _NavigationContainerState extends State<NavigationContainer> {
-  final double _indicatorHeight = 10;
-  final int _maxIndicatorSize = 100;
-
-  double _calcIndicatorWidth() {
-    if (widget.maxValue * 4 >= _maxIndicatorSize) {
-      return _maxIndicatorSize / widget.maxValue;
-    }
-    return (_maxIndicatorSize - widget.maxValue * 4) / widget.maxValue;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -48,14 +39,14 @@ class _NavigationContainerState extends State<NavigationContainer> {
       margin: EdgeInsets.fromLTRB(20, 5, 20, 5),
       child: new GestureDetector(
         onTap: () {
-          if(widget.passedLessons!= null){
-            widget.lessonController.categoryTitle = widget.text;
-            widget.lessonController.setLessons(widget.passedLessons!);
+          if (passedLessons != null) {
+            lessonSelectionController.setCategoryTitle(text);
+            lessonSelectionController.setLessons(passedLessons!);
           }
           Navigator.pushNamed(
             context,
-            widget.passedRoute,
-            arguments: {'title': widget.text},
+            passedRoute,
+            arguments: {'title': text},
           );
         },
         child: Container(
@@ -78,13 +69,13 @@ class _NavigationContainerState extends State<NavigationContainer> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Image.asset(
-                    widget.imagePath,
+                    imagePath,
                     height: 40,
                     key: UniqueKey(),
                   ),
                   SizedBox(width: 15),
                   Text(
-                    widget.text,
+                    text,
                     style: TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.w500,
@@ -95,14 +86,14 @@ class _NavigationContainerState extends State<NavigationContainer> {
                   Expanded(
                     child: SizedBox(width: 1),
                   ),
-                  if (widget.currentValue != -1)
+                  if (currentValue != -1)
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                            widget.currentValue.toString() +
+                            currentValue.toString() +
                                 "/" +
-                                widget.maxValue.toString(),
+                                maxValue.toString(),
                             style: TextStyle(fontSize: 20.0)),
                         Expanded(
                           child: Row(children: [
@@ -111,11 +102,11 @@ class _NavigationContainerState extends State<NavigationContainer> {
                               child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
                                   shrinkWrap: true,
-                                  itemCount: widget.currentValue,
+                                  itemCount: currentValue,
                                   itemBuilder: (BuildContext context, int i) {
                                     return Container(
                                         margin: EdgeInsets.fromLTRB(4, 0, 0, 0),
-                                        width: _calcIndicatorWidth(),
+                                        width: lessonCategorySelectionController.calcCompletedLessonIndicatorWidth(currentValue, maxValue),
                                         decoration: BoxDecoration(
                                             color: Colors.green,
                                             borderRadius:
@@ -128,12 +119,12 @@ class _NavigationContainerState extends State<NavigationContainer> {
                                     scrollDirection: Axis.horizontal,
                                     shrinkWrap: true,
                                     itemCount:
-                                        widget.maxValue - widget.currentValue,
+                                        maxValue - currentValue,
                                     itemBuilder: (BuildContext context, int i) {
                                       return Container(
                                           margin:
                                               EdgeInsets.fromLTRB(4, 0, 0, 0),
-                                          width: _calcIndicatorWidth(),
+                                          width: lessonCategorySelectionController.calcCompletedLessonIndicatorWidth(currentValue, maxValue),
                                           decoration: BoxDecoration(
                                               color: Colors.orange,
                                               borderRadius:

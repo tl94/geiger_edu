@@ -11,9 +11,6 @@ class LessonScreen extends StatelessWidget {
 
   final LessonController lessonController = Get.find();
 
-/*  final Lesson lesson
-  final int initialPage;*/
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<String>>(

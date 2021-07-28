@@ -18,8 +18,9 @@ class LessonController extends GetxController {
   SettingsController settingsController = Get.find();
 
   //** LESSON SELECTION **
+ /* String categoryTitle = '';
   List<Lesson> lessons = [];
-
+*/
   //** GEIGER INDICATOR **
   int completedLessons = 0;
   int maxLessons = 0;
@@ -28,7 +29,7 @@ class LessonController extends GetxController {
   late List<LessonCategory> lessonCategories;
 
   //** LESSON STATE **
-  String categoryTitle = '';
+
 
   late Lesson currentLesson;
 
@@ -56,11 +57,15 @@ class LessonController extends GetxController {
   DateTime? selectedDate;
 
   //** Functions **
+
+
+
   Lesson getLesson() {
     return currentLesson;
   }
 
   Future<void> setLesson(BuildContext context, Lesson lesson) async {
+    print("SET LESSON CALLED");
     currentLesson = lesson;
     currentLessonSlideIndex.value = 0;
     isOnFirstSlide.value = isOnFirstPage();
@@ -70,14 +75,6 @@ class LessonController extends GetxController {
     pageController = getLessonPageController();
     currentPageNotifier = ValueNotifier<int>(currentLessonSlideIndex.value);
     getSlides();
-  }
-
-  List<Lesson> getLessons() {
-    return lessons;
-  }
-
-  void setLessons(List<Lesson> lessons) {
-    this.lessons = lessons;
   }
 
   ///
@@ -116,33 +113,6 @@ class LessonController extends GetxController {
     return slidePaths.length;
   }
 
-  //** LESSON CATEGORIES **
-
-  Map<String, int> getCompletedLessonsForCategory(String lessonCategoryId) {
-    Map<String, int> result = {};
-    int completedCount = 0;
-
-    var lessonList = getLessonListForCategory(lessonCategoryId);
-
-    for (var lesson in lessonList) {
-      if (lesson.completed) completedCount++;
-    }
-    result["completed"] = completedCount;
-    result["allLessons"] = lessonList.length;
-    return result;
-  }
-
-  List<Lesson> getLessonListForCategory(String lessonCategoryId) {
-    return DB
-        .getLessonBox()
-        .values
-        .where((lesson) => lesson.lessonCategoryId == lessonCategoryId)
-        .toList();
-  }
-
-  List<LessonCategory> getLessonCategories() {
-    return DB.getLessonCategoryBox().values.toList();
-  }
 
   //** LESSON CONTAINER **
   List<Widget> getSlides() {

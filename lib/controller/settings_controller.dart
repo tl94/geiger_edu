@@ -24,5 +24,8 @@ class SettingsController extends GetxController {
   void changeLanguage() {
     DB.editDefaultSetting(null, null, null, null);
   }
-}
 
+  String getLanguage() {
+    return language;
+  }
+}

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:geiger_edu/controller/lesson_category_selection_controller.dart';
 import 'package:geiger_edu/controller/lesson_controller.dart';
 import 'package:geiger_edu/controller/settings_controller.dart';
 import 'package:geiger_edu/globals.dart' as globals;
@@ -11,17 +12,17 @@ import 'package:geiger_edu/services/db.dart';
 import 'package:geiger_edu/widgets/NavigationContainer.dart';
 import 'package:get/get.dart';
 
-class SelectionScreen extends StatelessWidget {
-  static const routeName = '/selection';
+class LessonCategorySelectionScreen extends StatelessWidget {
+  static const routeName = '/lessoncategoryselection';
 
-  final LessonController lessonController = Get.find();
   final SettingsController settingsController = Get.find();
+  final LessonCategorySelectionController lessonCategorySelectionController = Get.find();
 
   static const bckColor = const Color(0xFF5dbcd2); //0xFFedb879
 
   @override
   Widget build(BuildContext context) {
-    var categories = lessonController.getLessonCategories();
+    var categories = lessonCategorySelectionController.getLessonCategories();
 
     return Scaffold(
       appBar: AppBar(
@@ -48,7 +49,7 @@ class SelectionScreen extends StatelessWidget {
                     shrinkWrap: true,
                     itemCount: categories.length,
                     itemBuilder: (BuildContext context, int i) {
-                      var lessonSpecs = lessonController.getCompletedLessonsForCategory(categories[i].lessonCategoryId);
+                      var lessonSpecs = lessonCategorySelectionController.getCompletedLessonsForCategory(categories[i].lessonCategoryId);
                       return Container(
                         margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
                         child: NavigationContainer(
@@ -57,7 +58,7 @@ class SelectionScreen extends StatelessWidget {
                           passedRoute: LessonSelectionScreen.routeName,
                           currentValue: lessonSpecs["completed"]!,
                           maxValue: lessonSpecs["allLessons"]!,
-                          passedLessons: lessonController.getLessonListForCategory(categories[i].lessonCategoryId),
+                          passedLessons: lessonCategorySelectionController.getLessonListForCategory(categories[i].lessonCategoryId),
                         ),
                       );
                     }),

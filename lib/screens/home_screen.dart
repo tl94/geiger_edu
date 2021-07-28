@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:geiger_edu/screens/profile_screen.dart';
-import 'package:geiger_edu/screens/selection_screen.dart';
+import 'package:geiger_edu/screens/lesson_category_selection_screen.dart';
 import 'package:geiger_edu/screens/settings_screen.dart';
 import 'package:geiger_edu/services/lesson_loader.dart';
 import 'package:geiger_edu/widgets/Indicator.dart';
@@ -49,7 +49,7 @@ class HomeScreen extends StatelessWidget {
                                   NavigationContainer(
                                         imagePath: "assets/img/select_lesson.png",
                                         text: "Select Lesson",
-                                        passedRoute: SelectionScreen.routeName
+                                        passedRoute: LessonCategorySelectionScreen.routeName
                                   ),
                                   NavigationContainer(
                                       imagePath: "assets/img/my_comments.png",

@@ -11,6 +11,8 @@ import 'package:geiger_edu/widgets/LoadingAnimation.dart';
 import 'package:get/get.dart';
 
 import 'controller/global_controller.dart';
+import 'controller/lesson_category_selection_controller.dart';
+import 'controller/lesson_selection_controller.dart';
 
 InAppLocalhostServer localhostServer = new InAppLocalhostServer();
 
@@ -34,6 +36,9 @@ class MyApp extends StatefulWidget{
   final globalController = Get.put(GlobalController());
   final settingsController = Get.put(SettingsController());
   final lessonController = Get.put(LessonController());
+  final lessonCategorySelectionController = Get.put(LessonCategorySelectionController());
+  final lessonSelectionController = Get.put(LessonSelectionController());
+
   final profileController = Get.put(ProfileController());
 
   _MyAppState createState() => _MyAppState();

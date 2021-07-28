@@ -9,7 +9,7 @@ import 'package:geiger_edu/screens/lesson_selection_screen.dart';
 import 'package:geiger_edu/screens/profile_screen.dart';
 import 'package:geiger_edu/screens/quiz_results_screen.dart';
 import 'package:geiger_edu/widgets/lesson/quiz_slide.dart';
-import 'package:geiger_edu/screens/selection_screen.dart';
+import 'package:geiger_edu/screens/lesson_category_selection_screen.dart';
 import 'package:geiger_edu/screens/settings_screen.dart';
 import 'package:get/get.dart';
 
@@ -37,9 +37,9 @@ class RouteGenerator {
         // MaterialPageRoute transitions to the new route using a platform specific animation.
         return MaterialPageRoute(builder: (context) => ProfileScreen());
 
-      case SelectionScreen.routeName:
+      case LessonCategorySelectionScreen.routeName:
         // MaterialPageRoute transitions to the new route using a platform specific animation.
-        return MaterialPageRoute(builder: (context) => SelectionScreen());
+        return MaterialPageRoute(builder: (context) => LessonCategorySelectionScreen());
 
       case SettingsScreen.routeName:
         // MaterialPageRoute transitions to the new route using a platform specific animation.
@@ -51,7 +51,7 @@ class RouteGenerator {
 
       case LessonSelectionScreen.routeName:
       // MaterialPageRoute transitions to the new route using a platform specific animation.
-        return MaterialPageRoute(builder: (context) => LessonSelectionScreen(categoryTitle: lessonController.categoryTitle, lessons: lessonController.getLessons()));
+        return MaterialPageRoute(builder: (context) => LessonSelectionScreen());
 
       default:
         return MaterialPageRoute(builder: (context) => HomeScreen());
