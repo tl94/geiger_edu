@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geiger_edu/controller/global_controller.dart';
 import 'package:geiger_edu/controller/lesson_controller.dart';
 import 'package:geiger_edu/globals.dart' as globals;
 import 'package:get/get.dart';
@@ -6,6 +7,7 @@ import 'package:get/get.dart';
 class Indicator extends StatefulWidget {
 
   final LessonController lessonController = Get.find();
+  final GlobalController globalController = Get.find();
 
   final double height;
 
@@ -26,14 +28,14 @@ class _IndicatorState extends State<Indicator> {
   }
 
   void updateIndicator() {
-    completedLessons = widget.lessonController.completedLessons;
-    maxLessons = widget.lessonController.maxLessons;
-    percentage = (completedLessons / maxLessons);
+    completedLessons = widget.lessonController.getCompletedLessons();
+    maxLessons = widget.lessonController.getNumberOfLessons();
+    percentage = completedLessons == 0 ? 0 : (completedLessons / maxLessons);
 
-    if (percentage < 0.25 && percentage > 0) label = 'low';
+    if (percentage < 0.25 && percentage >= 0) label = 'low';
     if (percentage < 0.5 && percentage > 0.25) label = 'medium';
     if (percentage < 0.75 && percentage > 0.5) label = 'good';
-    if (percentage < 1 && percentage > 0.75) label = 'excellent';
+    if (percentage <= 1 && percentage > 0.75) label = 'excellent';
   }
 
   @override
@@ -45,7 +47,7 @@ class _IndicatorState extends State<Indicator> {
         width: 200,
         child:       Column(children: [
           Text("Your Progress",
-              style: TextStyle(fontSize: 20, color: globals.txtColor)),
+              style: TextStyle(fontSize: 20, color: widget.globalController.txtColor)),
           SizedBox(height: 10),
           Container(
             height: widget.height,
@@ -54,7 +56,7 @@ class _IndicatorState extends State<Indicator> {
                 Align(
                     alignment: Alignment(0, -.4),
                     child: Text((percentage * 100).toStringAsFixed(0) + "%",
-                        style: TextStyle(fontSize: 20, color: globals.txtColor))),
+                        style: TextStyle(fontSize: 20, color: widget.globalController.txtColor))),
                 RotationTransition(
                     turns: AlwaysStoppedAnimation(percentage * 0.49),
                     //0.49 is the value for the indicator to reach the other side

@@ -63,7 +63,7 @@ class LessonContainer extends StatelessWidget {
                   return SizedBox.shrink();
               }),
               Obx(() {
-                if (!lessonController.isOnLastSlide.value) {
+                if (!lessonController.isOnLastSlide.value || !lessonController.getLesson().hasQuiz) {
                   return Align(
                       alignment: Alignment.centerRight,
                       child: Material(

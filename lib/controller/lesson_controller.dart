@@ -8,7 +8,8 @@ import 'package:geiger_edu/model/quiz/question.dart';
 import 'package:geiger_edu/screens/home_screen.dart';
 import 'package:geiger_edu/screens/lesson_complete_screen.dart';
 import 'package:geiger_edu/services/db.dart';
-import 'package:geiger_edu/widgets/lesson/SlideContainer.dart';
+import 'package:geiger_edu/controller/io_controller.dart';
+import 'package:geiger_edu/widgets/lesson/slide_container.dart';
 import 'package:geiger_edu/widgets/lesson/quiz_results_group.dart';
 import 'package:geiger_edu/widgets/lesson/quiz_slide.dart';
 import 'package:get/get.dart';
@@ -16,6 +17,7 @@ import 'package:html/parser.dart';
 
 class LessonController extends GetxController {
   SettingsController settingsController = Get.find();
+  IOController ioController = Get.find();
 
   //** LESSON SELECTION **
  /* String categoryTitle = '';
@@ -47,15 +49,6 @@ class LessonController extends GetxController {
   RxBool isOnFirstSlide = false.obs;
   RxBool isOnLastSlide = false.obs;
 
-  //** Quiz State **
-  List<Question> answeredQuestions = [];
-
-  //** LessonCompleteScreen State **
-  final String icon1 = "assets/img/congratulations_icon.svg";
-  final String icon2 = "assets/img/trophy_icon.svg";
-
-  DateTime? selectedDate;
-
   //** Functions **
 
 
@@ -67,89 +60,36 @@ class LessonController extends GetxController {
   Future<void> setLesson(BuildContext context, Lesson lesson) async {
     print("SET LESSON CALLED");
     currentLesson = lesson;
-    currentLessonSlideIndex.value = 0;
-    isOnFirstSlide.value = isOnFirstPage();
-    isOnLastSlide.value = isOnLastPage();
-    await getSlidePaths(context);
-    await getSlideTitles(context);
+    currentLessonSlideIndex(0);
+    slidePaths = await ioController.getSlidePaths(context, lesson.path);
+    slideTitles = await getSlideTitles(context);
     pageController = getLessonPageController();
     currentPageNotifier = ValueNotifier<int>(currentLessonSlideIndex.value);
     getSlides();
+    isOnFirstSlide(isOnFirstPage());
+    isOnLastSlide(isOnLastPage());
   }
-
-  ///
-  Future<List<String>> getSlidePaths(BuildContext context) async {
-    List<String> filePaths =
-        await getLessonSlidePaths(context, currentLesson.path);
-    return filePaths;
-  }
-
-  Future<List<String>> getLessonSlidePaths(
-      BuildContext context, String lessonPath) async {
-    lessonPath = getLocalizedLessonPath(lessonPath);
-    RegExp regExp = RegExp(lessonPath + "slide_\*");
-    List<String> filePaths = await getDirectoryFilePaths(context, regExp);
-    slidePaths = filePaths;
-    return filePaths;
-  }
-
-  String getLocalizedLessonPath(String lessonPath) {
-    return lessonPath + settingsController.language + '/';
-  }
-
-  Future<List<String>> getDirectoryFilePaths(
-      BuildContext context, RegExp regExp) async {
-    var manifestContent =
-        await DefaultAssetBundle.of(context).loadString('AssetManifest.json');
-    Map<String, dynamic> manifestMap = json.decode(manifestContent);
-    var filePaths =
-        manifestMap.keys.where((String key) => regExp.hasMatch(key)).toList();
-    return filePaths;
-  }
-
-  Future<int> getNumberOfLessonSlides(
-      BuildContext context, String lessonPath) async {
-    var slidePaths = await getLessonSlidePaths(context, lessonPath);
-    return slidePaths.length;
-  }
-
 
   //** LESSON CONTAINER **
   List<Widget> getSlides() {
     List<Widget> newSlides = [];
     for (var sp in slidePaths) {
-      SlideContainer slide = new SlideContainer(
+      SlideContainer slide = SlideContainer(
         slidePath: sp,
-        title: 'dddd',
       );
       newSlides.add(slide);
     }
     print("HASQUIZ: " + currentLesson.hasQuiz.toString());
     if (currentLesson.hasQuiz) {
-      newSlides.add(QuizSlide(lesson: currentLesson));
+      newSlides.add(QuizSlide());
     }
-    print(slides.length);
     slides = newSlides;
+    print(slides.length);
     return slides;
   }
 
-/*  String _getCurrentSlidePath() {
-    var pageNumber = slideIndex;
-    var currentSlide = slidePaths[pageNumber];
-    return currentSlide;
-  }*/
-
-  Future<String> getLessonTitle(BuildContext context) async {
-    var firstSlidePath = slidePaths.first;
-    var doc =
-        parse(await DefaultAssetBundle.of(context).loadString(firstSlidePath));
-    var elems = doc.getElementsByTagName("meta");
-    var title;
-    for (var e in elems) {
-      var content = e.attributes["content"];
-      if (content != null) title = content;
-    }
-    return title;
+  String getLessonTitle (BuildContext context) {
+    return currentLesson.title[settingsController.language]!;
   }
 
   Future<String> getSlideTitle(BuildContext context, String slidePath) async {
@@ -165,18 +105,17 @@ class LessonController extends GetxController {
 
   Future<List<String>> getSlideTitles(BuildContext context) async {
     List<String> newslideTitles = [];
-    newslideTitles.add(await getLessonTitle(context));
+    newslideTitles.add(getLessonTitle(context));
     for (int i = 1; i < slidePaths.length; i++) {
       newslideTitles.add(await getSlideTitle(context, slidePaths[i]));
     }
-    newslideTitles.add("Quiz");
+    if (currentLesson.hasQuiz) newslideTitles.add("Quiz");
     currentTitle.value = newslideTitles[0];
     slideTitles = newslideTitles;
     return slideTitles;
   }
 
   PageController getLessonPageController() {
-    print(currentLessonSlideIndex.value);
     return PageController(initialPage: currentLessonSlideIndex.value);
   }
 
@@ -189,8 +128,8 @@ class LessonController extends GetxController {
   }
 
   void updateNavigatorButtons() {
-    isOnFirstSlide.value = isOnFirstPage();
-    isOnLastSlide.value = isOnLastPage();
+    isOnFirstSlide(isOnFirstPage());
+    isOnLastSlide(isOnLastPage());
   }
 
   Future<VoidCallback?> onSlideChanged(int page) async {
@@ -211,45 +150,38 @@ class LessonController extends GetxController {
     currentPageNotifier.value++;
     currentLessonSlideIndex++;
     if (isOnLastSlide.value && !currentLesson.hasQuiz) {
-      Get.to(LessonCompleteScreen());
+      setLessonCompleted();
+      Get.to(() => LessonCompleteScreen());
       // Navigator.pushNamed(context, LessonCompleteScreen.routeName);
+    } else {
+      await pageController.nextPage(duration: _kDuration, curve: _kCurve);
     }
-    await pageController.nextPage(duration: _kDuration, curve: _kCurve);
   }
 
-  //** LESSON COMPLETE SCREEN **
-  void onFinishLessonPressed() {
-    Get.to(() => HomeScreen());
-  }
-
-  List<Widget> getQuizResultsGroups() {
-    List<Widget> quizResultsGroups = [];
-    // TODO: don't do this step if lesson has no quiz
-    for (var question in answeredQuestions) {
-      quizResultsGroups.add(QuizResultsGroup(answeredQuestion: question));
-    }
-    return quizResultsGroups;
-  }
-
-  Future<void> selectDate(BuildContext context) async {
-    final DateTime? newSelectedDate = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime.now(),
-        lastDate: DateTime.utc(2100, 12, 31));
-    if (selectedDate != null) {
-      selectedDate = newSelectedDate;
+  void setLessonCompleted() {
+    if (!currentLesson.completed) {
+      currentLesson.completed = true;
+      DB.getLessonBox().put(currentLesson.lessonId, currentLesson);
+      incrementCompletedLessons();
     }
   }
 
   //** LESSON NUMBERS **
-  void calculateCompletedLessons() {
-    maxLessons = DB.getLessonBox().values.length;
+  void getLessonNumbers() {
     completedLessons =
         DB.getLessonBox().values.where((lesson) => lesson.completed).length;
+    maxLessons = DB.getLessonBox().values.length;
   }
 
-  void incrementGeigerIndicator() {
+  int getCompletedLessons() {
+    return completedLessons;
+  }
+
+  int getNumberOfLessons() {
+    return maxLessons;
+  }
+
+  void incrementCompletedLessons() {
     completedLessons++;
   }
 }

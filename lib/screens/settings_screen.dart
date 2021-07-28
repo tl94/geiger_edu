@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:geiger_edu/controller/settings_controller.dart';
 import 'package:geiger_edu/services/db.dart';
-import 'package:geiger_edu/widgets/LabledSwitch.dart';
+import 'package:geiger_edu/widgets/labeled_switch.dart';
 import 'package:get/get.dart';
 import 'package:hive_listener/hive_listener.dart';
 import '../globals.dart' as globals;

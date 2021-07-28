@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:geiger_edu/controller/profile_controller.dart';
 import 'package:geiger_edu/services/db.dart';
-import 'package:geiger_edu/widgets/ImageSelector.dart';
-import 'package:geiger_edu/widgets/LabeledTextField.dart';
+import 'package:geiger_edu/widgets/image_selector.dart';
+import 'package:geiger_edu/widgets/labeled_text_field.dart';
 import 'package:get/get.dart';
 import 'package:hive_listener/hive_listener.dart';
 

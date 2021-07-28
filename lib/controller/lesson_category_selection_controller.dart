@@ -10,18 +10,6 @@ class LessonCategorySelectionController extends GetxController {
 
   final LessonController lessonController = Get.find();
 
-  void setLessonCategory() {
-
-  }
-
-  //** LessonDropdown state **
-  RxBool isOpened = false.obs;
-
-  void toggleLessonDropdown() {
-    isOpened(!isOpened.value);
-  }
-
-
   Map<String, int> getCompletedLessonsForCategory(String lessonCategoryId) {
     Map<String, int> result = {};
     int completedCount = 0;
@@ -48,6 +36,8 @@ class LessonCategorySelectionController extends GetxController {
     return DB.getLessonCategoryBox().values.toList();
   }
 
+
+  //** LessonDropdown **
 
   double calcCompletedLessonIndicatorWidth(int currentValue, int maxValue,
       {int maxIndicatorSize = 100}) {

@@ -7,13 +7,14 @@ import 'package:geiger_edu/model/lessonObj.dart';
 import 'package:geiger_edu/screens/lesson_screen.dart';
 import 'package:get/get.dart';
 
-class LessonDropdown extends StatelessWidget {
+class LessonDropdown extends StatefulWidget {
+
   final LessonController lessonController = Get.find();
   final SettingsController settingsController = Get.find();
   final LessonCategorySelectionController lessonCategorySelectionController =
       Get.find();
 
-  static final titleColor = const Color(0xff748ea0);
+  final titleColor = const Color(0xff748ea0);
   final double dropDownHeight = 300;
   final double fontSize = 18;
 
@@ -21,12 +22,23 @@ class LessonDropdown extends StatelessWidget {
 
   LessonDropdown({required this.lesson});
 
+  _LessonDropdownState createState() => _LessonDropdownState();
+}
+
+class _LessonDropdownState extends State<LessonDropdown> {
+  bool _isOpened = false;
+
+  void _toggleLessonDropdown() {
+    setState(() {
+      _isOpened = !_isOpened;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
       return Container(
-          height: lessonCategorySelectionController.isOpened.value
-              ? 90 + dropDownHeight
+          height: _isOpened
+              ? 90 + widget.dropDownHeight
               : 90,
           decoration: BoxDecoration(
             color: Colors.white,
@@ -41,7 +53,7 @@ class LessonDropdown extends StatelessWidget {
             ],
           ),
           child: new GestureDetector(
-              onTap: lessonCategorySelectionController.toggleLessonDropdown,
+              onTap: _toggleLessonDropdown,
               child: Column(children: [
                 Container(
                     padding: EdgeInsets.all(20.0),
@@ -58,13 +70,13 @@ class LessonDropdown extends StatelessWidget {
                               width: 5,
                               height: 50,
                               decoration: BoxDecoration(
-                                  color: lesson.completed
+                                  color: widget.lesson.completed
                                       ? Colors.green
                                       : Colors.orange,
                                   borderRadius: BorderRadius.circular(2))),
                           SizedBox(width: 20),
                           Text(
-                            lesson.title[settingsController.getLanguage()]!,
+                            widget.lesson.title[widget.settingsController.getLanguage()]!,
                             style: TextStyle(
                               fontSize: 20.0,
                               fontWeight: FontWeight.w500,
@@ -76,7 +88,7 @@ class LessonDropdown extends StatelessWidget {
                             child: SizedBox(width: 1),
                           ),
                           Image.asset(
-                            lessonCategorySelectionController.isOpened.value
+                            _isOpened
                                 ? "assets/img/arrow_up.png"
                                 : "assets/img/arrow_down.png",
                             width: 20,
@@ -85,10 +97,10 @@ class LessonDropdown extends StatelessWidget {
                         ])),
 
                 //** DROP-DOWN **
-                if (lessonCategorySelectionController.isOpened.value)
+                if (_isOpened)
                   Container(
                       padding: EdgeInsets.all(20.0),
-                      height: dropDownHeight,
+                      height: widget.dropDownHeight,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(5.0),
@@ -110,14 +122,14 @@ class LessonDropdown extends StatelessWidget {
                                   children: [
                                     Text("Motivation",
                                         style: TextStyle(
-                                            color: titleColor,
-                                            fontSize: fontSize)),
+                                            color: widget.titleColor,
+                                            fontSize: widget.fontSize)),
                                     Container(
                                         width: 200,
                                         child: Text(
-                                            lesson.motivation[settingsController.language].toString(),
+                                            widget.lesson.motivation[widget.settingsController.language].toString(),
                                             style:
-                                                TextStyle(fontSize: fontSize)))
+                                                TextStyle(fontSize: widget.fontSize)))
                                   ],
                                 )
                               ],
@@ -133,10 +145,10 @@ class LessonDropdown extends StatelessWidget {
                                 SizedBox(width: 20),
                                 Text("Länge",
                                     style: TextStyle(
-                                        color: titleColor, fontSize: fontSize)),
+                                        color: widget.titleColor, fontSize: widget.fontSize)),
                                 Expanded(child: SizedBox(width: 1)),
-                                Text(lesson.duration.toString() + "'",
-                                    style: TextStyle(fontSize: fontSize))
+                                Text(widget.lesson.duration.toString() + "'",
+                                    style: TextStyle(fontSize: widget.fontSize))
                               ],
                             ),
                             Row(
@@ -150,10 +162,10 @@ class LessonDropdown extends StatelessWidget {
                                 SizedBox(width: 20),
                                 Text("Difficulty",
                                     style: TextStyle(
-                                        color: titleColor, fontSize: fontSize)),
+                                        color: widget.titleColor, fontSize: widget.fontSize)),
                                 Expanded(child: SizedBox(width: 1)),
-                                Text(lesson.difficulty.toString(),
-                                    style: TextStyle(fontSize: fontSize))
+                                Text(widget.lesson.difficulty.toString(),
+                                    style: TextStyle(fontSize: widget.fontSize))
                               ],
                             ),
                             Row(
@@ -186,13 +198,13 @@ class LessonDropdown extends StatelessWidget {
                                       onPressed: () async {
                                         //TODO: Put this in its own function
                                         print("SETTING LESSON TO: " +
-                                            lesson.title[
-                                                settingsController.language]!);
-                                        await lessonController.setLesson(
-                                            context, lesson);
+                                            widget.lesson.title[
+                                            widget.settingsController.language]!);
+                                        await widget.lessonController.setLesson(
+                                            context, widget.lesson);
                                         Navigator.pushNamed(
                                             context, LessonScreen.routeName,
-                                            arguments: {'title': lesson.title});
+                                            arguments: {'title': widget.lesson.title});
                                       },
                                       child: Text('Start',
                                           style: TextStyle(
@@ -203,6 +215,6 @@ class LessonDropdown extends StatelessWidget {
                                 ])
                           ]))
               ])));
-    });
-  }
+    }
+
 }

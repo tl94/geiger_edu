@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:geiger_edu/screens/home_screen.dart';
-import 'package:geiger_edu/widgets/NavigationContainer.dart';
+import 'package:geiger_edu/widgets/navigation_container.dart';
 
 class CommentsScreen extends StatelessWidget {
   static const routeName = '/commentsScreen';

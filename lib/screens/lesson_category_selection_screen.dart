@@ -9,7 +9,7 @@ import 'package:geiger_edu/model/lessonObj.dart';
 import 'package:geiger_edu/screens/home_screen.dart';
 import 'package:geiger_edu/screens/lesson_selection_screen.dart';
 import 'package:geiger_edu/services/db.dart';
-import 'package:geiger_edu/widgets/NavigationContainer.dart';
+import 'package:geiger_edu/widgets/navigation_container.dart';
 import 'package:get/get.dart';
 
 class LessonCategorySelectionScreen extends StatelessWidget {

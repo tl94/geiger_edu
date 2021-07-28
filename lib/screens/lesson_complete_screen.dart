@@ -1,22 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_svg/parser.dart';
+import 'package:geiger_edu/controller/lesson_complete_controller.dart';
 import 'package:geiger_edu/controller/lesson_controller.dart';
-import 'package:geiger_edu/globals.dart';
-import 'package:geiger_edu/model/lessonObj.dart';
-import 'package:geiger_edu/model/quiz/question.dart';
-import 'package:geiger_edu/screens/home_screen.dart';
-import 'package:geiger_edu/widgets/lesson/quiz_results_group.dart';
+import 'package:geiger_edu/controller/quiz_controller.dart';
 import 'package:get/get.dart';
 
 class LessonCompleteScreen extends StatelessWidget {
   static const routeName = '/lessoncompletescreen';
 
   final LessonController lessonController = Get.find();
+  final QuizController quizController = Get.find();
+  final LessonCompleteController lessonCompleteController = Get.find();
 
   Widget build(BuildContext context) {
-    List<Widget> quizResultsGroups = lessonController.getQuizResultsGroups();
+    List<Widget> quizResultsGroups =
+        lessonCompleteController.getQuizResultsGroups();
 
     return Scaffold(
       appBar: AppBar(leading: Container(), title: Text("Complete!")),
@@ -27,13 +26,13 @@ class LessonCompleteScreen extends StatelessWidget {
           children: [
             Text("Congratulations!"),
             SvgPicture.asset(
-              lessonController.icon1,
+              lessonCompleteController.icon1,
             ),
             SvgPicture.asset(
-              lessonController.icon2,
+              lessonCompleteController.icon2,
             ),
             Column(children: [
-              Center(child: Text("+25")),
+              Center(child: Text('+' + quizController.score.toString())),
               Center(
                 child: Text("Learn-Score"),
               )
@@ -44,17 +43,20 @@ class LessonCompleteScreen extends StatelessWidget {
                 "It is recommended that you revisit this lesson in the future to keep practising."),
             Text("Remind me:"),
             ElevatedButton(
-                onPressed: () => lessonController.selectDate(context),
+                onPressed: () => lessonCompleteController.selectDate(context),
                 child: Text("Set Reminder")),
-            if (lessonController.selectedDate != null) Text(lessonController.selectDate.toString()),
+            if (lessonCompleteController.selectedDate != null)
+              Text(lessonCompleteController.selectDate.toString()),
             Center(
                 child: ElevatedButton(
-                    onPressed: lessonController.onFinishLessonPressed, child: const Text("Finish Lesson"))),
-            if (lessonController.answeredQuestions.isNotEmpty)
+                    onPressed: lessonCompleteController.onFinishLessonPressed,
+                    child: const Text("Finish Lesson"))),
+            if (lessonController.getLesson().hasQuiz &&
+                quizController.answeredQuestions.isNotEmpty)
               Expanded(
                 child: SizedBox(
                     child: ListView.builder(
-                        itemCount: lessonController.answeredQuestions.length,
+                        itemCount: quizController.answeredQuestions.length,
                         itemBuilder: (context, index) {
                           return Center(child: quizResultsGroups[index]);
                         })),
