@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:geiger_edu/controller/global_controller.dart';
 import 'package:geiger_edu/controller/settings_controller.dart';
 import 'package:geiger_edu/services/db.dart';
 import 'package:geiger_edu/widgets/labeled_switch.dart';
@@ -11,13 +12,15 @@ import 'home_screen.dart';
 class SettingsScreen extends StatelessWidget {
   static const routeName = '/settings';
 
+  final GlobalController globalController = Get.find();
   final SettingsController settingsController = Get.find();
 
-  static const bckColor = const Color(0xFF5dbcd2); //0xFFedb879
-  static const borderColor = const Color(0xff0085ff);
 
   @override
   Widget build(BuildContext context) {
+    var defaultSetting = globalController.defaultSetting;
+    var bckColor = GlobalController.bckColor;
+
     return Scaffold(
       appBar: AppBar(
           leading: IconButton(
@@ -40,7 +43,7 @@ class SettingsScreen extends StatelessWidget {
                       children: <Widget>[
                         HiveListener(
                           box: DB.getSettingBox(),
-                          keys: [ globals.defaultSetting ], // keys is optional to specify listening value changes
+                          keys: [ defaultSetting ], // keys is optional to specify listening value changes
                           builder: (box) {
                             return LabeledSwitch(
                               label: "Darkmode",
@@ -55,7 +58,7 @@ class SettingsScreen extends StatelessWidget {
 
                         HiveListener(
                           box: DB.getSettingBox(),
-                          keys: [ globals.defaultSetting ], // keys is optional to specify listening value changes
+                          keys: [ defaultSetting ], // keys is optional to specify listening value changes
                           builder: (box) {
                             return LabeledSwitch(
                               label: "Display your alias on the discussion platform",
@@ -67,7 +70,7 @@ class SettingsScreen extends StatelessWidget {
 
                         HiveListener(
                           box: DB.getSettingBox(),
-                          keys: [ globals.defaultSetting ], // keys is optional to specify listening value changes
+                          keys: [ defaultSetting ], // keys is optional to specify listening value changes
                           builder: (box) {
                             return LabeledSwitch(
                               label: "Display your own score on the discussion platform",

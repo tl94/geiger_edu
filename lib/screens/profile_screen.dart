@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:geiger_edu/controller/global_controller.dart';
 import 'package:geiger_edu/controller/profile_controller.dart';
 import 'package:geiger_edu/services/db.dart';
 import 'package:geiger_edu/widgets/image_selector.dart';
@@ -14,13 +15,17 @@ import 'home_screen.dart';
 class ProfileScreen extends StatelessWidget {
   static const routeName = '/profilescreen';
 
-  ProfileController profileController = Get.find();
+  final GlobalController globalController = Get.find();
+  final ProfileController profileController = Get.find();
 
   static const bckColor = const Color(0xFF5dbcd2); //0xFFedb879
   static const borderColor = const Color(0xff0085ff);
 
   @override
   Widget build(BuildContext context) {
+    var defaultUser = globalController.defaultUser;
+    var userImg = globalController.userImg;
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(

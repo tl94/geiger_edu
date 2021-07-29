@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:geiger_edu/controller/global_controller.dart';
+import 'package:geiger_edu/controller/lesson_controller.dart';
 import 'package:geiger_edu/screens/lesson_category_selection_screen.dart';
 import 'package:geiger_edu/screens/profile_screen.dart';
 import 'package:geiger_edu/screens/settings_screen.dart';
 import 'package:geiger_edu/widgets/indicator.dart';
 import 'package:geiger_edu/widgets/navigation_container.dart';
+import 'package:get/get.dart';
 
 import 'comments_screen.dart';
 import 'lesson_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   static const routeName = '/homescreen';
-  static const bckColor = const Color(0xFF5dbcd2); //0xFFedb879
+
+  final LessonController lessonController = Get.find();
 
   @override
   Widget build(BuildContext context) {
+    var bckColor = GlobalController.bckColor;
+
     return Scaffold(
       appBar: AppBar(
         leading: new Container(),
@@ -45,7 +51,9 @@ class HomeScreen extends StatelessWidget {
                                         imagePath:
                                             "assets/img/continue_lesson.png",
                                         text: "Current Lesson",
-                                        passedRoute: LessonScreen.routeName),
+                                        passedRoute: LessonScreen.routeName,
+                                    function: lessonController.continueLesson),
+
                                     NavigationContainer(
                                         imagePath:
                                             "assets/img/select_lesson.png",

@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 class Indicator extends StatefulWidget {
 
   final LessonController lessonController = Get.find();
-  final GlobalController globalController = Get.find();
 
   final double height;
 
@@ -41,13 +40,15 @@ class _IndicatorState extends State<Indicator> {
   @override
   Widget build(BuildContext context) {
     updateIndicator();
+    var txtColor = GlobalController.txtColor;
+
     return
       Container(
         height: 200,
         width: 200,
         child:       Column(children: [
           Text("Your Progress",
-              style: TextStyle(fontSize: 20, color: widget.globalController.txtColor)),
+              style: TextStyle(fontSize: 20, color: txtColor)),
           SizedBox(height: 10),
           Container(
             height: widget.height,
@@ -56,7 +57,7 @@ class _IndicatorState extends State<Indicator> {
                 Align(
                     alignment: Alignment(0, -.4),
                     child: Text((percentage * 100).toStringAsFixed(0) + "%",
-                        style: TextStyle(fontSize: 20, color: widget.globalController.txtColor))),
+                        style: TextStyle(fontSize: 20, color: txtColor))),
                 RotationTransition(
                     turns: AlwaysStoppedAnimation(percentage * 0.49),
                     //0.49 is the value for the indicator to reach the other side

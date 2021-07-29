@@ -8,7 +8,6 @@ import 'package:geiger_edu/model/quiz/question.dart';
 import 'package:geiger_edu/screens/lesson_complete_screen.dart';
 import 'package:geiger_edu/screens/quiz_results_screen.dart';
 import 'package:geiger_edu/services/db.dart';
-import 'package:geiger_edu/services/lesson_loader.dart';
 import 'package:geiger_edu/widgets/lesson/question_group.dart';
 import 'package:get/get.dart';
 import 'package:html/parser.dart';

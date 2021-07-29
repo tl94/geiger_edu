@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:geiger_edu/controller/global_controller.dart';
 import 'package:geiger_edu/controller/lesson_category_selection_controller.dart';
 import 'package:geiger_edu/controller/lesson_controller.dart';
 import 'package:geiger_edu/controller/settings_controller.dart';
@@ -18,11 +19,11 @@ class LessonCategorySelectionScreen extends StatelessWidget {
   final SettingsController settingsController = Get.find();
   final LessonCategorySelectionController lessonCategorySelectionController = Get.find();
 
-  static const bckColor = const Color(0xFF5dbcd2); //0xFFedb879
 
   @override
   Widget build(BuildContext context) {
     var categories = lessonCategorySelectionController.getLessonCategories();
+    var bckColor = GlobalController.bckColor;
 
     return Scaffold(
       appBar: AppBar(

@@ -70,6 +70,22 @@ class LessonController extends GetxController {
     isOnLastSlide(isOnLastPage());
   }
 
+  //TODO: Load currentLesson from DB
+  void continueLesson(BuildContext context) {
+    print("CONTINUE LESSON CALLED");
+    // currentLesson = lesson;
+    // // currentLessonSlideIndex(0);
+    // slidePaths = await ioController.getSlidePaths(context, lesson.path);
+    // slideTitles = await getSlideTitles(context);
+    pageController = getLessonPageController();
+    currentPageNotifier = ValueNotifier<int>(currentLessonSlideIndex.value);
+    // getSlides();
+    isOnFirstSlide(isOnFirstPage());
+    isOnLastSlide(isOnLastPage());
+  }
+
+
+
   //** LESSON CONTAINER **
   List<Widget> getSlides() {
     List<Widget> newSlides = [];
@@ -116,6 +132,7 @@ class LessonController extends GetxController {
   }
 
   PageController getLessonPageController() {
+    print("CURRENT SLIDE: " + currentLessonSlideIndex.toString());
     return PageController(initialPage: currentLessonSlideIndex.value);
   }
 

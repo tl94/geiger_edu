@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/shims/dart_ui.dart';
+import 'package:geiger_edu/controller/global_controller.dart';
 import 'package:geiger_edu/controller/lesson_category_selection_controller.dart';
 import 'package:geiger_edu/controller/lesson_controller.dart';
 import 'package:geiger_edu/controller/lesson_selection_controller.dart';
@@ -20,6 +22,7 @@ class NavigationContainer extends StatelessWidget {
   final int maxValue;
 
   final List<Lesson>? passedLessons;
+  final Function? function;
 
   final double _indicatorHeight = 10;
 
@@ -29,11 +32,14 @@ class NavigationContainer extends StatelessWidget {
       required this.imagePath,
       this.currentValue = -1,
       this.maxValue = -1,
-      this.passedLessons})
+      this.passedLessons,
+      this.function})
       : super();
 
   @override
   Widget build(BuildContext context) {
+    var txtColor = GlobalController.txtColor;
+
     return Container(
       height: 75,
       margin: EdgeInsets.fromLTRB(20, 5, 20, 5),
@@ -42,6 +48,8 @@ class NavigationContainer extends StatelessWidget {
           if (passedLessons != null) {
             lessonSelectionController.setCategoryTitle(text);
             lessonSelectionController.setLessons(passedLessons!);
+          } else if (function != null)  {
+            function!(context);
           }
           Navigator.pushNamed(
             context,

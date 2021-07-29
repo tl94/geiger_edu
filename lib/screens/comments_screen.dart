@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:geiger_edu/controller/global_controller.dart';
 import 'package:geiger_edu/screens/home_screen.dart';
 import 'package:geiger_edu/widgets/navigation_container.dart';
 
 class CommentsScreen extends StatelessWidget {
   static const routeName = '/commentsScreen';
-  static const bckColor = const Color(0xFF5dbcd2); //0xFFedb879
 
   @override
   Widget build(BuildContext context) {
+    var bckColor = GlobalController.bckColor;
+
     return Scaffold(
       appBar: AppBar(
         leading: new Container(),

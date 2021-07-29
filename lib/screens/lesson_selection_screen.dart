@@ -1,17 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:geiger_edu/controller/global_controller.dart';
 import 'package:geiger_edu/controller/lesson_category_selection_controller.dart';
 import 'package:geiger_edu/controller/lesson_controller.dart';
 import 'package:geiger_edu/controller/lesson_selection_controller.dart';
 import 'package:geiger_edu/controller/settings_controller.dart';
 import 'package:geiger_edu/screens/lesson_category_selection_screen.dart';
-import 'package:geiger_edu/widgets/LessonDropdown.dart';
+import 'package:geiger_edu/widgets/lesson_dropdown.dart';
 import 'package:get/get.dart';
 
 class LessonSelectionScreen extends StatelessWidget {
   static const routeName = '/lessonselection';
-  static const bckColor = const Color(0xFF5dbcd2); //0xFFedb879
 
   final LessonSelectionController lessonSelectionController = Get.find();
 
@@ -19,6 +19,8 @@ class LessonSelectionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var bckColor = GlobalController.bckColor;
+
     print(lessonSelectionController.categoryTitle);
     return Scaffold(
       appBar: AppBar(

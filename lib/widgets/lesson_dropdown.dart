@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geiger_edu/controller/global_controller.dart';
 import 'package:geiger_edu/controller/lesson_category_selection_controller.dart';
 import 'package:geiger_edu/controller/lesson_controller.dart';
 import 'package:geiger_edu/controller/settings_controller.dart';
@@ -36,6 +37,8 @@ class _LessonDropdownState extends State<LessonDropdown> {
 
   @override
   Widget build(BuildContext context) {
+    var txtColor = GlobalController.txtColor;
+
       return Container(
           height: _isOpened
               ? 90 + widget.dropDownHeight
