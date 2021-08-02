@@ -71,15 +71,15 @@ class LessonController extends GetxController {
   }
 
   //TODO: Load currentLesson from DB
-  void continueLesson(BuildContext context) {
+  Future<void> continueLesson(BuildContext context) async {
     print("CONTINUE LESSON CALLED");
     // currentLesson = lesson;
-    // // currentLessonSlideIndex(0);
-    // slidePaths = await ioController.getSlidePaths(context, lesson.path);
-    // slideTitles = await getSlideTitles(context);
+    // currentLessonSlideIndex(0);
+    slidePaths = await ioController.getSlidePaths(context, currentLesson.path);
+    slideTitles = await getSlideTitles(context);
     pageController = getLessonPageController();
     currentPageNotifier = ValueNotifier<int>(currentLessonSlideIndex.value);
-    // getSlides();
+    getSlides();
     isOnFirstSlide(isOnFirstPage());
     isOnLastSlide(isOnLastPage());
   }
@@ -95,7 +95,6 @@ class LessonController extends GetxController {
       );
       newSlides.add(slide);
     }
-    print("HASQUIZ: " + currentLesson.hasQuiz.toString());
     if (currentLesson.hasQuiz) {
       newSlides.add(QuizSlide());
     }
@@ -120,14 +119,14 @@ class LessonController extends GetxController {
   }
 
   Future<List<String>> getSlideTitles(BuildContext context) async {
-    List<String> newslideTitles = [];
-    newslideTitles.add(getLessonTitle(context));
+    List<String> newSlideTitles = [];
+    newSlideTitles.add(getLessonTitle(context));
     for (int i = 1; i < slidePaths.length; i++) {
-      newslideTitles.add(await getSlideTitle(context, slidePaths[i]));
+      newSlideTitles.add(await getSlideTitle(context, slidePaths[i]));
     }
-    if (currentLesson.hasQuiz) newslideTitles.add("Quiz");
-    currentTitle.value = newslideTitles[0];
-    slideTitles = newslideTitles;
+    if (currentLesson.hasQuiz) newSlideTitles.add("Quiz");
+    currentTitle.value = newSlideTitles[0];
+    slideTitles = newSlideTitles;
     return slideTitles;
   }
 

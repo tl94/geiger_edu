@@ -52,11 +52,11 @@ class LessonCompleteScreen extends StatelessWidget {
                     onPressed: lessonCompleteController.onFinishLessonPressed,
                     child: const Text("Finish Lesson"))),
             if (lessonController.getLesson().hasQuiz &&
-                quizController.answeredQuestions.isNotEmpty)
+                quizController.questions.isNotEmpty)
               Expanded(
                 child: SizedBox(
                     child: ListView.builder(
-                        itemCount: quizController.answeredQuestions.length,
+                        itemCount: quizController.questions.length,
                         itemBuilder: (context, index) {
                           return Center(child: quizResultsGroups[index]);
                         })),

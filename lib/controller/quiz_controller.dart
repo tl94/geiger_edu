@@ -19,19 +19,17 @@ class QuizController extends GetxController {
   List<Question> questions = [];
   var introText = "";
   List<Widget> questionGroups = [];
-  List<Question> answeredQuestions = [];
-  List<Answer> selectedAnswers = [];
   int score = 0;
 
-
+  /// initialize quiz state
   void initializeQuiz() {
     questions = [];
     introText = "";
     questionGroups = [];
-    selectedAnswers = [];
     score = 0;
   }
 
+  /// get path for this lesson's quiz file
   Future<List<String>> getQuizPath(BuildContext context) async {
     var lessonPath = ioController.getLocalizedLessonPath(lessonController.currentLesson.path);
     RegExp regExp = RegExp(lessonPath + "quiz\*");
@@ -40,7 +38,7 @@ class QuizController extends GetxController {
     return filePaths;
   }
 
-  /* get questions and answers from quiz html file */
+  /// get questions and answers from html file
   Future<List<Question>> getQuiz(BuildContext context) async {
     initializeQuiz();
     var quizPath = await getQuizPath(context);
@@ -72,11 +70,10 @@ class QuizController extends GetxController {
       questions.add(sq);
     }
     this.questions = questions;
-    selectedAnswers = List.filled(questions.length, Answer.getDefaultAnswer());
     return questions;
   }
 
-  // create QuestionGroup for each question
+  /// create QuestionGroup for each question
   Future<List<Widget>> getQuestionGroups(BuildContext context) async {
     List<Question> questions = await getQuiz(context);
     questions = questions;
@@ -94,14 +91,13 @@ class QuizController extends GetxController {
     return questionGroups;
   }
 
-  /* save selected answer */
+  /// set answer to selected
   void addSelectedAnswer(int questionIndex, int selectionIndex) {
-    // print(answer.answer);
     var question = questions[questionIndex];
     question.setSelectionIndex(selectionIndex);
   }
 
-  /* check if an answer was selected for all questions */
+  /// check if an answer was selected for all questions
   bool checkAnswers() {
     for (var question in questions) {
       if (question.selectionIndex == -1) return false;
@@ -109,9 +105,10 @@ class QuizController extends GetxController {
     return true;
   }
 
-  /* evaluate answers */
+  /// evaluate answers
   int evaluateAnswers() {
-    for (var answer in selectedAnswers) {
+    for (var question in questions) {
+      var answer = question.answers[question.selectionIndex];
       if (answer.value) {
         score += 25;
       }
@@ -119,11 +116,11 @@ class QuizController extends GetxController {
     return score;
   }
 
+  /// if all questions were answered, finish quiz, award score and move on to next screen
   void finishQuiz() {
     if (!lessonController.getLesson().completed) {
       if (checkAnswers()) {
         var score = evaluateAnswers();
-        answeredQuestions = questions;
 
         lessonController.setLessonCompleted();
         DB.modifyUserScore(score);

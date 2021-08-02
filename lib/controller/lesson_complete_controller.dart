@@ -22,7 +22,7 @@ class LessonCompleteController extends GetxController {
   List<Widget> getQuizResultsGroups() {
     List<Widget> quizResultsGroups = [];
     // TODO: don't do this step if lesson has no quiz
-    for (var question in quizController.answeredQuestions) {
+    for (var question in quizController.questions) {
       quizResultsGroups.add(QuizResultsGroup(answeredQuestion: question));
     }
     return quizResultsGroups;
