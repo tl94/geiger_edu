@@ -9,15 +9,15 @@ class SettingsController extends GetxController {
   final appVersion = "0.4.210727";
 
   void switchDarkMode() {
-    DB.editDefaultSetting(!DB.getDefaultSetting()!.darkmode, null, null, null);
+    DB.editDefaultSetting(!DB.getDefaultSettings()!.darkmode, null, null, null);
   }
 
   void switchShowAlias() {
-    DB.editDefaultSetting(null, !DB.getDefaultSetting()!.showAlias, null, null);
+    DB.editDefaultSetting(null, !DB.getDefaultSettings()!.showAlias, null, null);
   }
 
   void switchShowScore() {
-    DB.editDefaultSetting(null, null, !DB.getDefaultSetting()!.showScore, null);
+    DB.editDefaultSetting(null, null, !DB.getDefaultSettings()!.showScore, null);
   }
 
 // TODO: use this function

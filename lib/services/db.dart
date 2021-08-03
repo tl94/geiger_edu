@@ -54,8 +54,6 @@ class DB {
     if (!lessonCategoriesIsOpen) {
       await Hive.openBox<LessonCategory>('lessonCategories');
     }
-    // if(DB.getLessonCategoryBox().keys.isEmpty)
-    print("LESSON CATEGORIES OPEN");
 
     if (!lessonsIsOpen) {
       await Hive.openBox<Lesson>('lessons');
@@ -71,40 +69,128 @@ class DB {
   }
 
   static Future<bool> databaseExists() async {
-    print("DATABASE EXISTS?");
     return await Hive.boxExists('users') &&
         await Hive.boxExists('settings') &&
         await Hive.boxExists('lessons') &&
         await Hive.boxExists('lessonCategories');
   }
 
-  static void updateLessonBox() {
-    //TODO: validate lesson box on start check files for new lessons add them tho the lesson category
+  //TODO: validate lesson box on start check files for new lessons add them tho the lesson category
+  static void updateLessonBox() {}
+
+  static void createDefaultUser() {
+    //add default user to box
+    User defaultUser = new User(
+        userName: 'Daniel',
+        userImagePath: 'assets/img/profile/default.png',
+        userScore: 100);
+    userBox.put("default", defaultUser);
   }
 
-  static void createTestComments() {
-    addComment(Comment(
-        id: "C001",
-        text: "Gibt es ein Programm welches mir meine EMail bereinigt?",
-        dateTime: DateTime.now(),
-        lessonId: "LPW001"));
-    addComment(Comment(
-        id: "C002",
-        text: "Hab mir das neue Office geholt, ist das sicher?",
-        dateTime: DateTime.now(),
-        lessonId: "LPW001"));
-    addComment(Comment(
-        id: "C003",
-        text:
-            "Wie habt ihr das gelöst mit der Verankerung des neuen Kaspersky-Cleaner??",
-        dateTime: DateTime.now(),
-        lessonId: "LPW001"));
+  static void editDefaultUser(
+      String? userName, String? userImagePath, int? userScore) {
+    User? tempUser = getDefaultUser();
+
+    if (tempUser!.userName != userName && null != userName)
+      tempUser.userName = userName;
+
+    if (tempUser.userImagePath != userImagePath && null != userImagePath)
+      tempUser.userImagePath = userImagePath;
+
+    if (tempUser.userScore != userScore && null != userScore)
+      tempUser.userScore = userScore;
+
+    //persist modified User object to database
+    userBox.put("default", tempUser);
+  }
+
+  static void modifyUserScore(int score) {
+    User? tempUser = getDefaultUser();
+    tempUser!.userScore += score;
+    userBox.put("default", tempUser);
+  }
+
+  /// save current lesson state to db for later continuation
+  static void saveCurrentLesson(Lesson lesson) {
+    User? tempUser = getDefaultUser();
+    tempUser!.currentLesson = lesson;
+    userBox.put("default", tempUser);
+  }
+
+  static void createDefaultSettings() {
+    //add default settings to box
+    Setting defaultSetting = new Setting(
+        darkmode: false, showAlias: true, showScore: false, language: 'ger');
+    settingBox.put("default", defaultSetting);
+  }
+
+  static void editDefaultSetting(
+      bool? darkmode, bool? showAlias, bool? showScore, String? language) {
+    Setting? tempSetting = getDefaultSettings();
+
+    if (tempSetting!.darkmode != darkmode && null != darkmode)
+      tempSetting.darkmode = darkmode;
+
+    if (tempSetting.showAlias != showAlias && null != showAlias)
+      tempSetting.showAlias = showAlias;
+
+    if (tempSetting.showScore != showScore && null != showScore)
+      tempSetting.showScore = showScore;
+
+    if (tempSetting.language != language && null != language) {
+      tempSetting.language = language;
+    }
+
+    //persist modified Settings object to database
+    settingBox.put("default", tempSetting);
   }
 
   static void addComment(Comment c) {
     getCommentBox().put(c.id, c);
   }
 
+  static User? getDefaultUser() {
+    return userBox.get("default");
+  }
+
+  static Setting? getDefaultSettings() {
+    return settingBox.get("default");
+  }
+
+  static Box<User> getUserBox() {
+    return userBox;
+  }
+
+  static Box<Setting> getSettingBox() {
+    return settingBox;
+  }
+
+  static Box<Lesson> getLessonBox() {
+    return lessonBox;
+  }
+
+  static Box<LessonCategory> getLessonCategoryBox() {
+    return lessonCategoryBox;
+  }
+
+  static Box<Comment> getCommentBox() {
+    return commentBox;
+  }
+
+  static void wipeDB() async {
+    //delete the hive-boxes, clears the file content from the device
+    await Hive.deleteBoxFromDisk('users');
+    await Hive.deleteBoxFromDisk('settings');
+    await Hive.deleteBoxFromDisk('lessons');
+    await Hive.deleteBoxFromDisk('lessonCategories');
+    await Hive.deleteBoxFromDisk('comments');
+    // await Hive.deleteBoxFromDisk('xapis');
+  }
+
+
+
+  //** Creation of static test data **
+  /// create test lessons
   static void createTestLessons() {
     //TODO: replace with updateLessonBox
     Lesson l1 = new Lesson(
@@ -235,102 +321,23 @@ class DB {
     getLessonCategoryBox().put(c2.lessonCategoryId, c2);
   }
 
-  static void createDefaultUser() {
-    //add default user to box
-    User defaultUser = new User(
-        userName: 'Daniel',
-        userImagePath: 'assets/img/profile/default.png',
-        userScore: 100);
-    userBox.put("default", defaultUser);
-  }
-
-  static User? getDefaultUser() {
-    return userBox.get("default");
-  }
-
-  static void editDefaultUser(
-      String? userName, String? userImagePath, int? userScore) {
-    User? tempUser = getDefaultUser();
-
-    if (tempUser!.userName != userName && null != userName)
-      tempUser.userName = userName;
-
-    if (tempUser.userImagePath != userImagePath && null != userImagePath)
-      tempUser.userImagePath = userImagePath;
-
-    if (tempUser.userScore != userScore && null != userScore)
-      tempUser.userScore = userScore;
-
-    //persist modified User object to database
-    userBox.put("default", tempUser);
-  }
-
-  static void editDefaultSetting(
-      bool? darkmode, bool? showAlias, bool? showScore, String? language) {
-    Setting? tempSetting = getDefaultSetting();
-
-    if (tempSetting!.darkmode != darkmode && null != darkmode)
-      tempSetting.darkmode = darkmode;
-
-    if (tempSetting.showAlias != showAlias && null != showAlias)
-      tempSetting.showAlias = showAlias;
-
-    if (tempSetting.showScore != showScore && null != showScore)
-      tempSetting.showScore = showScore;
-
-    if (tempSetting.language != language && null != language) {
-      tempSetting.language = language;
-    }
-
-    //persist modified Settings object to database
-    settingBox.put("default", tempSetting);
-  }
-
-  static void modifyUserScore(int score) {
-    User? tempUser = getDefaultUser();
-    tempUser!.userScore += score;
-    userBox.put("default", tempUser);
-  }
-
-  static void createDefaultSettings() {
-    //add default settings to box
-    Setting defaultSetting = new Setting(
-        darkmode: false, showAlias: true, showScore: false, language: 'ger');
-    settingBox.put("default", defaultSetting);
-  }
-
-  static Setting? getDefaultSetting() {
-    return settingBox.get("default");
-  }
-
-
-  static Box<User> getUserBox() {
-    return userBox;
-  }
-
-  static Box<Setting> getSettingBox() {
-    return settingBox;
-  }
-
-  static Box<Lesson> getLessonBox() {
-    return lessonBox;
-  }
-
-  static Box<LessonCategory> getLessonCategoryBox() {
-    return lessonCategoryBox;
-  }
-
-  static Box<Comment> getCommentBox() {
-    return commentBox;
-  }
-
-  static void wipeDB() async {
-    //delete the hive-boxes, clears the file content from the device
-    await Hive.deleteBoxFromDisk('users');
-    await Hive.deleteBoxFromDisk('settings');
-    await Hive.deleteBoxFromDisk('lessons');
-    await Hive.deleteBoxFromDisk('lessonCategories');
-    await Hive.deleteBoxFromDisk('comments');
-    // await Hive.deleteBoxFromDisk('xapis');
+  /// create test comments
+  static void createTestComments() {
+    addComment(Comment(
+        id: "C001",
+        text: "Gibt es ein Programm welches mir meine EMail bereinigt?",
+        dateTime: DateTime.now(),
+        lessonId: "LPW001"));
+    addComment(Comment(
+        id: "C002",
+        text: "Hab mir das neue Office geholt, ist das sicher?",
+        dateTime: DateTime.now(),
+        lessonId: "LPW001"));
+    addComment(Comment(
+        id: "C003",
+        text:
+            "Wie habt ihr das gelöst mit der Verankerung des neuen Kaspersky-Cleaner??",
+        dateTime: DateTime.now(),
+        lessonId: "LPW001"));
   }
 }

@@ -1,13 +1,10 @@
 import 'package:geiger_edu/controller/lesson_controller.dart';
 import 'package:geiger_edu/model/lessonCategoryObj.dart';
 import 'package:geiger_edu/model/lessonObj.dart';
-import 'package:geiger_edu/screens/lesson_category_selection_screen.dart';
 import 'package:geiger_edu/services/db.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
 
 class LessonCategorySelectionController extends GetxController {
-
   final LessonController lessonController = Get.find();
 
   Map<String, int> getCompletedLessonsForCategory(String lessonCategoryId) {
@@ -35,7 +32,6 @@ class LessonCategorySelectionController extends GetxController {
   List<LessonCategory> getLessonCategories() {
     return DB.getLessonCategoryBox().values.toList();
   }
-
 
   //** LessonDropdown **
 

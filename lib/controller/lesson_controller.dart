@@ -1,17 +1,12 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:geiger_edu/controller/io_controller.dart';
 import 'package:geiger_edu/controller/settings_controller.dart';
 import 'package:geiger_edu/model/lessonCategoryObj.dart';
 import 'package:geiger_edu/model/lessonObj.dart';
-import 'package:geiger_edu/model/quiz/question.dart';
-import 'package:geiger_edu/screens/home_screen.dart';
 import 'package:geiger_edu/screens/lesson_complete_screen.dart';
 import 'package:geiger_edu/services/db.dart';
-import 'package:geiger_edu/controller/io_controller.dart';
-import 'package:geiger_edu/widgets/lesson/slide_container.dart';
-import 'package:geiger_edu/widgets/lesson/quiz_results_group.dart';
 import 'package:geiger_edu/widgets/lesson/quiz_slide.dart';
+import 'package:geiger_edu/widgets/lesson/slide_container.dart';
 import 'package:get/get.dart';
 import 'package:html/parser.dart';
 
@@ -19,10 +14,6 @@ class LessonController extends GetxController {
   SettingsController settingsController = Get.find();
   IOController ioController = Get.find();
 
-  //** LESSON SELECTION **
- /* String categoryTitle = '';
-  List<Lesson> lessons = [];
-*/
   //** GEIGER INDICATOR **
   int completedLessons = 0;
   int maxLessons = 0;
@@ -31,11 +22,9 @@ class LessonController extends GetxController {
   late List<LessonCategory> lessonCategories;
 
   //** LESSON STATE **
-
-
   late Lesson currentLesson;
 
-  // LessonContainer State
+  /// LessonContainer State
   final _kDuration = const Duration(milliseconds: 300);
   final _kCurve = Curves.ease;
 
@@ -51,30 +40,22 @@ class LessonController extends GetxController {
 
   //** Functions **
 
-
-
-  Lesson getLesson() {
+  Lesson getCurrentLesson() {
     return currentLesson;
+  }
+
+  Lesson? getCurrentLessonFromDB() {
+    return DB.getDefaultUser()!.currentLesson;
+  }
+
+  void saveCurrentLesson() {
+    DB.saveCurrentLesson(currentLesson);
   }
 
   Future<void> setLesson(BuildContext context, Lesson lesson) async {
     print("SET LESSON CALLED");
     currentLesson = lesson;
     currentLessonSlideIndex(0);
-    slidePaths = await ioController.getSlidePaths(context, lesson.path);
-    slideTitles = await getSlideTitles(context);
-    pageController = getLessonPageController();
-    currentPageNotifier = ValueNotifier<int>(currentLessonSlideIndex.value);
-    getSlides();
-    isOnFirstSlide(isOnFirstPage());
-    isOnLastSlide(isOnLastPage());
-  }
-
-  //TODO: Load currentLesson from DB
-  Future<void> continueLesson(BuildContext context) async {
-    print("CONTINUE LESSON CALLED");
-    // currentLesson = lesson;
-    // currentLessonSlideIndex(0);
     slidePaths = await ioController.getSlidePaths(context, currentLesson.path);
     slideTitles = await getSlideTitles(context);
     pageController = getLessonPageController();
@@ -82,11 +63,30 @@ class LessonController extends GetxController {
     getSlides();
     isOnFirstSlide(isOnFirstPage());
     isOnLastSlide(isOnLastPage());
+
+    saveCurrentLesson();
   }
 
+  Future<bool> continueLesson(BuildContext context) async {
+    var currentLessonFromDB = getCurrentLessonFromDB();
+    var currentLessonIsNull = currentLessonFromDB == null;
+    if (!currentLessonIsNull) {
+      currentLesson = currentLessonFromDB!;
+      currentLessonSlideIndex(currentLesson.lastIndex);
+      slidePaths =
+          await ioController.getSlidePaths(context, currentLesson.path);
+      slideTitles = await getSlideTitles(context);
+      pageController = getLessonPageController();
+      currentPageNotifier = ValueNotifier<int>(currentLessonSlideIndex.value);
+      print(currentPageNotifier.toString());
+      getSlides();
+      isOnFirstSlide(isOnFirstPage());
+      isOnLastSlide(isOnLastPage());
+    }
+    return currentLessonIsNull;
+  }
 
-
-  //** LESSON CONTAINER **
+  //** LessonContainer functions **
   List<Widget> getSlides() {
     List<Widget> newSlides = [];
     for (var sp in slidePaths) {
@@ -103,7 +103,7 @@ class LessonController extends GetxController {
     return slides;
   }
 
-  String getLessonTitle (BuildContext context) {
+  String getLessonTitle(BuildContext context) {
     return currentLesson.title[settingsController.language]!;
   }
 
@@ -125,7 +125,7 @@ class LessonController extends GetxController {
       newSlideTitles.add(await getSlideTitle(context, slidePaths[i]));
     }
     if (currentLesson.hasQuiz) newSlideTitles.add("Quiz");
-    currentTitle.value = newSlideTitles[0];
+    currentTitle.value = newSlideTitles[currentLessonSlideIndex.value];
     slideTitles = newSlideTitles;
     return slideTitles;
   }
@@ -149,37 +149,50 @@ class LessonController extends GetxController {
   }
 
   Future<VoidCallback?> onSlideChanged(int page) async {
-    currentPageNotifier.value = page;
     currentLessonSlideIndex.value = page;
+    currentLesson.lastIndex = page;
+    currentPageNotifier.value = page;
     currentTitle(slideTitles[page]);
     updateNavigatorButtons();
   }
 
   void previousPage() async {
-    currentLessonSlideIndex--;
-    currentPageNotifier.value--;
-    await pageController.previousPage(duration: _kDuration, curve: _kCurve);
+    if (!isOnFirstSlide.value) {
+      currentLessonSlideIndex--;
+      currentLesson.lastIndex--;
+      saveCurrentLesson();
+      currentPageNotifier.value--;
+      await pageController.previousPage(duration: _kDuration, curve: _kCurve);
+    }
   }
 
   void nextPage() async {
-    // TODO: don't allow this if the lesson has a quiz
-    currentPageNotifier.value++;
-    currentLessonSlideIndex++;
-    if (isOnLastSlide.value && !currentLesson.hasQuiz) {
-      setLessonCompleted();
-      Get.to(() => LessonCompleteScreen());
-      // Navigator.pushNamed(context, LessonCompleteScreen.routeName);
-    } else {
+    print('hewwo');
+    if (!isOnLastSlide.value) {
+      print('hewwo 2');
+      currentLessonSlideIndex++;
+      currentLesson.lastIndex++;
+      saveCurrentLesson();
+      currentPageNotifier.value++;
       await pageController.nextPage(duration: _kDuration, curve: _kCurve);
+    } else {
+      print('hewwo 3');
+      if (!currentLesson.hasQuiz) {
+        print('hewwo 4');
+        setLessonCompleted();
+        Get.to(() => LessonCompleteScreen());
+      }
     }
   }
 
   void setLessonCompleted() {
+    currentLesson.lastIndex = 0;
     if (!currentLesson.completed) {
       currentLesson.completed = true;
       DB.getLessonBox().put(currentLesson.lessonId, currentLesson);
       incrementCompletedLessons();
     }
+    saveCurrentLesson();
   }
 
   //** LESSON NUMBERS **

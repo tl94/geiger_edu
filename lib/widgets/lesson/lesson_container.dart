@@ -1,9 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/shims/dart_ui.dart';
 import 'package:geiger_edu/controller/lesson_controller.dart';
-import 'package:geiger_edu/model/lessonObj.dart';
-import 'package:geiger_edu/screens/lesson_complete_screen.dart';
 import 'package:get/get.dart';
 import 'package:page_view_indicators/step_page_indicator.dart';
 
@@ -14,8 +11,8 @@ class LessonContainer extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            title: Obx(() => Text(lessonController.currentTitle.value))),
+        appBar:
+            AppBar(title: Obx(() => Text(lessonController.currentTitle.value))),
         body: Container(
             child: Column(children: [
           Row(
@@ -57,13 +54,15 @@ class LessonContainer extends StatelessWidget {
                               ),
                               child: IconButton(
                                 icon: Icon(Icons.chevron_left),
-                                onPressed: () => lessonController.previousPage(),
+                                onPressed: () =>
+                                    lessonController.previousPage(),
                               ))));
                 } else
                   return SizedBox.shrink();
               }),
               Obx(() {
-                if (!lessonController.isOnLastSlide.value || !lessonController.getLesson().hasQuiz) {
+                if (!lessonController.isOnLastSlide.value ||
+                    !lessonController.getCurrentLesson().hasQuiz) {
                   return Align(
                       alignment: Alignment.centerRight,
                       child: Material(
@@ -77,7 +76,8 @@ class LessonContainer extends StatelessWidget {
                                 icon: Icon(Icons.chevron_right),
                                 onPressed: () => lessonController.nextPage(),
                               ))));
-                } else return SizedBox.shrink();
+                } else
+                  return SizedBox.shrink();
               }),
             ],
           ))

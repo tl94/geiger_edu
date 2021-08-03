@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:hive/hive.dart';
 
+import 'lessonObj.dart';
+
 part 'userObj.g.dart';
 
 User userFromJson(String str)=> User.fromJson(json.decode(str));
@@ -17,10 +19,14 @@ class User extends HiveObject{
   @HiveField(2)
   int userScore;
 
+  @HiveField(3)
+  Lesson? currentLesson;
+
   User({
     required this.userName,
     required this.userImagePath,
-    this.userScore = 0
+    this.userScore = 0,
+    this.currentLesson
   });
 
   //not used

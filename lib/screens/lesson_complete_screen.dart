@@ -51,8 +51,7 @@ class LessonCompleteScreen extends StatelessWidget {
                 child: ElevatedButton(
                     onPressed: lessonCompleteController.onFinishLessonPressed,
                     child: const Text("Finish Lesson"))),
-            if (lessonController.getLesson().hasQuiz &&
-                quizController.questions.isNotEmpty)
+            if (quizResultsGroups.isNotEmpty)
               Expanded(
                 child: SizedBox(
                     child: ListView.builder(

@@ -118,7 +118,7 @@ class QuizController extends GetxController {
 
   /// if all questions were answered, finish quiz, award score and move on to next screen
   void finishQuiz() {
-    if (!lessonController.getLesson().completed) {
+    if (!lessonController.getCurrentLesson().completed) {
       if (checkAnswers()) {
         var score = evaluateAnswers();
 

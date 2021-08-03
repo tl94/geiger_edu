@@ -52,7 +52,9 @@ class HomeScreen extends StatelessWidget {
                                             "assets/img/continue_lesson.png",
                                         text: "Current Lesson",
                                         passedRoute: LessonScreen.routeName,
-                                    function: lessonController.continueLesson),
+                                    continueLessonFunction: () async {
+                                          return await lessonController.continueLesson(context);
+                                    }),
 
                                     NavigationContainer(
                                         imagePath:
