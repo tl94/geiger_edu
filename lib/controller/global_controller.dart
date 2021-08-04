@@ -1,10 +1,6 @@
-import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:geiger_edu/model/difficultyObj.dart';
-import 'package:geiger_edu/model/lessonObj.dart';
-import 'package:geiger_edu/model/quiz/question.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 class GlobalController extends GetxController {

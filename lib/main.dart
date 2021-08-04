@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:geiger_edu/controller/chat_controller.dart';
 import 'package:geiger_edu/controller/lesson_controller.dart';
 import 'package:geiger_edu/controller/profile_controller.dart';
 import 'package:geiger_edu/controller/quiz_controller.dart';
 import 'package:geiger_edu/controller/settings_controller.dart';
 import 'package:geiger_edu/route_generator.dart';
+import 'package:geiger_edu/screens/chat_screen.dart';
 import 'package:geiger_edu/screens/home_screen.dart';
 import 'package:geiger_edu/services/db.dart';
 import 'package:geiger_edu/controller/io_controller.dart';
 import 'package:geiger_edu/widgets/loading_animation.dart';
 import 'package:get/get.dart';
 
+import 'controller/comments_controller.dart';
 import 'controller/global_controller.dart';
 import 'controller/lesson_category_selection_controller.dart';
 import 'controller/lesson_complete_controller.dart';
@@ -44,6 +47,8 @@ class MyApp extends StatefulWidget {
   final quizController = Get.put(QuizController());
   final lessonCompleteController = Get.put(LessonCompleteController());
   final profileController = Get.put(ProfileController());
+  final chatController = Get.put(ChatController());
+  final commentsController = Get.put(CommentsController());
 
   _MyAppState createState() => _MyAppState();
 }
@@ -59,7 +64,7 @@ class _MyAppState extends State<MyApp> {
     Future.delayed(Duration(seconds: 5), () {
       widget.lessonController.getLessonNumbers();
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => HomeScreen()));
+          context, MaterialPageRoute(builder: (context) => HomeScreen()));//HomeScreen()));
     });
   }
 
