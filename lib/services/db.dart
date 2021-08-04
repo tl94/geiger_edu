@@ -110,37 +110,37 @@ class DB {
     addComment(Comment(
         id: "C005",
         text:
-        "Wie habt ihr das gelöst mit der Verankerung des neuen Kaspersky-Cleaner??",
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
         dateTime: DateTime.now(),
         lessonId: "LPW001"));
     addComment(Comment(
         id: "C006",
         text:
-        "Wie habt ihr das gelöst mit der Verankerung des neuen Kaspersky-Cleaner??",
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
         dateTime: DateTime.now(),
         lessonId: "LPW001"));
     addComment(Comment(
         id: "C007",
         text:
-        "Wie habt ihr das geslöst mit der Verankerung des neuen Kaspersky-Cleaner??",
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
         dateTime: DateTime.now(),
         lessonId: "LPW001"));
     addComment(Comment(
         id: "C008",
         text:
-        "Wie habt ihr das gelöst mit der Verankerung des neuen Kaspersky-Cleaner??",
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
         dateTime: DateTime.now(),
         lessonId: "LPW001"));
     addComment(Comment(
         id: "C009",
         text:
-        "Wie habt ihr das gelöst mit der Verankerung des neuen Kaspersky-Cleaner??",
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
         dateTime: DateTime.now(),
         lessonId: "LPW001"));
     addComment(Comment(
         id: "C010",
         text:
-        "Wie habt ihr das gelöst mit der Verankerung des neuen Kaspersky-Cleaner??",
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
         dateTime: DateTime.now(),
         lessonId: "LPW001"));
     addComment(Comment(
