@@ -105,6 +105,10 @@ class DB {
     getCommentBox().put(c.id, c);
   }
 
+  static void deleteComment(String id){
+    getCommentBox().delete(id);
+  }
+
   static void createTestLessons() {
     //TODO: replace with updateLessonBox
     Lesson l1 = new Lesson(
