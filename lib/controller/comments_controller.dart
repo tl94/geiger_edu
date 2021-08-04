@@ -9,8 +9,8 @@ class CommentsController extends GetxController {
   //get items => this._items;
   var items = DB.getCommentBox().values.toList(growable: true).obs;
 
-  void deleteComment(String id, int index){
-    items.removeAt(index);
+  void deleteComment(String id){
     DB.deleteComment(id);
   }
+
 }

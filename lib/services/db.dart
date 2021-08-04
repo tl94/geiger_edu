@@ -99,6 +99,62 @@ class DB {
             "Wie habt ihr das gelöst mit der Verankerung des neuen Kaspersky-Cleaner??",
         dateTime: DateTime.now(),
         lessonId: "LPW001"));
+
+    //
+    addComment(Comment(
+        id: "C004",
+        text:
+        "Wie habt ihr das gelöst mit der Verankerung des neuen Kaspersky-Cleaner??",
+        dateTime: DateTime.now(),
+        lessonId: "LPW001"));
+    addComment(Comment(
+        id: "C005",
+        text:
+        "Wie habt ihr das gelöst mit der Verankerung des neuen Kaspersky-Cleaner??",
+        dateTime: DateTime.now(),
+        lessonId: "LPW001"));
+    addComment(Comment(
+        id: "C006",
+        text:
+        "Wie habt ihr das gelöst mit der Verankerung des neuen Kaspersky-Cleaner??",
+        dateTime: DateTime.now(),
+        lessonId: "LPW001"));
+    addComment(Comment(
+        id: "C007",
+        text:
+        "Wie habt ihr das geslöst mit der Verankerung des neuen Kaspersky-Cleaner??",
+        dateTime: DateTime.now(),
+        lessonId: "LPW001"));
+    addComment(Comment(
+        id: "C008",
+        text:
+        "Wie habt ihr das gelöst mit der Verankerung des neuen Kaspersky-Cleaner??",
+        dateTime: DateTime.now(),
+        lessonId: "LPW001"));
+    addComment(Comment(
+        id: "C009",
+        text:
+        "Wie habt ihr das gelöst mit der Verankerung des neuen Kaspersky-Cleaner??",
+        dateTime: DateTime.now(),
+        lessonId: "LPW001"));
+    addComment(Comment(
+        id: "C010",
+        text:
+        "Wie habt ihr das gelöst mit der Verankerung des neuen Kaspersky-Cleaner??",
+        dateTime: DateTime.now(),
+        lessonId: "LPW001"));
+    addComment(Comment(
+        id: "C011",
+        text:
+        "Wie habt ihr das gelöst mit der Verankerung des neuen Kaspersky-Cleaner??",
+        dateTime: DateTime.now(),
+        lessonId: "LPW001"));
+    addComment(Comment(
+        id: "C012",
+        text:
+        "Wie habt ihr das gelöst mit der Verankerung des neuen Kaspersky-Cleaner??",
+        dateTime: DateTime.now(),
+        lessonId: "LPW001"));
   }
 
   static void addComment(Comment c) {
