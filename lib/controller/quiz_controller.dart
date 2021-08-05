@@ -124,8 +124,9 @@ class QuizController extends GetxController {
 
         lessonController.setLessonCompleted();
         DB.modifyUserScore(score);
+
+        Get.to(() => LessonCompleteScreen());
       }
     }
-    Get.to(() => LessonCompleteScreen());
   }
 }
