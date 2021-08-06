@@ -2,18 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:geiger_edu/controller/chat_controller.dart';
 import 'package:geiger_edu/controller/global_controller.dart';
-import 'package:geiger_edu/controller/lesson_controller.dart';
 import 'package:geiger_edu/model/commentObj.dart';
-import 'package:geiger_edu/screens/lesson_category_selection_screen.dart';
-import 'package:geiger_edu/screens/profile_screen.dart';
-import 'package:geiger_edu/screens/settings_screen.dart';
-import 'package:geiger_edu/widgets/indicator.dart';
-import 'package:geiger_edu/widgets/navigation_container.dart';
+import 'package:geiger_edu/services/db.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
-import 'comments_screen.dart';
 import 'home_screen.dart';
-import 'lesson_screen.dart';
 
 class ChatScreen extends StatelessWidget {
   static const routeName = '/chatScreen';
@@ -25,120 +19,249 @@ class ChatScreen extends StatelessWidget {
   var lastMessageId = 0;
   var currentLessonId = "LPW001";
   var msgController = TextEditingController();
-  var items = List<Comment>.generate(20, (i) => new Comment(
+
+  /*var items = List<Comment>.generate(5, (i) => new Comment(
       id: "C00"+i.toString(),
       text:
       "Text: $i",
       dateTime: DateTime.now(),
-      lessonId: "LPW001")).obs;
+      lessonId: "LPW001",
+      userId: "default")).obs;*/
   var scrollController = ScrollController();
 
-  void sendMessage(){
-    if(message!="") {
+  List<Comment> loadLessons() {
+    return DB.getComments("LPW001");
+  }
+
+  var items = DB.getComments("LPW001").obs;
+
+  var requestedUserId = "XYZ";
+  var defaultUserId = DB.getDefaultUser()!.userId;
+
+  String getUserImagePath() {
+    if (requestedUserId == defaultUserId) {
+      return DB.getDefaultUser()!.userImagePath.toString();
+    } else {
+      //TODO: SERVER REQUEST)
+      return "assets/img/profile/user-09.png";
+    }
+  }
+
+  void setRequestedUserId(int index) {
+    requestedUserId = items[index].userId;
+  }
+
+  String getUserName() {
+    if (requestedUserId == defaultUserId) {
+      if(!DB.getDefaultSetting()!.showAlias){
+        return ("Anonymous");
+      }
+      return DB.getDefaultUser()!.userName;
+    } else {
+      //TODO: SERVER REQUEST)
+      return "???";
+    }
+  }
+
+  String getUserScore() {
+    if (requestedUserId == defaultUserId) {
+      if(!DB.getDefaultSetting()!.showScore){
+        return ("");
+      }
+      return DB.getDefaultUser()!.userScore.toString();
+    } else {
+      //TODO: SERVER REQUEST)
+      return "???";
+    }
+  }
+
+  //if its a comment of the user messages are displayed right
+  MainAxisAlignment getMainAxisAlignment(){
+    //if (requestedUserId == defaultUserId) {
+    //  return MainAxisAlignment.end;
+    //}else{
+      return MainAxisAlignment.start;
+    //}
+  }
+
+  String getCommentDate(int index) {
+    return DateFormat.yMMMd().format(items[index].dateTime);
+  }
+
+  void sendMessage() {
+    if (message != "") {
       //add message
       Comment comment = new Comment(
-          id: "C00"+(lastMessageId++).toString(),
+          id: "C00" + (lastMessageId++).toString(),
           text: message,
           dateTime: DateTime.now(),
-          lessonId: currentLessonId);
+          lessonId: currentLessonId,
+          userId: DB.getDefaultUser()!.userId);
       items.add(comment);
+      DB.addComment(comment);
       //clear text input
       msgController.clear();
       //scroll to the bottom of the list view
       scrollController.animateTo(
-        scrollController.position.maxScrollExtent+50, //+height of new item
+        scrollController.position.maxScrollExtent + 150, //+height of new item
         duration: Duration(seconds: 1),
         curve: Curves.fastOutSlowIn,
       );
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pushNamed(context, HomeScreen.routeName),
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () => Navigator.pushNamed(context, HomeScreen.routeName),
+          ),
+          title: Text("Chat"),
+          centerTitle: true,
+          backgroundColor: bckColor,
         ),
-        title: Text("Chat"),
-        centerTitle: true,
-        backgroundColor: bckColor,
-      ),
-      body: Obx (()=> Container(
-          child: Column(children: [
-
-              Expanded(
-                child: Container(
+        body: Obx(
+          () => Container(
+              child: Column(children: [
+            Expanded(
+              child: Container(
                   child: ListView.builder(
-                    controller: scrollController,
-                    itemCount: items.length,
-                    itemBuilder: (context, index) {
-                      return Container(child: ListTile(
-                        title: Text(items[index].text),subtitle: Text(items[index].dateTime.toString()),
-                      )
-                      );
-                    },
-                  )
-                ),
-              ),
-
-
-              //** INPUT BAR **
-              Container(
-                margin: EdgeInsets.fromLTRB(20, 20, 20, 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Image.asset(
-                      "assets/img/delete_icon.png",
-                      width: 20,
-                      color: Colors.grey,
-                    ),
-                    Container(
-                        width: context.width - 90,
-                        child: TextField(
-                            keyboardType: TextInputType.multiline,
-                            minLines: 1,//Normal textInputField will be displayed
-                            maxLines: 5,// when user presses enter it will adapt to it
-                            controller: msgController,
-                            decoration: InputDecoration(
-                              hintText: "Write a comment...",
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20),
+                controller: scrollController,
+                itemCount: items.length,
+                itemBuilder: (context, index) {
+                  setRequestedUserId(index);
+                  return Container(
+                      margin: EdgeInsets.all(10),
+                      child: Row(
+                        mainAxisAlignment: getMainAxisAlignment(),
+                        children: [
+                          Column(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50),
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black54,
+                                      blurRadius: 4.0,
+                                      offset: Offset(0.0, 4),
+                                    ),
+                                  ],
+                                ),
+                                child: ClipOval(
+                                    child: Image.asset(getUserImagePath(),
+                                        width: 50)),
                               ),
-                              contentPadding:
-                              EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                              Text(getUserScore())
+                            ],
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Container(
+                            width: context.width / 2,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(10),
+                                  margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Color.fromRGBO(234, 240, 243, 1),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      //TODO: SERVER REQUEST
+                                      Text(getUserName()),
+                                      Container(
+                                        width: context.width,
+                                        child: Text(items[index].text),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("Antworten"),
+                                    Text(getCommentDate(index))
+                                  ],
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      )
+                      //child: ListTile(
+                      //  title: Text(items[index].text),subtitle: Text(items[index].dateTime.toString()),
+                      //)
+                      );
+                },
+              )),
+            ),
+
+            //** INPUT BAR **
+            Container(
+              margin: EdgeInsets.fromLTRB(20, 20, 20, 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Image.asset(
+                    "assets/img/delete_icon.png",
+                    width: 20,
+                    color: Colors.grey,
+                  ),
+                  Container(
+                    width: context.width - 90,
+                    child: TextField(
+                      keyboardType: TextInputType.multiline,
+                      minLines: 1,
+                      //Normal textInputField will be displayed
+                      maxLines: 5,
+                      // when user presses enter it will adapt to it
+                      controller: msgController,
+                      decoration: InputDecoration(
+                        hintText: "Write a comment...",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                            onSubmitted:(text) { print(text); text=text+"\n"; }, onChanged:(text){ message = text;},),
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                      ),
+                      onSubmitted: (text) {
+                        print(text);
+                        text = text + "\n";
+                      },
+                      onChanged: (text) {
+                        message = text;
+                      },
                     ),
-                GestureDetector(
-                  onTap: () => { sendMessage() },
-                  child:
-                      Container(width: 20, height: 20,child:
-                    Image.asset(
-                      "assets/img/arrow_right.png",
-                      width: 10,
-                      color: Colors.blue,
-                    )),
-                )
-                  ],
-                ),
-              )
-          ])
-      ),
-    )
-    );
-
+                  ),
+                  GestureDetector(
+                    onTap: () => {sendMessage()},
+                    child: Container(
+                        width: 20,
+                        height: 20,
+                        child: Image.asset(
+                          "assets/img/arrow_right.png",
+                          width: 10,
+                          color: Colors.blue,
+                        )),
+                  )
+                ],
+              ),
+            )
+          ])),
+        ));
   }
-
-
-
 }
-
-
 
 /*
 import 'package:flutter/material.dart';

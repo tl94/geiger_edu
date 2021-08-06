@@ -82,23 +82,37 @@ class DB {
     //TODO: validate lesson box on start check files for new lessons add them tho the lesson category
   }
 
+  static List<Comment> getComments(String lessonId){
+    List<Comment> commentsOfLesson = [];
+    for(var lesson in getCommentBox().values){
+      if(lesson.lessonId == lessonId){
+        commentsOfLesson.add(lesson);
+      }
+    }
+    commentsOfLesson.sort((a,b) => a.dateTime.compareTo(b.dateTime));
+    return commentsOfLesson;
+  }
+
   static void createTestComments() {
     addComment(Comment(
         id: "C001",
         text: "Gibt es ein Programm welches mir meine EMail bereinigt?",
         dateTime: DateTime.now(),
-        lessonId: "LPW001"));
+        lessonId: "LPW001",
+        userId: "XYZ"));
     addComment(Comment(
         id: "C002",
         text: "Hab mir das neue Office geholt, ist das sicher?",
         dateTime: DateTime.now(),
-        lessonId: "LPW001"));
+        lessonId: "LPW001",
+        userId: "XYZ"));
     addComment(Comment(
         id: "C003",
         text:
             "Wie habt ihr das gelöst mit der Verankerung des neuen Kaspersky-Cleaner??",
         dateTime: DateTime.now(),
-        lessonId: "LPW001"));
+        lessonId: "LPW003",
+        userId: "XYZ"));
 
     //
     addComment(Comment(
@@ -106,55 +120,64 @@ class DB {
         text:
         "Wie habt ihr das gelöst mit der Verankerung des neuen Kaspersky-Cleaner??",
         dateTime: DateTime.now(),
-        lessonId: "LPW001"));
+        lessonId: "LPW004",
+        userId: "XYZ"));
     addComment(Comment(
         id: "C005",
         text:
         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
         dateTime: DateTime.now(),
-        lessonId: "LPW001"));
+        lessonId: "LPW005",
+        userId: "XYZ"));
     addComment(Comment(
         id: "C006",
         text:
         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
         dateTime: DateTime.now(),
-        lessonId: "LPW001"));
+        lessonId: "LPW006",
+        userId: "XYZ"));
     addComment(Comment(
         id: "C007",
         text:
         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
         dateTime: DateTime.now(),
-        lessonId: "LPW001"));
+        lessonId: "LPW006",
+        userId: "XYZ"));
     addComment(Comment(
         id: "C008",
         text:
         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
         dateTime: DateTime.now(),
-        lessonId: "LPW001"));
+        lessonId: "LPW006",
+        userId: "XYZ"));
     addComment(Comment(
         id: "C009",
         text:
         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
         dateTime: DateTime.now(),
-        lessonId: "LPW001"));
+        lessonId: "LPW006",
+        userId: "XYZ"));
     addComment(Comment(
         id: "C010",
         text:
         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
         dateTime: DateTime.now(),
-        lessonId: "LPW001"));
+        lessonId: "LPW006",
+        userId: "XYZ"));
     addComment(Comment(
         id: "C011",
         text:
         "Wie habt ihr das gelöst mit der Verankerung des neuen Kaspersky-Cleaner??",
         dateTime: DateTime.now(),
-        lessonId: "LPW001"));
+        lessonId: "LPW006",
+        userId: "XYZ"));
     addComment(Comment(
         id: "C012",
         text:
         "Wie habt ihr das gelöst mit der Verankerung des neuen Kaspersky-Cleaner??",
         dateTime: DateTime.now(),
-        lessonId: "LPW001"));
+        lessonId: "LPW006",
+        userId: "XYZ"));
   }
 
   static void addComment(Comment c) {
@@ -300,7 +323,8 @@ class DB {
     User defaultUser = new User(
         userName: 'Daniel',
         userImagePath: 'assets/img/profile/default.png',
-        userScore: 100);
+        userScore: 100,
+        userId: "default");
     userBox.put("default", defaultUser);
   }
 

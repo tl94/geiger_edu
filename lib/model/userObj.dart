@@ -17,10 +17,14 @@ class User extends HiveObject{
   @HiveField(2)
   int userScore;
 
+  @HiveField(3)
+  String userId;
+
   User({
     required this.userName,
     required this.userImagePath,
-    this.userScore = 0
+    this.userScore = 0,
+    this.userId = "default"
   });
 
   //not used

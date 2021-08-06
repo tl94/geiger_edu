@@ -20,12 +20,17 @@ class Comment extends HiveObject {
   @HiveField(4)
   String lessonId;
 
+  //userid given by the server
+  @HiveField(5)
+  String userId;
+
   Comment({
     required this.id,
     required this.text,
     required this.dateTime,
     this.reply = false,
-    required this.lessonId
+    required this.lessonId,
+    required this.userId,
   });
 
 }
