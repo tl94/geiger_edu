@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:geiger_edu/controller/chat_controller.dart';
-import 'package:geiger_edu/controller/global_controller.dart';
-import 'package:geiger_edu/model/commentObj.dart';
-import 'package:geiger_edu/services/db.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 
 import 'home_screen.dart';
 
@@ -14,198 +10,23 @@ class ChatScreen extends StatelessWidget {
 
   final ChatController chatController = Get.find();
 
-  var bckColor = GlobalController.bckColor;
-  var message = "";
-  var lastMessageId = 0;
-  var currentLessonId = "LPW001";
-  var msgController = TextEditingController();
-
-  /*var items = List<Comment>.generate(5, (i) => new Comment(
-      id: "C00"+i.toString(),
-      text:
-      "Text: $i",
-      dateTime: DateTime.now(),
-      lessonId: "LPW001",
-      userId: "default")).obs;*/
-  var scrollController = ScrollController();
-
-  List<Comment> loadLessons() {
-    return DB.getComments("LPW001");
-  }
-
-  var items = DB.getComments("LPW001").obs;
-
-  var requestedUserId = "XYZ";
-  var defaultUserId = DB.getDefaultUser()!.userId;
-
-  String getUserImagePath() {
-    if (requestedUserId == defaultUserId) {
-      return DB.getDefaultUser()!.userImagePath.toString();
-    } else {
-      //TODO: SERVER REQUEST)
-      return "assets/img/profile/user-09.png";
-    }
-  }
-
-  void setRequestedUserId(int index) {
-    requestedUserId = items[index].userId;
-  }
-
-  String getUserName() {
-    if (requestedUserId == defaultUserId) {
-      if(!DB.getDefaultSetting()!.showAlias){
-        return ("Anonymous");
-      }
-      return DB.getDefaultUser()!.userName;
-    } else {
-      //TODO: SERVER REQUEST)
-      return "???";
-    }
-  }
-
-  String getUserScore() {
-    if (requestedUserId == defaultUserId) {
-      if(!DB.getDefaultSetting()!.showScore){
-        return ("");
-      }
-      return DB.getDefaultUser()!.userScore.toString();
-    } else {
-      //TODO: SERVER REQUEST)
-      return "???";
-    }
-  }
-
-  //if its a comment of the user messages are displayed right
-  MainAxisAlignment getMainAxisAlignment(){
-    //if (requestedUserId == defaultUserId) {
-    //  return MainAxisAlignment.end;
-    //}else{
-      return MainAxisAlignment.start;
-    //}
-  }
-
-  String getCommentDate(int index) {
-    return DateFormat.yMMMd().format(items[index].dateTime);
-  }
-
-  void sendMessage() {
-    if (message != "") {
-      //add message
-      Comment comment = new Comment(
-          id: "C00" + (lastMessageId++).toString(),
-          text: message,
-          dateTime: DateTime.now(),
-          lessonId: currentLessonId,
-          userId: DB.getDefaultUser()!.userId);
-      items.add(comment);
-      DB.addComment(comment);
-      //clear text input
-      msgController.clear();
-      //scroll to the bottom of the list view
-      scrollController.animateTo(
-        scrollController.position.maxScrollExtent + 150, //+height of new item
-        duration: Duration(seconds: 1),
-        curve: Curves.fastOutSlowIn,
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    chatController.getConnectionMode();
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () => Navigator.pushNamed(context, HomeScreen.routeName),
           ),
-          title: Text("Chat"),
+          title: Text("Chat "+chatController.currentLessonId),
           centerTitle: true,
-          backgroundColor: bckColor,
+          backgroundColor: chatController.bckColor,
         ),
-        body: Obx(
-          () => Container(
+        body: Obx(() => Container(
               child: Column(children: [
-            Expanded(
-              child: Container(
-                  child: ListView.builder(
-                controller: scrollController,
-                itemCount: items.length,
-                itemBuilder: (context, index) {
-                  setRequestedUserId(index);
-                  return Container(
-                      margin: EdgeInsets.all(10),
-                      child: Row(
-                        mainAxisAlignment: getMainAxisAlignment(),
-                        children: [
-                          Column(
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(50),
-                                  color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black54,
-                                      blurRadius: 4.0,
-                                      offset: Offset(0.0, 4),
-                                    ),
-                                  ],
-                                ),
-                                child: ClipOval(
-                                    child: Image.asset(getUserImagePath(),
-                                        width: 50)),
-                              ),
-                              Text(getUserScore())
-                            ],
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Container(
-                            width: context.width / 2,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.all(10),
-                                  margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: Color.fromRGBO(234, 240, 243, 1),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      //TODO: SERVER REQUEST
-                                      Text(getUserName()),
-                                      Container(
-                                        width: context.width,
-                                        child: Text(items[index].text),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text("Antworten"),
-                                    Text(getCommentDate(index))
-                                  ],
-                                )
-                              ],
-                            ),
-                          )
-                        ],
-                      )
-                      //child: ListTile(
-                      //  title: Text(items[index].text),subtitle: Text(items[index].dateTime.toString()),
-                      //)
-                      );
-                },
-              )),
-            ),
+
+                          chatController.getContentWidget(),
 
             //** INPUT BAR **
             Container(
@@ -226,7 +47,7 @@ class ChatScreen extends StatelessWidget {
                       //Normal textInputField will be displayed
                       maxLines: 5,
                       // when user presses enter it will adapt to it
-                      controller: msgController,
+                      controller: chatController.msgController,
                       decoration: InputDecoration(
                         hintText: "Write a comment...",
                         border: OutlineInputBorder(
@@ -240,12 +61,12 @@ class ChatScreen extends StatelessWidget {
                         text = text + "\n";
                       },
                       onChanged: (text) {
-                        message = text;
+                        chatController.message = text;
                       },
                     ),
                   ),
                   GestureDetector(
-                    onTap: () => {sendMessage()},
+                    onTap: () => {chatController.sendMessage()},
                     child: Container(
                         width: 20,
                         height: 20,

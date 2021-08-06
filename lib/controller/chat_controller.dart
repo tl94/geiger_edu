@@ -1,5 +1,225 @@
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:connectivity/connectivity.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:geiger_edu/controller/global_controller.dart';
+import 'package:geiger_edu/model/commentObj.dart';
+import 'package:geiger_edu/services/db.dart';
+import 'package:geiger_edu/services/internet_connectivity.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class ChatController extends GetxController {
+  var bckColor = GlobalController.bckColor;
+  var message = "";
+  var lastMessageId = 0;
+  var currentLessonId = "LPW001";
+  var msgController = TextEditingController();
+
+  /*var items = List<Comment>.generate(5, (i) => new Comment(
+      id: "C00"+i.toString(),
+      text:
+      "Text: $i",
+      dateTime: DateTime.now(),
+      lessonId: "LPW001",
+      userId: "default")).obs;*/
+  var scrollController = ScrollController();
+
+
+  Map _source = {ConnectivityResult.none: false}.obs;
+  MyConnectivity _connectivity = MyConnectivity.instance;
+
+  void getConnectionMode(){
+    //online offline check
+    print("ENTER::");
+    _connectivity.initialise();
+    _connectivity.myStream.listen((source) {
+      //_source = source;
+      _source.assignAll(source);
+      print("MATRIX CHANGED:: "+source.keys.toList()[0].toString());
+    });
+  }
+
+  //unused
+  List<Comment> loadLessons() {
+    return DB.getComments("LPW001");
+  }
+
+  var items = DB.getComments("LPW001").obs;
+
+  var requestedUserId = "XYZ";
+  var defaultUserId = DB.getDefaultUser()!.userId;
+
+  String getUserImagePath() {
+    print(DB.getComments("LPW001").length);
+    if (requestedUserId == defaultUserId) {
+      return DB.getDefaultUser()!.userImagePath.toString();
+    } else {
+      //TODO: SERVER REQUEST)
+      return "assets/img/profile/user-09.png";
+    }
+  }
+
+  void setRequestedUserId(int index) {
+    requestedUserId = items[index].userId;
+  }
+
+  String getUserName() {
+    if (requestedUserId == defaultUserId) {
+      if(!DB.getDefaultSetting()!.showAlias){
+        return ("Anonymous");
+      }
+      return DB.getDefaultUser()!.userName;
+    } else {
+      //TODO: SERVER REQUEST)
+      return "???";
+    }
+  }
+
+  Expanded getContentWidget(){
+
+    switch (_source.keys.toList()[0]) {
+      case ConnectivityResult.none:
+        print("Offline");
+        break;
+      case ConnectivityResult.mobile:
+        print("Online");
+        break;
+      case ConnectivityResult.wifi:
+        print("Online");
+    }
+
+
+    if(_source.keys.toList()[0] == ConnectivityResult.none){
+      return Expanded(child: Text("NO INTERNET CONNECTION AVAILABLE"));
+    }
+    return Expanded(
+      child: Container(
+          child: ListView.builder(
+            controller: scrollController,
+            itemCount: items.length,
+            itemBuilder: (context, index) {
+              setRequestedUserId(index);
+              return Container(
+                  margin: EdgeInsets.all(10),
+                  child: Row(
+                    mainAxisAlignment: getMainAxisAlignment(),
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Column(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(50),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black54,
+                                  blurRadius: 4.0,
+                                  offset: Offset(0.0, 4),
+                                ),
+                              ],
+                            ),
+                            child: ClipOval(
+                                child: Image.asset(getUserImagePath(),
+                                    width: 50)),
+                          ),
+                          Text(getUserScore())
+                        ],
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Container(
+                        width: context.width / 2,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(10),
+                              margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: Color.fromRGBO(234, 240, 243, 1),
+                              ),
+                              child: Column(
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                                children: [
+                                  Text(getUserName()),
+                                  Container(
+                                    width: context.width,
+                                    child: Text(items[index].text),
+                                  )
+                                ],
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Antworten"),
+                                Text(getCommentDate(index))
+                              ],
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  )
+                //child: ListTile(
+                //  title: Text(items[index].text),subtitle: Text(items[index].dateTime.toString()),
+                //)
+              );
+            },
+          )),
+    );
+  }
+
+  String getUserScore() {
+    if (requestedUserId == defaultUserId) {
+      if(!DB.getDefaultSetting()!.showScore){
+        return ("");
+      }
+      return DB.getDefaultUser()!.userScore.toString();
+    } else {
+      //TODO: SERVER REQUEST)
+      return "???";
+    }
+  }
+
+  //if its a comment of the user messages are displayed right
+  MainAxisAlignment getMainAxisAlignment(){
+    //if (requestedUserId == defaultUserId) {
+    //  return MainAxisAlignment.end;
+    //}else{
+    return MainAxisAlignment.start;
+    //}
+  }
+
+  String getCommentDate(int index) {
+    return DateFormat.yMMMd().format(items[index].dateTime);
+  }
+
+  void sendMessage() {
+    if (message != "") {
+      //add message
+      Comment comment = new Comment(
+          id: "C00_" + DateTime.now().toString(), //TODO: SERVER RESPONSE
+          text: message,
+          dateTime: DateTime.now(),
+          lessonId: currentLessonId,
+          userId: DB.getDefaultUser()!.userId);
+      items.add(comment);
+      DB.addComment(comment);
+      //clear text input
+      msgController.clear();
+      //scroll to the bottom of the list view
+      scrollController.animateTo(
+        scrollController.position.maxScrollExtent + 150, //+height of new item
+        duration: Duration(seconds: 1),
+        curve: Curves.fastOutSlowIn,
+      );
+    }
+  }
 
 }

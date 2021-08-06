@@ -34,6 +34,9 @@ dependencies:
   webview_flutter: ^2.0.9
   flutter_inappwebview: ^5.3.2
 
+  #connectivity
+  connectivity: ^3.0.6
+
   #chat
   flutter_chat_ui: ^1.1.9
   #chat utils
