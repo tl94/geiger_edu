@@ -1,15 +1,153 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui/flutter_chat_ui.dart';
-import 'package:geiger_edu/controller/global_controller.dart';
+import 'package:flutter/rendering.dart';
 import 'package:geiger_edu/controller/chat_controller.dart';
-import 'dart:convert';
+import 'package:geiger_edu/controller/global_controller.dart';
+import 'package:geiger_edu/controller/lesson_controller.dart';
+import 'package:geiger_edu/model/commentObj.dart';
+import 'package:geiger_edu/screens/lesson_category_selection_screen.dart';
+import 'package:geiger_edu/screens/profile_screen.dart';
+import 'package:geiger_edu/screens/settings_screen.dart';
+import 'package:geiger_edu/widgets/indicator.dart';
+import 'package:geiger_edu/widgets/navigation_container.dart';
+import 'package:get/get.dart';
+
+import 'comments_screen.dart';
+import 'home_screen.dart';
+import 'lesson_screen.dart';
+
+class ChatScreen extends StatelessWidget {
+  static const routeName = '/chatScreen';
+
+  final ChatController chatController = Get.find();
+
+  var bckColor = GlobalController.bckColor;
+  var message = "";
+  var lastMessageId = 0;
+  var currentLessonId = "LPW001";
+  var msgController = TextEditingController();
+  var items = List<Comment>.generate(20, (i) => new Comment(
+      id: "C00"+i.toString(),
+      text:
+      "Text: $i",
+      dateTime: DateTime.now(),
+      lessonId: "LPW001")).obs;
+  var scrollController = ScrollController();
+
+  void sendMessage(){
+    if(message!="") {
+      //add message
+      Comment comment = new Comment(
+          id: "C00"+(lastMessageId++).toString(),
+          text: message,
+          dateTime: DateTime.now(),
+          lessonId: currentLessonId);
+      items.add(comment);
+      //clear text input
+      msgController.clear();
+      //scroll to the bottom of the list view
+      scrollController.animateTo(
+        scrollController.position.maxScrollExtent+50, //+height of new item
+        duration: Duration(seconds: 1),
+        curve: Curves.fastOutSlowIn,
+      );
+    }
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pushNamed(context, HomeScreen.routeName),
+        ),
+        title: Text("Chat"),
+        centerTitle: true,
+        backgroundColor: bckColor,
+      ),
+      body: Obx (()=> Container(
+          child: Column(children: [
+
+              Expanded(
+                child: Container(
+                  child: ListView.builder(
+                    controller: scrollController,
+                    itemCount: items.length,
+                    itemBuilder: (context, index) {
+                      return Container(child: ListTile(
+                        title: Text(items[index].text),subtitle: Text(items[index].dateTime.toString()),
+                      )
+                      );
+                    },
+                  )
+                ),
+              ),
+
+
+              //** INPUT BAR **
+              Container(
+                margin: EdgeInsets.fromLTRB(20, 20, 20, 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Image.asset(
+                      "assets/img/delete_icon.png",
+                      width: 20,
+                      color: Colors.grey,
+                    ),
+                    Container(
+                        width: context.width - 90,
+                        child: TextField(
+                            keyboardType: TextInputType.multiline,
+                            minLines: 1,//Normal textInputField will be displayed
+                            maxLines: 5,// when user presses enter it will adapt to it
+                            controller: msgController,
+                            decoration: InputDecoration(
+                              hintText: "Write a comment...",
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              contentPadding:
+                              EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                        ),
+                            onSubmitted:(text) { print(text); text=text+"\n"; }, onChanged:(text){ message = text;},),
+                    ),
+                GestureDetector(
+                  onTap: () => { sendMessage() },
+                  child:
+                      Container(width: 20, height: 20,child:
+                    Image.asset(
+                      "assets/img/arrow_right.png",
+                      width: 10,
+                      color: Colors.blue,
+                    )),
+                )
+                  ],
+                ),
+              )
+          ])
+      ),
+    )
+    );
+
+  }
+
+
+
+}
+
+
+
+/*
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:mime/mime.dart';
 import 'package:open_file/open_file.dart';
 import 'package:uuid/uuid.dart';
@@ -161,7 +299,9 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void _loadMessages() async {
+    //simulate server response
     final response = await rootBundle.loadString('assets/messages.json');
+
     final messages = (jsonDecode(response) as List)
         .map((e) => types.Message.fromJson(e as Map<String, dynamic>))
         .toList();
@@ -185,3 +325,4 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 }
+ */

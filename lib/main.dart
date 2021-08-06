@@ -64,7 +64,7 @@ class _MyAppState extends State<MyApp> {
     Future.delayed(Duration(seconds: 5), () {
       widget.lessonController.getLessonNumbers();
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => HomeScreen()));//HomeScreen()));
+          context, MaterialPageRoute(builder: (context) => ChatScreen()));//HomeScreen()));
     });
   }
 
