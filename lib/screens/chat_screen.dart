@@ -277,7 +277,11 @@ class ChatScreen extends StatelessWidget {
                             ),
                           ),
                           GestureDetector(
-                            onTap: () => {chatController.sendMessage()},
+                            onTap: () {
+
+                              chatController.sendMessage();
+                              FocusScope.of(context).requestFocus(FocusNode());
+                              },
                             child: Container(
                                 child: InkWell(
                                     child: Image.asset(

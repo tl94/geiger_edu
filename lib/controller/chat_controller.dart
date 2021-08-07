@@ -162,7 +162,7 @@ class ChatController extends GetxController {
       currentImage.value = "" ;
       //scroll to the bottom of the list view
       scrollController.animateTo(
-        scrollController.position.maxScrollExtent + 150, //+height of new item
+        scrollController.position.maxScrollExtent, //+height of new item
         duration: Duration(seconds: 1),
         curve: Curves.fastOutSlowIn,
       );
