@@ -136,16 +136,21 @@ class ChatController extends GetxController {
   void saveImageLocally() async {
     final File file = File( currentImage.value );
     file.copy(await getFilePath());
-
+    print(await getFilePath());
   }
 
   Future<void> sendMessage() async {
     if (message != "" || currentImage.value != "") {
       //add message
       var attachedImage;
+      var imageId = '';
       if(currentImage.value != ""){
         attachedImage = await getFilePath();
+        imageId = await ChatAPI.sendImage(currentImage.value, currentLessonId);
+
+        print(imageId);
         saveImageLocally();
+
       }else{
         attachedImage = null;
       }
@@ -157,6 +162,7 @@ class ChatController extends GetxController {
           dateTime: DateTime.now(),
           lessonId: currentLessonId,
           userId: DB.getDefaultUser()!.userId,
+          imageId: imageId,
           imageFilePath: attachedImage);
       // items.add(comment);
       ChatAPI.sendMessage(comment);

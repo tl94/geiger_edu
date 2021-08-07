@@ -51,9 +51,12 @@ class Comment extends HiveObject {
     return Comment(
         id: parsedJson['id'],
         text: parsedJson['message'],
+        parentMsgId: parsedJson['parentMsg'],
+        childMsgIds: parsedJson['childMsgs'],
         dateTime: DateTime.parse(dateTime),
         lessonId: roomId,
-        userId: parsedJson['userId']);
+        userId: parsedJson['userId'],
+    imageId: parsedJson['imageId']);
   }
 
   Map<String, dynamic> toJson() => {

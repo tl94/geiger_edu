@@ -61,6 +61,7 @@ class ChatScreen extends StatelessWidget {
                 builder: (box) {
                   var items = DB.getComments(chatController.currentLessonId);
                   var length = items.length;
+
                   return Expanded(
                     child: Container(
                         child: ListView.builder(
@@ -126,11 +127,11 @@ class ChatScreen extends StatelessWidget {
                                                     child: Container(
                                                       width: context.width,
                                                       child: Image.file(File(
-                                                          chatController.image)),
+                                                          commentImagePath)),
                                                     ),
                                                     onTap: () {
                                                       globalController.selectedImage =
-                                                          chatController.image;
+                                                          commentImagePath;
                                                       Navigator.push(context,
                                                           MaterialPageRoute(
                                                               builder: (_) {
