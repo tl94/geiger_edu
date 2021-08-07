@@ -23,13 +23,14 @@ class CommentAdapter extends TypeAdapter<Comment> {
       reply: fields[3] as bool,
       lessonId: fields[4] as String,
       userId: fields[5] as String,
+      attachedImage: fields[6] as Image?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Comment obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -41,7 +42,9 @@ class CommentAdapter extends TypeAdapter<Comment> {
       ..writeByte(4)
       ..write(obj.lessonId)
       ..writeByte(5)
-      ..write(obj.userId);
+      ..write(obj.userId)
+      ..writeByte(6)
+      ..write(obj.attachedImage);
   }
 
   @override

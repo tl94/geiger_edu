@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import 'package:hive/hive.dart';
 
 part 'commentObj.g.dart';
@@ -24,6 +26,9 @@ class Comment extends HiveObject {
   @HiveField(5)
   String userId;
 
+  @HiveField(6)
+  Image? attachedImage;
+
   Comment({
     required this.id,
     required this.text,
@@ -31,6 +36,7 @@ class Comment extends HiveObject {
     this.reply = false,
     required this.lessonId,
     required this.userId,
+    this.attachedImage
   });
 
 }

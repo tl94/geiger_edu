@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -142,7 +144,8 @@ class ChatScreen extends StatelessWidget {
                                                       OutlinedButton(
                                                           onPressed: () {
                                                             chatController
-                                                                .deleteComment(index);
+                                                                .deleteComment(
+                                                                    index);
                                                             Navigator.of(
                                                                     context,
                                                                     rootNavigator:
@@ -232,56 +235,68 @@ class ChatScreen extends StatelessWidget {
             if (globalController.source.keys.toList()[0] !=
                 ConnectivityResult.none)
               //** INPUT BAR **
+
               Container(
-                margin: EdgeInsets.fromLTRB(15, 5, 15, 5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Image.asset(
-                      "assets/img/delete_icon.png",
-                      width: 20,
-                      color: Colors.grey,
-                    ),
-                    Container(
-                      //height: 40,
-                      width: context.width - 90,
-                      child: TextField(
-                        keyboardType: TextInputType.multiline,
-                        minLines: 1,
-                        //Normal textInputField will be displayed
-                        maxLines: 5,
-                        // when user presses enter it will adapt to it
-                        controller: chatController.msgController,
-                        decoration: InputDecoration(
-                          hintText: "Write a comment...",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
+                  margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                  child: Column(
+                    children: [
+                      if (chatController.currentImage != "")
+                        Container(
+                            height: 150,
+                            child: Image.file(
+                                File(chatController.currentImage.toString()))),
+                      Text(chatController.currentImage.toString()),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                              onTap: () => {chatController.getImage()},
+                              child: Image.asset(
+                                "assets/img/attachment.png",
+                                width: 25,
+                                color: Colors.grey,
+                              )),
+                          Container(
+                            //height: 40,
+                            width: context.width - 90,
+                            child: TextField(
+                              keyboardType: TextInputType.multiline,
+                              minLines: 1,
+                              //Normal textInputField will be displayed
+                              maxLines: 5,
+                              // when user presses enter it will adapt to it
+                              controller: chatController.msgController,
+                              decoration: InputDecoration(
+                                hintText: "Write a comment...",
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 0, horizontal: 15),
+                              ),
+                              onSubmitted: (text) {
+                                text = text + "\n";
+                              },
+                              onChanged: (text) {
+                                chatController.message = text;
+                              },
+                            ),
                           ),
-                          contentPadding:
-                              EdgeInsets.symmetric(vertical: 0, horizontal: 15),
-                        ),
-                        onSubmitted: (text) {
-                          text = text + "\n";
-                        },
-                        onChanged: (text) {
-                          chatController.message = text;
-                        },
+                          GestureDetector(
+                            onTap: () => {chatController.sendMessage()},
+                            child: Container(
+                                child: InkWell(
+                                    child: Image.asset(
+                              "assets/img/arrow_send.png",
+                              width: 30,
+                              height: 50,
+                              //color: Colors.blue,
+                            ))),
+                          )
+                        ],
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: () => {chatController.sendMessage()},
-                      child: Container(
-                          width: 20,
-                          height: 20,
-                          child: Image.asset(
-                            "assets/img/arrow_right.png",
-                            width: 10,
-                            color: Colors.blue,
-                          )),
-                    )
-                  ],
-                ),
-              )
+                    ],
+                  ))
           ])),
         ));
   }

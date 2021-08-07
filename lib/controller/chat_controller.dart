@@ -5,12 +5,25 @@ import 'package:geiger_edu/controller/global_controller.dart';
 import 'package:geiger_edu/model/commentObj.dart';
 import 'package:geiger_edu/services/db.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'dart:io';
 
 class ChatController extends GetxController {
 
 
   final GlobalController globalController = Get.find();
+
+  final ImagePicker _picker = ImagePicker();
+  var currentImage = ''.obs;
+  Future getImage() async {
+    final pickedFile = await _picker.getImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      currentImage = pickedFile.path.toString().obs;
+    } else {
+      print('No image selected.');
+    }
+  }
 
   var bckColor = GlobalController.bckColor;
   var message = "";
@@ -62,6 +75,66 @@ class ChatController extends GetxController {
       return "???";
     }
   }
+  String getUserScore() {
+    if (requestedUserId == defaultUserId) {
+      if(!DB.getDefaultSetting()!.showScore){
+        return ("");
+      }
+      return DB.getDefaultUser()!.userScore.toString();
+    } else {
+      //TODO: SERVER REQUEST)
+      return "???";
+    }
+  }
+
+  //if its a comment of the user messages are displayed right
+  MainAxisAlignment getMainAxisAlignment(){
+    //if (requestedUserId == defaultUserId) {
+    //  return MainAxisAlignment.end;
+    //}else{
+    return MainAxisAlignment.start;
+    //}
+  }
+
+  String getCommentDate(int index) {
+    return DateFormat.yMMMd().format(items[index].dateTime);
+  }
+
+  void deleteComment(int index){
+    DB.deleteComment(items[index].id);
+    //TODO: FIX THIS WORKAROUND::
+    items = DB.getComments(currentLessonId).obs;
+  }
+
+  void sendMessage() {
+    if (message != "" || currentImage != "") {
+      //add message
+      var attachedImage = null;
+      currentImage == "" ? attachedImage = Image.file(File(currentLessonId)) : attachedImage = null;
+      Comment comment = new Comment(
+          id: "C00_"+DateTime.now().toString(), //TODO: SERVER RESPONSE
+          text: message,
+          dateTime: DateTime.now(),
+          lessonId: currentLessonId,
+          userId: DB.getDefaultUser()!.userId,
+          attachedImage: attachedImage);
+      items.add(comment);
+      DB.addComment(comment);
+
+      print("MATRIXX::: "+DB.commentBox.get(comment)!.attachedImage!.image.toString());
+      //clear text input
+      msgController.clear();
+      message="";
+      currentImage="" as RxString;
+      //scroll to the bottom of the list view
+      scrollController.animateTo(
+        scrollController.position.maxScrollExtent + 150, //+height of new item
+        duration: Duration(seconds: 1),
+        curve: Curves.fastOutSlowIn,
+      );
+    }
+  }
+
 /*
 //unused
   Expanded getContentWidget(){
@@ -151,56 +224,5 @@ class ChatController extends GetxController {
     );
   }
 */
-  String getUserScore() {
-    if (requestedUserId == defaultUserId) {
-      if(!DB.getDefaultSetting()!.showScore){
-        return ("");
-      }
-      return DB.getDefaultUser()!.userScore.toString();
-    } else {
-      //TODO: SERVER REQUEST)
-      return "???";
-    }
-  }
-
-  //if its a comment of the user messages are displayed right
-  MainAxisAlignment getMainAxisAlignment(){
-    //if (requestedUserId == defaultUserId) {
-    //  return MainAxisAlignment.end;
-    //}else{
-    return MainAxisAlignment.start;
-    //}
-  }
-
-  String getCommentDate(int index) {
-    return DateFormat.yMMMd().format(items[index].dateTime);
-  }
-
-  void deleteComment(int index){
-    DB.deleteComment(items[index].id);
-    items = DB.getComments(currentLessonId).obs;
-  }
-
-  void sendMessage() {
-    if (message != "") {
-      //add message
-      Comment comment = new Comment(
-          id: "C00_"+DateTime.now().toString(), //TODO: SERVER RESPONSE
-          text: message,
-          dateTime: DateTime.now(),
-          lessonId: currentLessonId,
-          userId: DB.getDefaultUser()!.userId);
-      items.add(comment);
-      DB.addComment(comment);
-      //clear text input
-      msgController.clear();
-      //scroll to the bottom of the list view
-      scrollController.animateTo(
-        scrollController.position.maxScrollExtent + 150, //+height of new item
-        duration: Duration(seconds: 1),
-        curve: Curves.fastOutSlowIn,
-      );
-    }
-  }
 
 }
