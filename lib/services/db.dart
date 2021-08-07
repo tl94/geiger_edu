@@ -336,7 +336,7 @@ class DB {
   }
 
   static void editDefaultUser(
-      String? userName, String? userImagePath, int? userScore) {
+      String? userName, String? userImagePath, int? userScore, bool? showAlias, bool? showScore) {
     User? tempUser = getDefaultUser();
 
     if (tempUser!.userName != userName && null != userName)
@@ -348,22 +348,22 @@ class DB {
     if (tempUser.userScore != userScore && null != userScore)
       tempUser.userScore = userScore;
 
+    if (tempUser.showAlias != showAlias && null != showAlias)
+      tempUser.showAlias = showAlias;
+
+    if (tempUser.showScore != showScore && null != showScore)
+      tempUser.showScore = showScore;
+
     //persist modified User object to database
     userBox.put("default", tempUser);
   }
 
   static void editDefaultSetting(
-      bool? darkmode, bool? showAlias, bool? showScore, String? language) {
+      bool? darkmode, String? language) {
     Setting? tempSetting = getDefaultSetting();
 
     if (tempSetting!.darkmode != darkmode && null != darkmode)
       tempSetting.darkmode = darkmode;
-
-    if (tempSetting.showAlias != showAlias && null != showAlias)
-      tempSetting.showAlias = showAlias;
-
-    if (tempSetting.showScore != showScore && null != showScore)
-      tempSetting.showScore = showScore;
 
     if (tempSetting.language != language && null != language) {
       tempSetting.language = language;
@@ -382,7 +382,7 @@ class DB {
   static void createDefaultSettings() {
     //add default settings to box
     Setting defaultSetting = new Setting(
-        darkmode: false, showAlias: true, showScore: false, language: 'ger');
+        darkmode: false, language: 'ger');
     settingBox.put("default", defaultSetting);
   }
 

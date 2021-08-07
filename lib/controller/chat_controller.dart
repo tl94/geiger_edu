@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:geiger_edu/controller/global_controller.dart';
 import 'package:geiger_edu/model/commentObj.dart';
+import 'package:geiger_edu/providers/chat_api.dart';
 import 'package:geiger_edu/services/db.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -34,8 +35,8 @@ class ChatController extends GetxController {
   var msgController = TextEditingController();
   var image = "";
 
-  String getCommentImagePath(int index){
-    var imageFilePath = DB.getCommentBox().get(items[index].id)!.imageFilePath;
+  String getCommentImagePath(String commentId){
+    var imageFilePath = DB.getCommentBox().get(commentId)!.imageFilePath;
     if(imageFilePath != null){
       return image = imageFilePath;
     }
@@ -56,14 +57,18 @@ class ChatController extends GetxController {
     return DB.getComments("LPW001");
   }
 
-  var items = DB.getComments("LPW001").obs;
+  // var items = DB.getComments("LPW001").obs;
 
   var requestedUserId = "XYZ";
-  var defaultUserId = DB.getDefaultUser()!.userId;
+
+  String getDefaultUserId() {
+    return DB.getDefaultUser()!.userId;
+  }
 
   String getUserImagePath() {
     //print(DB.getComments("LPW001").length);
-    if (requestedUserId == defaultUserId) {
+
+    if (requestedUserId == getDefaultUserId()) {
       return DB.getDefaultUser()!.userImagePath.toString();
     } else {
       //TODO: SERVER REQUEST)
@@ -71,13 +76,13 @@ class ChatController extends GetxController {
     }
   }
 
-  void setRequestedUserId(int index) {
-    requestedUserId = items[index].userId;
+  void setRequestedUserId(String commentId) {
+    requestedUserId = DB.getCommentBox().get(commentId)!.userId;
   }
 
   String getUserName() {
-    if (requestedUserId == defaultUserId) {
-      if(!DB.getDefaultSetting()!.showAlias){
+    if (requestedUserId == getDefaultUserId()) {
+      if(!DB.getDefaultUser()!.showAlias){
         return ("Anonymous");
       }
       return DB.getDefaultUser()!.userName;
@@ -87,8 +92,9 @@ class ChatController extends GetxController {
     }
   }
   String getUserScore() {
-    if (requestedUserId == defaultUserId) {
-      if(!DB.getDefaultSetting()!.showScore){
+    var defaultUserId = DB.getDefaultUser()!.userId;
+    if (requestedUserId == getDefaultUserId()) {
+      if(!DB.getDefaultUser()!.showScore){
         return ("");
       }
       return DB.getDefaultUser()!.userScore.toString();
@@ -107,14 +113,14 @@ class ChatController extends GetxController {
     //}
   }
 
-  String getCommentDate(int index) {
-    return DateFormat.yMMMd().format(items[index].dateTime);
+  String getCommentDate(String commentId) {
+    return DateFormat.yMMMd().format(DB.getCommentBox().get(commentId)!.dateTime);
   }
 
-  void deleteComment(int index){
-    DB.deleteComment(items[index].id);
+  void deleteComment(String commentId){
+    DB.deleteComment(commentId);
     //TODO: FIX THIS WORKAROUND::
-    items.removeAt(index); // = DB.getComments(currentLessonId);
+    // items.removeAt(index); // = DB.getComments(currentLessonId);
   }
 
   Future<String> getFilePath() async {
@@ -152,8 +158,8 @@ class ChatController extends GetxController {
           lessonId: currentLessonId,
           userId: DB.getDefaultUser()!.userId,
           imageFilePath: attachedImage);
-      items.add(comment);
-      DB.addComment(comment);
+      // items.add(comment);
+      ChatAPI.sendMessage(comment);
 
       //print("MATRIXX::: " + DB.commentBox.get(comment)!.imageFilePath!);
       //clear text input

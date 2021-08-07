@@ -57,24 +57,22 @@ class SettingsScreen extends StatelessWidget {
                         Text("Lessons", style: TextStyle(fontSize: 20)),
 
                         HiveListener(
-                          box: DB.getSettingBox(),
-                          keys: [ defaultSetting ], // keys is optional to specify listening value changes
+                          box: DB.getUserBox(),
                           builder: (box) {
                             return LabeledSwitch(
                               label: "Display your alias on the discussion platform",
-                              isSelected: DB.getDefaultSetting()!.showAlias,
+                              isSelected: DB.getDefaultUser()!.showAlias,
                               onChanged: settingsController.switchShowAlias,
                             );
                           },
                         ),
 
                         HiveListener(
-                          box: DB.getSettingBox(),
-                          keys: [ defaultSetting ], // keys is optional to specify listening value changes
+                          box: DB.getUserBox(),
                           builder: (box) {
                             return LabeledSwitch(
                               label: "Display your own score on the discussion platform",
-                              isSelected: DB.getDefaultSetting()!.showScore,
+                              isSelected: DB.getDefaultUser()!.showScore,
                               onChanged: settingsController.switchShowScore,
                             );
                           },

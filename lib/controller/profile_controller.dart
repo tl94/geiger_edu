@@ -26,7 +26,7 @@ class ProfileController extends GetxController {
 
   void saveNewProfileImage(String? s) {
     if (s != null && DB.getDefaultUser()!.userImagePath != s) {
-      DB.editDefaultUser(null, s, null);
+      DB.editDefaultUser(null, s, null, null, null);
     }
   }
 

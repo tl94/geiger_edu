@@ -105,7 +105,7 @@ class ProfileScreen extends StatelessWidget {
                                             .get('default')!
                                             .userName,
                                         onSubmitted: (text) {
-                                          DB.editDefaultUser(text, null, null);
+                                          DB.editDefaultUser(text, null, null, null, null);
                                         });
                                   },
                                 ),

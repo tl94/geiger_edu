@@ -9,20 +9,20 @@ class SettingsController extends GetxController {
   final appVersion = "0.4.210727";
 
   void switchDarkMode() {
-    DB.editDefaultSetting(!DB.getDefaultSetting()!.darkmode, null, null, null);
+    DB.editDefaultSetting(!DB.getDefaultSetting()!.darkmode, null);
   }
 
   void switchShowAlias() {
-    DB.editDefaultSetting(null, !DB.getDefaultSetting()!.showAlias, null, null);
+    DB.editDefaultUser(null, null, null, !DB.getDefaultUser()!.showAlias, null);
   }
 
   void switchShowScore() {
-    DB.editDefaultSetting(null, null, !DB.getDefaultSetting()!.showScore, null);
+    DB.editDefaultUser(null, null, null, null, !DB.getDefaultUser()!.showScore);
   }
 
 // TODO: use this function
   void changeLanguage() {
-    DB.editDefaultSetting(null, null, null, null);
+    DB.editDefaultSetting(null, null);
   }
 
   String getLanguage() {
