@@ -9,17 +9,19 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'dart:io';
 
+import 'package:path_provider/path_provider.dart';
+
 class ChatController extends GetxController {
 
 
   final GlobalController globalController = Get.find();
 
   final ImagePicker _picker = ImagePicker();
-  var currentImage = ''.obs;
+  var currentImage = "".obs;
   Future getImage() async {
     final pickedFile = await _picker.getImage(source: ImageSource.gallery);
     if (pickedFile != null) {
-      currentImage = pickedFile.path.toString().obs;
+      currentImage ( pickedFile.path.toString() );
     } else {
       print('No image selected.');
     }
@@ -30,7 +32,16 @@ class ChatController extends GetxController {
   var lastMessageId = 0;
   var currentLessonId = "LPW001";
   var msgController = TextEditingController();
-  var image = "assets/img/profile/default.png";
+  var image = "";
+
+  String getCommentImagePath(int index){
+    var imageFilePath = DB.getCommentBox().get(items[index].id)!.imageFilePath;
+    if(imageFilePath != null){
+      return image = imageFilePath;
+    }
+    return image = "";
+  }
+
   /*var items = List<Comment>.generate(5, (i) => new Comment(
       id: "C00"+i.toString(),
       text:
@@ -103,29 +114,52 @@ class ChatController extends GetxController {
   void deleteComment(int index){
     DB.deleteComment(items[index].id);
     //TODO: FIX THIS WORKAROUND::
-    items = DB.getComments(currentLessonId).obs;
+    items.removeAt(index); // = DB.getComments(currentLessonId);
   }
 
-  void sendMessage() {
-    if (message != "" || currentImage != "") {
+  Future<String> getFilePath() async {
+    var fileName = currentImage.value.split("/");
+
+    Directory appDocumentsDirectory = await getApplicationDocumentsDirectory();
+    String appDocumentsPath = appDocumentsDirectory.path;
+    String filePath = '$appDocumentsPath/'+ fileName.last;
+//geiger_edu/$currentLessonId
+    return filePath;
+  }
+
+  void saveImageLocally() async {
+    final File file = File( currentImage.value );
+    file.copy(await getFilePath());
+
+  }
+
+  Future<void> sendMessage() async {
+    if (message != "" || currentImage.value != "") {
       //add message
-      var attachedImage = null;
-      currentImage == "" ? attachedImage = Image.file(File(currentLessonId)) : attachedImage = null;
+      var attachedImage;
+      if(currentImage.value != ""){
+        attachedImage = await getFilePath();
+        saveImageLocally();
+      }else{
+        attachedImage = null;
+      }
+
+      //generate comment object
       Comment comment = new Comment(
           id: "C00_"+DateTime.now().toString(), //TODO: SERVER RESPONSE
           text: message,
           dateTime: DateTime.now(),
           lessonId: currentLessonId,
           userId: DB.getDefaultUser()!.userId,
-          attachedImage: attachedImage);
+          imageFilePath: attachedImage);
       items.add(comment);
       DB.addComment(comment);
 
-      print("MATRIXX::: "+DB.commentBox.get(comment)!.attachedImage!.image.toString());
+      //print("MATRIXX::: " + DB.commentBox.get(comment)!.imageFilePath!);
       //clear text input
       msgController.clear();
       message="";
-      currentImage="" as RxString;
+      currentImage.value = "" ;
       //scroll to the bottom of the list view
       scrollController.animateTo(
         scrollController.position.maxScrollExtent + 150, //+height of new item

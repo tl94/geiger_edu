@@ -23,7 +23,7 @@ class CommentAdapter extends TypeAdapter<Comment> {
       reply: fields[3] as bool,
       lessonId: fields[4] as String,
       userId: fields[5] as String,
-      attachedImage: fields[6] as Image?,
+      imageFilePath: fields[6] as String?,
     );
   }
 
@@ -44,7 +44,7 @@ class CommentAdapter extends TypeAdapter<Comment> {
       ..writeByte(5)
       ..write(obj.userId)
       ..writeByte(6)
-      ..write(obj.attachedImage);
+      ..write(obj.imageFilePath);
   }
 
   @override

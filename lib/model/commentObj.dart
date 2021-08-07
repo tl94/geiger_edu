@@ -27,7 +27,7 @@ class Comment extends HiveObject {
   String userId;
 
   @HiveField(6)
-  Image? attachedImage;
+  String? imageFilePath;
 
   Comment({
     required this.id,
@@ -36,7 +36,7 @@ class Comment extends HiveObject {
     this.reply = false,
     required this.lessonId,
     required this.userId,
-    this.attachedImage
+    this.imageFilePath
   });
 
 }

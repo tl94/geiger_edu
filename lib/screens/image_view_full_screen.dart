@@ -1,9 +1,11 @@
+
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:geiger_edu/controller/chat_controller.dart';
 import 'package:geiger_edu/controller/global_controller.dart';
 import 'package:get/get.dart';
+import 'dart:io';
 
 class ImageViewFullScreen extends StatelessWidget {
   static const routeName = '/imageViewFullScreen';
@@ -20,7 +22,7 @@ class ImageViewFullScreen extends StatelessWidget {
             onPressed: () => Navigator.pop(context),
           ),
         ),
-        body: Center(child: Image.asset(globalController.selectedImage)));
+        body: Center(child: Image.file(File(globalController.selectedImage))));
   }
 }
 

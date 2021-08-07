@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:geiger_edu/controller/chat_controller.dart';
 import 'package:geiger_edu/controller/global_controller.dart';
 import 'package:geiger_edu/screens/image_view_full_screen.dart';
@@ -52,6 +53,7 @@ class ChatScreen extends StatelessWidget {
                   itemCount: chatController.items.length,
                   itemBuilder: (context, index) {
                     chatController.setRequestedUserId(index);
+                    var commentImagePath = chatController.getCommentImagePath(index);
                     return Container(
                         margin: EdgeInsets.all(10),
                         child: Row(
@@ -102,13 +104,14 @@ class ChatScreen extends StatelessWidget {
                                       children: [
                                         Text(chatController.getUserName()),
                                         SizedBox(height: 10),
-                                        if (chatController.image !=
+                                        //** COMMENT HAS IMAGE ATTACHED **
+                                        if (commentImagePath !=
                                             "") //chatController.items[index].image
                                           GestureDetector(
                                             child: Container(
                                               width: context.width,
-                                              child: Image.asset(
-                                                  chatController.image),
+                                              child: Image.file(File(
+                                                  chatController.image)),
                                             ),
                                             onTap: () {
                                               globalController.selectedImage =
@@ -120,10 +123,8 @@ class ChatScreen extends StatelessWidget {
                                               }));
                                             },
                                             onLongPress: () {
-                                              if (chatController
-                                                      .requestedUserId ==
-                                                  chatController
-                                                      .defaultUserId) {
+                                              if (chatController.requestedUserId ==
+                                                  chatController.defaultUserId) {
                                                 showDialog(
                                                   context: context,
                                                   builder: (_) => AlertDialog(
@@ -134,33 +135,26 @@ class ChatScreen extends StatelessWidget {
                                                     actions: [
                                                       OutlinedButton(
                                                           onPressed: () {
-                                                            Navigator.of(
-                                                                    context,
-                                                                    rootNavigator:
-                                                                        true)
-                                                                .pop('dialog');
+                                                            //FocusScope.of(context).requestFocus(FocusNode());
+                                                            //SystemChannels.textInput.invokeMethod('TextInput.hide');
+                                                            Navigator.of(context,rootNavigator:true).pop('dialog');
                                                           },
                                                           child: Text("NO")),
                                                       OutlinedButton(
                                                           onPressed: () {
-                                                            chatController
-                                                                .deleteComment(
-                                                                    index);
-                                                            Navigator.of(
-                                                                    context,
-                                                                    rootNavigator:
-                                                                        true)
-                                                                .pop('dialog');
+                                                            chatController.deleteComment(index);
+                                                            Navigator.of(context, rootNavigator: true).pop('dialog');
                                                           },
                                                           child: Text("YES")),
-                                                      //OutlineButton("NO"),
                                                     ],
                                                   ),
                                                 );
                                               }
                                             },
                                           ),
-                                        if (chatController.image ==
+
+                                        //** COMMENT HAS NO IMAGE ATTACHED **
+                                        if (commentImagePath ==
                                             "") //chatController.items[index].image
                                           GestureDetector(
                                             child: Container(
@@ -240,7 +234,7 @@ class ChatScreen extends StatelessWidget {
                   margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
                   child: Column(
                     children: [
-                      if (chatController.currentImage != "")
+                      if (chatController.currentImage.value != "")
                         Container(
                             height: 150,
                             child: Image.file(
