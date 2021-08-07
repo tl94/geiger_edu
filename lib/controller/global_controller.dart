@@ -1,7 +1,11 @@
+import 'dart:convert';
 import 'dart:ui';
 
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:flutter/rendering.dart';
+import 'package:geiger_edu/services/internet_connectivity.dart';
+import 'package:get/get.dart';
 
 class GlobalController extends GetxController {
   static const txtColor = const Color(0xff2f4858);
@@ -13,14 +17,29 @@ class GlobalController extends GetxController {
   bool appRunning = false;
   bool isOnline = false;
 
-
-
-//** USER DATA **
-//Hive-listener Key
+  //** USER DATA **
+  //Hive-listener Key
   String defaultUser = 'default';
   String defaultSetting = 'default';
 
-//** ICONS **
+  //** ICONS **
   String userImg = "assets/img/profile/user_icon.png";
 
+  //** INTERNET CONNECTIVITY **
+  Map source = {ConnectivityResult.none: false}.obs;
+  MyConnectivity _connectivity = MyConnectivity.instance;
+
+  void getConnectionMode() {
+    //online offline check
+    //print("ENTER::");
+    _connectivity.initialise();
+    _connectivity.myStream.listen((src) {
+      //_source = source;
+      source.assignAll(src);
+      //print("MATRIX CHANGED:: " + source.keys.toList()[0].toString());
+    });
+  }
+
+  //** IMAGE FULLSCREEN VIEW **
+  String selectedImage = "";
 }

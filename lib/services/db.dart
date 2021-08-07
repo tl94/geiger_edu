@@ -185,7 +185,10 @@ class DB {
   }
 
   static void deleteComment(String id){
+    print("F:: " +id);
+    print(getCommentBox().containsKey(id));
     getCommentBox().delete(id);
+    print(getCommentBox().containsKey(id));
   }
 
   static void createTestLessons() {

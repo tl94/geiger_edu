@@ -4,17 +4,20 @@ import 'package:flutter/rendering.dart';
 import 'package:geiger_edu/controller/global_controller.dart';
 import 'package:geiger_edu/model/commentObj.dart';
 import 'package:geiger_edu/services/db.dart';
-import 'package:geiger_edu/services/internet_connectivity.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class ChatController extends GetxController {
+
+
+  final GlobalController globalController = Get.find();
+
   var bckColor = GlobalController.bckColor;
   var message = "";
   var lastMessageId = 0;
   var currentLessonId = "LPW001";
   var msgController = TextEditingController();
-
+  var image = "assets/img/profile/default.png";
   /*var items = List<Comment>.generate(5, (i) => new Comment(
       id: "C00"+i.toString(),
       text:
@@ -23,21 +26,6 @@ class ChatController extends GetxController {
       lessonId: "LPW001",
       userId: "default")).obs;*/
   var scrollController = ScrollController();
-
-
-  Map _source = {ConnectivityResult.none: false}.obs;
-  MyConnectivity _connectivity = MyConnectivity.instance;
-
-  void getConnectionMode(){
-    //online offline check
-    print("ENTER::");
-    _connectivity.initialise();
-    _connectivity.myStream.listen((source) {
-      //_source = source;
-      _source.assignAll(source);
-      print("MATRIX CHANGED:: "+source.keys.toList()[0].toString());
-    });
-  }
 
   //unused
   List<Comment> loadLessons() {
@@ -50,7 +38,7 @@ class ChatController extends GetxController {
   var defaultUserId = DB.getDefaultUser()!.userId;
 
   String getUserImagePath() {
-    print(DB.getComments("LPW001").length);
+    //print(DB.getComments("LPW001").length);
     if (requestedUserId == defaultUserId) {
       return DB.getDefaultUser()!.userImagePath.toString();
     } else {
@@ -74,22 +62,10 @@ class ChatController extends GetxController {
       return "???";
     }
   }
-
+/*
+//unused
   Expanded getContentWidget(){
-
-    switch (_source.keys.toList()[0]) {
-      case ConnectivityResult.none:
-        print("Offline");
-        break;
-      case ConnectivityResult.mobile:
-        print("Online");
-        break;
-      case ConnectivityResult.wifi:
-        print("Online");
-    }
-
-
-    if(_source.keys.toList()[0] == ConnectivityResult.none){
+    if(globalController.source.keys.toList()[0] == ConnectivityResult.none){
       return Expanded(child: Text("NO INTERNET CONNECTION AVAILABLE"));
     }
     return Expanded(
@@ -174,7 +150,7 @@ class ChatController extends GetxController {
           )),
     );
   }
-
+*/
   String getUserScore() {
     if (requestedUserId == defaultUserId) {
       if(!DB.getDefaultSetting()!.showScore){
@@ -200,11 +176,16 @@ class ChatController extends GetxController {
     return DateFormat.yMMMd().format(items[index].dateTime);
   }
 
+  void deleteComment(int index){
+    DB.deleteComment(items[index].id);
+    items = DB.getComments(currentLessonId).obs;
+  }
+
   void sendMessage() {
     if (message != "") {
       //add message
       Comment comment = new Comment(
-          id: "C00_" + DateTime.now().toString(), //TODO: SERVER RESPONSE
+          id: "C00_"+DateTime.now().toString(), //TODO: SERVER RESPONSE
           text: message,
           dateTime: DateTime.now(),
           lessonId: currentLessonId,
