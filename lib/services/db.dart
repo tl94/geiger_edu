@@ -99,20 +99,20 @@ class DB {
         text: "Gibt es ein Programm welches mir meine EMail bereinigt?",
         dateTime: DateTime.now(),
         lessonId: "LPW001",
-        userId: "XYZ"));
+        userId: "610ebdb0d6f3d93048080a79"));
     addComment(Comment(
         id: "C002",
         text: "Hab mir das neue Office geholt, ist das sicher?",
         dateTime: DateTime.now(),
         lessonId: "LPW001",
-        userId: "XYZ"));
+        userId: "610ebdb0d6f3d93048080a79"));
     addComment(Comment(
         id: "C003",
         text:
             "Wie habt ihr das gelöst mit der Verankerung des neuen Kaspersky-Cleaner??",
         dateTime: DateTime.now(),
         lessonId: "LPW003",
-        userId: "XYZ"));
+        userId: "610ebdb0d6f3d93048080a79"));
 
     //
     addComment(Comment(

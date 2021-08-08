@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:geiger_edu/model/commentObj.dart';
+import 'package:geiger_edu/model/userObj.dart';
 import 'package:geiger_edu/services/db.dart';
 import 'package:http/http.dart' as http;
 import 'package:async/async.dart';
@@ -166,6 +167,29 @@ class ChatAPI {
       if (!DB.getCommentBox().keys.contains(element.id)) DB.addComment(element);
     });
   }
+
+
+  static Future<User> getForeignUserData(String requestedUserId) async {
+    Uri request = Uri.parse(baseUri + "/users/" + requestedUserId);
+
+    final response = await http.get(request);
+
+    print(response);
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      print(response.body);
+      User user = User.fromJson(json.decode(response.body));
+      print(user.userName);
+      return user;
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load user');
+    }
+  }
+
 }
 
 class Messages {

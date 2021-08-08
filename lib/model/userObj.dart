@@ -39,7 +39,7 @@ class User extends HiveObject {
 
   //not used
   factory User.fromJson(Map<String, dynamic> json) => User(
-        userName: json["username"],
+        userName: json["name"],
         userImagePath: json["profileImage"],
         userScore: json["learnScore"],
     showAlias: json["isAnonymous"],

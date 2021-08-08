@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:geiger_edu/controller/global_controller.dart';
 import 'package:geiger_edu/model/commentObj.dart';
+import 'package:geiger_edu/model/userObj.dart';
 import 'package:geiger_edu/providers/chat_api.dart';
 import 'package:geiger_edu/services/db.dart';
 import 'package:get/get.dart';
@@ -80,15 +81,17 @@ class ChatController extends GetxController {
     requestedUserId = DB.getCommentBox().get(commentId)!.userId;
   }
 
-  String getUserName() {
+  Future<String> getUserName() async {
     if (requestedUserId == getDefaultUserId()) {
       if(!DB.getDefaultUser()!.showAlias){
         return ("Anonymous");
       }
       return DB.getDefaultUser()!.userName;
     } else {
+      User requestedUser = await getRequestedUser(requestedUserId);
+
       //TODO: SERVER REQUEST)
-      return "???";
+      return requestedUser.userName;
     }
   }
   String getUserScore() {
@@ -179,6 +182,13 @@ class ChatController extends GetxController {
         curve: Curves.fastOutSlowIn,
       );
     }
+  }
+
+  Future<User> getRequestedUser(String requestedUserId) async {
+    print("USER: " + requestedUserId);
+    User user = await ChatAPI.getForeignUserData(requestedUserId);
+    print("GOT USER: " + user.userId);
+    return user;
   }
 
 /*
