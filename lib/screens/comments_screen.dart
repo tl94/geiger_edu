@@ -21,12 +21,11 @@ class CommentsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var bckColor = GlobalController.bckColor;
-    commentsController.checkHasComments();
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
-            onPressed: () => Navigator.pushNamed(context, HomeScreen.routeName),
+            onPressed: () => Navigator.of(context).pop(),
           ),
           title: Text("My Comments"),
           centerTitle: true,

@@ -27,10 +27,10 @@ class ChatScreen extends StatelessWidget {
     globalController.getConnectionMode();
     return Scaffold(
         appBar: AppBar(
-/*          leading: IconButton(
+          leading: IconButton(
             icon: Icon(Icons.arrow_back),
-            onPressed: () => Navigator.pushNamed(context, HomeScreen.routeName),
-          ),*/
+            onPressed: () => Navigator.of(context).pop(),
+          ),
           title: Text("Chat " + chatController.currentLessonId),
           centerTitle: true,
           backgroundColor: chatController.bckColor,

@@ -17,8 +17,8 @@ class LessonCompleteController extends GetxController {
   DateTime? selectedDate;
 
   /// navigate to home screen after finish lesson button press
-  void onFinishLessonPressed() {
-    Get.to(() => HomeScreen());
+  void onFinishLessonPressed(BuildContext context) {
+    Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
   /// create quiz result elements to visualise correct / false answers

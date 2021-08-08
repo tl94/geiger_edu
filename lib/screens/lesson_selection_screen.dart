@@ -26,8 +26,7 @@ class LessonSelectionScreen extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pushNamed(
-              context, LessonCategorySelectionScreen.routeName),
+          onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(lessonSelectionController.categoryTitle),
         centerTitle: true,

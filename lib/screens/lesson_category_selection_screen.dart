@@ -29,7 +29,7 @@ class LessonCategorySelectionScreen extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pushNamed(context, HomeScreen.routeName),
+          onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text("Topic Selection"),
         centerTitle: true,

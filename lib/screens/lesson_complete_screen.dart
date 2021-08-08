@@ -49,8 +49,10 @@ class LessonCompleteScreen extends StatelessWidget {
               Text(lessonCompleteController.selectDate.toString()),
             Center(
                 child: ElevatedButton(
-                    onPressed: lessonCompleteController.onFinishLessonPressed,
-                    child: const Text("Finish Lesson"))),
+                    onPressed: () {
+                      lessonCompleteController.onFinishLessonPressed(context);
+    },
+    child: const Text("Finish Lesson"))),
             if (quizResultsGroups.isNotEmpty)
               Expanded(
                 child: SizedBox(
