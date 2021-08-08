@@ -65,9 +65,9 @@ class DB {
     if (!commentsIsOpen) {
       await Hive.openBox<Comment>('comments');
     }
-    if (DB.getCommentBox().keys.isEmpty) {
+    /*if (DB.getCommentBox().keys.isEmpty) {
       createTestComments();
-    }
+    }*/
   }
 
   static Future<bool> databaseExists() async {

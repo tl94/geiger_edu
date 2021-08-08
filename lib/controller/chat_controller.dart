@@ -96,16 +96,12 @@ class ChatController extends GetxController {
       return requestedUser.userName;
     }
   }
-  String getUserScore() {
-    var defaultUserId = DB.getDefaultUser()!.userId;
-    if (requestedUserId == getDefaultUserId()) {
-      if(!DB.getDefaultUser()!.showScore){
-        return ("");
-      }
-      return DB.getDefaultUser()!.userScore.toString();
+
+  String getUserScore(User user) {
+    if (!user.showScore) {
+        return ("-");
     } else {
-      //TODO: SERVER REQUEST)
-      return "???";
+      return user.userScore.toString();
     }
   }
 

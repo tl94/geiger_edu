@@ -125,6 +125,25 @@ class ChatAPI {
     }
   }
 
+  static Future<Messages> fetchUserMessages(String userId) async {
+    // Uri request = Uri(host: host, port: port, path: "/geiger-edu-chat/rooms/" + roomId + "/messages");
+    Uri request = Uri.parse(baseUri + "/users/" + userId + "/messages");
+
+    final response = await http.get(request);
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      Messages messages = Messages.fromJson(json.decode(response.body));
+
+      return messages;
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load messages');
+    }
+  }
+
   static Future<List<int>> fetchImage(String imageId) async {
     Uri request = Uri.parse(baseUri + "/images/" + imageId);
 
