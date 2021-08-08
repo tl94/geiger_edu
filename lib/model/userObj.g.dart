@@ -23,13 +23,14 @@ class UserAdapter extends TypeAdapter<User> {
       userId: fields[3] as String,
       showAlias: fields[4] as bool,
       showScore: fields[5] as bool,
+      currentLesson: fields[6] as Lesson?,
     );
   }
 
   @override
   void write(BinaryWriter writer, User obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.userName)
       ..writeByte(1)
@@ -41,7 +42,9 @@ class UserAdapter extends TypeAdapter<User> {
       ..writeByte(4)
       ..write(obj.showAlias)
       ..writeByte(5)
-      ..write(obj.showScore);
+      ..write(obj.showScore)
+      ..writeByte(6)
+      ..write(obj.currentLesson);
   }
 
   @override

@@ -379,6 +379,14 @@ class DB {
     userBox.put("default", tempUser);
   }
 
+  /// save current lesson state to db for later continuation
+  static void saveCurrentLesson(Lesson lesson) {
+    print("CURRENT LESSON SAVING");
+    User? tempUser = getDefaultUser();
+    tempUser!.currentLesson = lesson;
+    userBox.put("default", tempUser);
+  }
+
   static void createDefaultSettings() {
     //add default settings to box
     Setting defaultSetting = new Setting(

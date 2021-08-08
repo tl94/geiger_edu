@@ -153,32 +153,21 @@ class LessonController extends GetxController {
     currentLesson.lastIndex = page;
     currentPageNotifier.value = page;
     currentTitle(slideTitles[page]);
+    saveCurrentLesson();
     updateNavigatorButtons();
   }
 
   void previousPage() async {
     if (!isOnFirstSlide.value) {
-      currentLessonSlideIndex--;
-      currentLesson.lastIndex--;
-      saveCurrentLesson();
-      currentPageNotifier.value--;
       await pageController.previousPage(duration: _kDuration, curve: _kCurve);
     }
   }
 
   void nextPage() async {
-    print('hewwo');
     if (!isOnLastSlide.value) {
-      print('hewwo 2');
-      currentLessonSlideIndex++;
-      currentLesson.lastIndex++;
-      saveCurrentLesson();
-      currentPageNotifier.value++;
       await pageController.nextPage(duration: _kDuration, curve: _kCurve);
     } else {
-      print('hewwo 3');
       if (!currentLesson.hasQuiz) {
-        print('hewwo 4');
         setLessonCompleted();
         Get.to(() => LessonCompleteScreen());
       }

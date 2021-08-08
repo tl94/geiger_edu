@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:geiger_edu/services/db.dart';
 import 'package:hive/hive.dart';
 
+import 'lessonObj.dart';
+
 part 'userObj.g.dart';
 
 User userFromJson(String str) => User.fromJson(json.decode(str));
@@ -29,13 +31,17 @@ class User extends HiveObject {
   @HiveField(5)
   bool showScore;
 
+  @HiveField(6)
+  Lesson? currentLesson;
+
   User(
       {required this.userName,
       required this.userImagePath,
       this.userScore = 0,
       this.userId = "default",
       this.showAlias = false,
-      this.showScore = true});
+      this.showScore = true,
+      this.currentLesson});
 
   //not used
   factory User.fromJson(Map<String, dynamic> json) => User(
