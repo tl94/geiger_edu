@@ -1,3 +1,4 @@
+import 'package:geiger_edu/providers/chat_api.dart';
 import 'package:geiger_edu/services/db.dart';
 import 'package:get/get.dart';
 
@@ -14,10 +15,12 @@ class SettingsController extends GetxController {
 
   void switchShowAlias() {
     DB.editDefaultUser(null, null, null, !DB.getDefaultUser()!.showAlias, null);
+    ChatAPI.sendUpdatedUserData();
   }
 
   void switchShowScore() {
     DB.editDefaultUser(null, null, null, null, !DB.getDefaultUser()!.showScore);
+    ChatAPI.sendUpdatedUserData();
   }
 
 // TODO: use this function

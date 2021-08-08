@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:geiger_edu/providers/chat_api.dart';
 import 'package:geiger_edu/services/db.dart';
 import 'package:get/get.dart';
 
@@ -27,7 +28,14 @@ class ProfileController extends GetxController {
   void saveNewProfileImage(String? s) {
     if (s != null && DB.getDefaultUser()!.userImagePath != s) {
       DB.editDefaultUser(null, s, null, null, null);
+      // TODO: check for internet connection
+      ChatAPI.sendUpdatedUserData();
     }
+  }
+
+  void saveNewUserName(String name) {
+    DB.editDefaultUser(name, null, null, null, null);
+    ChatAPI.sendUpdatedUserData();
   }
 
   /// returns list of widgets with images that can be selected via tap

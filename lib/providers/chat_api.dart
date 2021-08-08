@@ -2,11 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:async/async.dart';
 import 'package:geiger_edu/model/commentObj.dart';
 import 'package:geiger_edu/model/userObj.dart';
 import 'package:geiger_edu/services/db.dart';
 import 'package:http/http.dart' as http;
-import 'package:async/async.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -24,8 +24,7 @@ class ChatAPI {
     var user = DB.getDefaultUser();
 
     if (user!.userId == 'default') {
-      Uri request =
-      Uri.parse(baseUri + "/users");
+      Uri request = Uri.parse(baseUri + "/users");
 
       final response = await http.post(request,
           headers: <String, String>{
@@ -48,13 +47,11 @@ class ChatAPI {
         },
         body: json.encode(comment.toJson()));
 
-    print(json.encode(comment.toJson()));
     // print(response.body);
 
     if (response.statusCode == 201) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
-      print(json.decode(response.body));
       Comment c = Comment.fromJson(json.decode(response.body));
       comment.id = c.id;
       DB.addComment(comment);
@@ -65,11 +62,13 @@ class ChatAPI {
     }
   }
 
-  static Future<String> sendImage(String imageFilePath, String currentLessonId) async {
+  static Future<String> sendImage(
+      String imageFilePath, String currentLessonId) async {
     var imageFile = File(imageFilePath);
 
     // open a bytestream
-    var stream = new http.ByteStream(DelegatingStream.typed(imageFile.openRead()));
+    var stream =
+        new http.ByteStream(DelegatingStream.typed(imageFile.openRead()));
     // get file length
     var length = await imageFile.length();
 
@@ -90,8 +89,6 @@ class ChatAPI {
 
     // send
     var response = await request.send();
-    print(response.statusCode);
-
 
     if (response.statusCode == 201) {
       // If the server did return a 200 OK response,
@@ -151,37 +148,31 @@ class ChatAPI {
 
     msgs.messages.forEach((element) async {
       if (element.imageId != null && element.imageId != '') {
-
-        List<int> imageBytes = await fetchImage(element.imageId!);
-        Directory appDocumentsDirectory = await getApplicationDocumentsDirectory();
+        Directory appDocumentsDirectory =
+            await getApplicationDocumentsDirectory();
         String appDocumentsPath = appDocumentsDirectory.path;
-        String filePath = '$appDocumentsPath/'+ element.imageId! + '.png';
+        String filePath = '$appDocumentsPath/' + element.imageId! + '.png';
         File imageFile = File(filePath);
-        imageFile = await imageFile.writeAsBytes(imageBytes);
-        element.imageFilePath = imageFile.path;
-
-
-        //  TODO: save image, add image file path to comment
+        if (!imageFile.existsSync()) {
+          List<int> imageBytes = await fetchImage(element.imageId!);
+          imageFile = await imageFile.writeAsBytes(imageBytes);
+          element.imageFilePath = imageFile.path;
+        }
       }
 
       if (!DB.getCommentBox().keys.contains(element.id)) DB.addComment(element);
     });
   }
 
-
   static Future<User> getForeignUserData(String requestedUserId) async {
     Uri request = Uri.parse(baseUri + "/users/" + requestedUserId);
 
     final response = await http.get(request);
 
-    print(response);
-
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
-      print(response.body);
       User user = User.fromJson(json.decode(response.body));
-      print(user.userName);
       return user;
     } else {
       // If the server did not return a 200 OK response,
@@ -190,6 +181,28 @@ class ChatAPI {
     }
   }
 
+  static void sendUpdatedUserData() async {
+    User user = DB.getDefaultUser()!;
+
+    Uri request = Uri.parse(baseUri + "/users/" + user.userId);
+
+    var data = json.encode(user.toJson());
+    print(data);
+    final response = await http.put(request,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: data);
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to update user');
+    }
+  }
 }
 
 class Messages {

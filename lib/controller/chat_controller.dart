@@ -139,7 +139,6 @@ class ChatController extends GetxController {
   void saveImageLocally() async {
     final File file = File( currentImage.value );
     file.copy(await getFilePath());
-    print(await getFilePath());
   }
 
   Future<void> sendMessage() async {
@@ -150,8 +149,6 @@ class ChatController extends GetxController {
       if(currentImage.value != ""){
         attachedImage = await getFilePath();
         imageId = await ChatAPI.sendImage(currentImage.value, currentLessonId);
-
-        print(imageId);
         saveImageLocally();
 
       }else{
@@ -185,9 +182,7 @@ class ChatController extends GetxController {
   }
 
   Future<User> getRequestedUser(String requestedUserId) async {
-    print("USER: " + requestedUserId);
     User user = await ChatAPI.getForeignUserData(requestedUserId);
-    print("GOT USER: " + user.userId);
     return user;
   }
 
