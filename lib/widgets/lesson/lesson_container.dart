@@ -1,18 +1,35 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geiger_edu/controller/chat_controller.dart';
 import 'package:geiger_edu/controller/lesson_controller.dart';
+import 'package:geiger_edu/providers/chat_api.dart';
+import 'package:geiger_edu/screens/chat_screen.dart';
 import 'package:get/get.dart';
 import 'package:page_view_indicators/step_page_indicator.dart';
 
 class LessonContainer extends StatelessWidget {
   final LessonController lessonController = Get.find();
+  final ChatController chatController = Get.find();
 
   static const _buttonColor = Color.fromRGBO(0, 0, 0, 0.2);
 
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar:
-            AppBar(title: Obx(() => Text(lessonController.currentTitle.value))),
+        appBar: AppBar(
+            actions: [
+              IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: () {
+                  chatController.currentLessonId = lessonController.currentLesson.lessonId;
+                  ChatAPI.authenticateUser();
+                  ChatAPI.saveMessagesToDB(ChatAPI.fetchMessages(chatController.currentLessonId));
+                  Navigator.pushNamed(context, ChatScreen.routeName);
+                }
+                ,
+              )
+            ],
+            title: Obx(() => Text(lessonController.currentTitle.value)),
+            centerTitle: true),
         body: Container(
             child: Column(children: [
           Row(
@@ -62,7 +79,7 @@ class LessonContainer extends StatelessWidget {
               }),
               Obx(() {
                 if (!lessonController.isOnLastSlide.value ||
-                    !lessonController.getCurrentLesson().hasQuiz) {
+                    !lessonController.getLesson().hasQuiz) {
                   return Align(
                       alignment: Alignment.centerRight,
                       child: Material(

@@ -54,6 +54,8 @@ class DB {
     if (!lessonCategoriesIsOpen) {
       await Hive.openBox<LessonCategory>('lessonCategories');
     }
+    // if(DB.getLessonCategoryBox().keys.isEmpty)
+    print("LESSON CATEGORIES OPEN");
 
     if (!lessonsIsOpen) {
       await Hive.openBox<Lesson>('lessons');
@@ -63,134 +65,132 @@ class DB {
     if (!commentsIsOpen) {
       await Hive.openBox<Comment>('comments');
     }
-    if (DB.getCommentBox().keys.isEmpty) {
+    /*if (DB.getCommentBox().keys.isEmpty) {
       createTestComments();
-    }
+    }*/
   }
 
   static Future<bool> databaseExists() async {
+    print("DATABASE EXISTS?");
     return await Hive.boxExists('users') &&
         await Hive.boxExists('settings') &&
         await Hive.boxExists('lessons') &&
         await Hive.boxExists('lessonCategories');
   }
 
-  //TODO: validate lesson box on start check files for new lessons add them tho the lesson category
-  static void updateLessonBox() {}
-
-  static void createDefaultUser() {
-    //add default user to box
-    User defaultUser = new User(
-        userName: 'Daniel',
-        userImagePath: 'assets/img/profile/default.png',
-        userScore: 100);
-    userBox.put("default", defaultUser);
+  static void updateLessonBox() {
+    //TODO: validate lesson box on start check files for new lessons add them tho the lesson category
   }
 
-  static void editDefaultUser(
-      String? userName, String? userImagePath, int? userScore) {
-    User? tempUser = getDefaultUser();
-
-    if (tempUser!.userName != userName && null != userName)
-      tempUser.userName = userName;
-
-    if (tempUser.userImagePath != userImagePath && null != userImagePath)
-      tempUser.userImagePath = userImagePath;
-
-    if (tempUser.userScore != userScore && null != userScore)
-      tempUser.userScore = userScore;
-
-    //persist modified User object to database
-    userBox.put("default", tempUser);
-  }
-
-  static void modifyUserScore(int score) {
-    User? tempUser = getDefaultUser();
-    tempUser!.userScore += score;
-    userBox.put("default", tempUser);
-  }
-
-  /// save current lesson state to db for later continuation
-  static void saveCurrentLesson(Lesson lesson) {
-    User? tempUser = getDefaultUser();
-    tempUser!.currentLesson = lesson;
-    userBox.put("default", tempUser);
-  }
-
-  static void createDefaultSettings() {
-    //add default settings to box
-    Setting defaultSetting = new Setting(
-        darkmode: false, showAlias: true, showScore: false, language: 'ger');
-    settingBox.put("default", defaultSetting);
-  }
-
-  static void editDefaultSetting(
-      bool? darkmode, bool? showAlias, bool? showScore, String? language) {
-    Setting? tempSetting = getDefaultSettings();
-
-    if (tempSetting!.darkmode != darkmode && null != darkmode)
-      tempSetting.darkmode = darkmode;
-
-    if (tempSetting.showAlias != showAlias && null != showAlias)
-      tempSetting.showAlias = showAlias;
-
-    if (tempSetting.showScore != showScore && null != showScore)
-      tempSetting.showScore = showScore;
-
-    if (tempSetting.language != language && null != language) {
-      tempSetting.language = language;
+  static List<Comment> getComments(String lessonId){
+    List<Comment> commentsOfLesson = [];
+    for(var lesson in getCommentBox().values){
+      if(lesson.lessonId == lessonId){
+        commentsOfLesson.add(lesson);
+      }
     }
+    commentsOfLesson.sort((a,b) => a.dateTime.compareTo(b.dateTime));
+    return commentsOfLesson;
+  }
 
-    //persist modified Settings object to database
-    settingBox.put("default", tempSetting);
+  static void createTestComments() {
+    addComment(Comment(
+        id: "C001",
+        text: "Gibt es ein Programm welches mir meine EMail bereinigt?",
+        dateTime: DateTime.now(),
+        lessonId: "LPW001",
+        userId: "610ebdb0d6f3d93048080a79"));
+    addComment(Comment(
+        id: "C002",
+        text: "Hab mir das neue Office geholt, ist das sicher?",
+        dateTime: DateTime.now(),
+        lessonId: "LPW001",
+        userId: "610ebdb0d6f3d93048080a79"));
+    addComment(Comment(
+        id: "C003",
+        text:
+            "Wie habt ihr das gelöst mit der Verankerung des neuen Kaspersky-Cleaner??",
+        dateTime: DateTime.now(),
+        lessonId: "LPW003",
+        userId: "610ebdb0d6f3d93048080a79"));
+
+    //
+    addComment(Comment(
+        id: "C004",
+        text:
+        "Wie habt ihr das gelöst mit der Verankerung des neuen Kaspersky-Cleaner??",
+        dateTime: DateTime.now(),
+        lessonId: "LPW004",
+        userId: "XYZ"));
+    addComment(Comment(
+        id: "C005",
+        text:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+        dateTime: DateTime.now(),
+        lessonId: "LPW005",
+        userId: "XYZ"));
+    addComment(Comment(
+        id: "C006",
+        text:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+        dateTime: DateTime.now(),
+        lessonId: "LPW006",
+        userId: "XYZ"));
+    addComment(Comment(
+        id: "C007",
+        text:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+        dateTime: DateTime.now(),
+        lessonId: "LPW006",
+        userId: "XYZ"));
+    addComment(Comment(
+        id: "C008",
+        text:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+        dateTime: DateTime.now(),
+        lessonId: "LPW006",
+        userId: "XYZ"));
+    addComment(Comment(
+        id: "C009",
+        text:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+        dateTime: DateTime.now(),
+        lessonId: "LPW006",
+        userId: "XYZ"));
+    addComment(Comment(
+        id: "C010",
+        text:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+        dateTime: DateTime.now(),
+        lessonId: "LPW006",
+        userId: "XYZ"));
+    addComment(Comment(
+        id: "C011",
+        text:
+        "Wie habt ihr das gelöst mit der Verankerung des neuen Kaspersky-Cleaner??",
+        dateTime: DateTime.now(),
+        lessonId: "LPW006",
+        userId: "XYZ"));
+    addComment(Comment(
+        id: "C012",
+        text:
+        "Wie habt ihr das gelöst mit der Verankerung des neuen Kaspersky-Cleaner??",
+        dateTime: DateTime.now(),
+        lessonId: "LPW006",
+        userId: "XYZ"));
   }
 
   static void addComment(Comment c) {
     getCommentBox().put(c.id, c);
   }
 
-  static User? getDefaultUser() {
-    return userBox.get("default");
+  static void deleteComment(String id){
+    print("F:: " +id);
+    print(getCommentBox().containsKey(id));
+    getCommentBox().delete(id);
+    print(getCommentBox().containsKey(id));
   }
 
-  static Setting? getDefaultSettings() {
-    return settingBox.get("default");
-  }
-
-  static Box<User> getUserBox() {
-    return userBox;
-  }
-
-  static Box<Setting> getSettingBox() {
-    return settingBox;
-  }
-
-  static Box<Lesson> getLessonBox() {
-    return lessonBox;
-  }
-
-  static Box<LessonCategory> getLessonCategoryBox() {
-    return lessonCategoryBox;
-  }
-
-  static Box<Comment> getCommentBox() {
-    return commentBox;
-  }
-
-  static void wipeDB() async {
-    //delete the hive-boxes, clears the file content from the device
-    await Hive.deleteBoxFromDisk('users');
-    await Hive.deleteBoxFromDisk('settings');
-    await Hive.deleteBoxFromDisk('lessons');
-    await Hive.deleteBoxFromDisk('lessonCategories');
-    await Hive.deleteBoxFromDisk('comments');
-    // await Hive.deleteBoxFromDisk('xapis');
-  }
-
-
-
-  //** Creation of static test data **
-  /// create test lessons
   static void createTestLessons() {
     //TODO: replace with updateLessonBox
     Lesson l1 = new Lesson(
@@ -321,23 +321,103 @@ class DB {
     getLessonCategoryBox().put(c2.lessonCategoryId, c2);
   }
 
-  /// create test comments
-  static void createTestComments() {
-    addComment(Comment(
-        id: "C001",
-        text: "Gibt es ein Programm welches mir meine EMail bereinigt?",
-        dateTime: DateTime.now(),
-        lessonId: "LPW001"));
-    addComment(Comment(
-        id: "C002",
-        text: "Hab mir das neue Office geholt, ist das sicher?",
-        dateTime: DateTime.now(),
-        lessonId: "LPW001"));
-    addComment(Comment(
-        id: "C003",
-        text:
-            "Wie habt ihr das gelöst mit der Verankerung des neuen Kaspersky-Cleaner??",
-        dateTime: DateTime.now(),
-        lessonId: "LPW001"));
+  static void createDefaultUser() {
+    //add default user to box
+    User defaultUser = new User(
+        userName: 'Daniel',
+        userImagePath: 'assets/img/profile/default.png',
+        userScore: 100,
+        userId: "default");
+    userBox.put("default", defaultUser);
+  }
+
+  static User? getDefaultUser() {
+    return userBox.get("default");
+  }
+
+  static void editDefaultUser(
+      String? userName, String? userImagePath, int? userScore, bool? showAlias, bool? showScore) {
+    User? tempUser = getDefaultUser();
+
+    if (tempUser!.userName != userName && null != userName)
+      tempUser.userName = userName;
+
+    if (tempUser.userImagePath != userImagePath && null != userImagePath)
+      tempUser.userImagePath = userImagePath;
+
+    if (tempUser.userScore != userScore && null != userScore)
+      tempUser.userScore = userScore;
+
+    if (tempUser.showAlias != showAlias && null != showAlias)
+      tempUser.showAlias = showAlias;
+
+    if (tempUser.showScore != showScore && null != showScore)
+      tempUser.showScore = showScore;
+
+    //persist modified User object to database
+    userBox.put("default", tempUser);
+  }
+
+  static void editDefaultSetting(
+      bool? darkmode, String? language) {
+    Setting? tempSetting = getDefaultSetting();
+
+    if (tempSetting!.darkmode != darkmode && null != darkmode)
+      tempSetting.darkmode = darkmode;
+
+    if (tempSetting.language != language && null != language) {
+      tempSetting.language = language;
+    }
+
+    //persist modified Settings object to database
+    settingBox.put("default", tempSetting);
+  }
+
+  static void modifyUserScore(int score) {
+    User? tempUser = getDefaultUser();
+    tempUser!.userScore += score;
+    userBox.put("default", tempUser);
+  }
+
+  static void createDefaultSettings() {
+    //add default settings to box
+    Setting defaultSetting = new Setting(
+        darkmode: false, language: 'ger');
+    settingBox.put("default", defaultSetting);
+  }
+
+  static Setting? getDefaultSetting() {
+    return settingBox.get("default");
+  }
+
+
+  static Box<User> getUserBox() {
+    return userBox;
+  }
+
+  static Box<Setting> getSettingBox() {
+    return settingBox;
+  }
+
+  static Box<Lesson> getLessonBox() {
+    return lessonBox;
+  }
+
+  static Box<LessonCategory> getLessonCategoryBox() {
+    return lessonCategoryBox;
+  }
+
+  static Box<Comment> getCommentBox() {
+    return commentBox;
+  }
+
+  static void wipeDB() async {
+    //delete the hive-boxes, clears the file content from the device
+    await Hive.deleteBoxFromDisk('users');
+    await Hive.deleteBoxFromDisk('settings');
+    await Hive.deleteBoxFromDisk('lessons');
+    await Hive.deleteBoxFromDisk('lessonCategories');
+    await Hive.deleteBoxFromDisk('comments');
+    // await Hive.deleteBoxFromDisk('xapis');
   }
 }
