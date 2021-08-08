@@ -61,10 +61,10 @@ class _MyAppState extends State<MyApp> {
     //** LOAD LESSON DATA **
     widget.ioController.loadLessonData(context);
 
-    Future.delayed(Duration(seconds: 1), () {
+    Future.delayed(Duration(seconds: 3), () {
       widget.lessonController.getLessonNumbers();
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => ChatScreen()));//HomeScreen()));
+          context, MaterialPageRoute(builder: (context) => HomeScreen()));//HomeScreen()));
     });
   }
 

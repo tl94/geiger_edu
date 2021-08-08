@@ -34,7 +34,7 @@ class User extends HiveObject {
       required this.userImagePath,
       this.userScore = 0,
       this.userId = "default",
-      this.showAlias = true,
+      this.showAlias = false,
       this.showScore = true});
 
   //not used

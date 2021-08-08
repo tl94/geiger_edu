@@ -24,12 +24,6 @@ class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-
-
-    //TODO: put this somewhere else
-    ChatAPI.authenticateUser();
-    ChatAPI.saveMessagesToDB(ChatAPI.fetchMessages(chatController.currentLessonId));
-
     globalController.getConnectionMode();
     return Scaffold(
         appBar: AppBar(
