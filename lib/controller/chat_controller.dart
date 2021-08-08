@@ -2,6 +2,7 @@ import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:geiger_edu/controller/global_controller.dart';
+import 'package:geiger_edu/controller/io_controller.dart';
 import 'package:geiger_edu/model/commentObj.dart';
 import 'package:geiger_edu/model/userObj.dart';
 import 'package:geiger_edu/providers/chat_api.dart';
@@ -17,6 +18,7 @@ class ChatController extends GetxController {
 
 
   final GlobalController globalController = Get.find();
+  final IOController ioController = Get.find();
 
   final ImagePicker _picker = ImagePicker();
   var currentImage = "".obs;
@@ -120,10 +122,13 @@ class ChatController extends GetxController {
     return DateFormat.yMMMd().format(DB.getCommentBox().get(commentId)!.dateTime);
   }
 
-  void deleteComment(String commentId){
+  Future<void> deleteComment(String commentId) async {
+    var comment = DB.getCommentBox().get(commentId);
+    if (comment!.imageFilePath != null && comment.imageFilePath != '') {
+      await ioController.deleteFile(File(comment.imageFilePath!));
+    }
     DB.deleteComment(commentId);
-    //TODO: FIX THIS WORKAROUND::
-    // items.removeAt(index); // = DB.getComments(currentLessonId);
+    ChatAPI.deleteMessage(commentId);
   }
 
   Future<String> getFilePath() async {

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:geiger_edu/controller/settings_controller.dart';
@@ -152,5 +153,15 @@ class IOController extends GetxController {
       BuildContext context, String lessonPath) async {
     var slidePaths = await getLessonSlidePaths(context, lessonPath);
     return slidePaths.length;
+  }
+
+  Future<void> deleteFile(File file) async {
+    try {
+      if (await file.exists()) {
+        await file.delete();
+      }
+    } catch (e) {
+      // Error in getting access to the file.
+    }
   }
 }

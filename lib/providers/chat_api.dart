@@ -164,6 +164,26 @@ class ChatAPI {
     });
   }
 
+  static void deleteMessage(String commentId) async {
+
+    print(commentId);
+
+    Uri request = Uri.parse(baseUri + "/messages/" + commentId);
+
+    print(baseUri + "/messages/" + commentId);
+
+    final response = await http.delete(request);
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to delete message');
+    }
+  }
+
   static Future<User> getForeignUserData(String requestedUserId) async {
     Uri request = Uri.parse(baseUri + "/users/" + requestedUserId);
 
