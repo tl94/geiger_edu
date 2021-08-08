@@ -21,6 +21,7 @@ class CommentsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var bckColor = GlobalController.bckColor;
+    commentsController.checkHasComments();
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
