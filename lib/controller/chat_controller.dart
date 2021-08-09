@@ -6,6 +6,7 @@ import 'package:geiger_edu/controller/io_controller.dart';
 import 'package:geiger_edu/model/commentObj.dart';
 import 'package:geiger_edu/model/userObj.dart';
 import 'package:geiger_edu/providers/chat_api.dart';
+import 'package:geiger_edu/screens/chat_screen.dart';
 import 'package:geiger_edu/services/db.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -97,6 +98,11 @@ class ChatController extends GetxController {
     }
   }
 
+  Future<User> getRequestedUser(String requestedUserId) async {
+    User user = await ChatAPI.getForeignUserData(requestedUserId);
+    return user;
+  }
+
   String getUserScore(User user) {
     if (!user.showScore) {
         return ("-");
@@ -182,9 +188,10 @@ class ChatController extends GetxController {
     }
   }
 
-  Future<User> getRequestedUser(String requestedUserId) async {
-    User user = await ChatAPI.getForeignUserData(requestedUserId);
-    return user;
+  Future<void> navigateToChat(BuildContext context) async {
+    await ChatAPI.authenticateUser();
+    ChatAPI.saveMessagesToDB(ChatAPI.fetchMessages(currentLessonId));
+    Navigator.pushNamed(context, ChatScreen.routeName);
   }
 
 /*

@@ -107,11 +107,9 @@ class CommentsScreen extends StatelessWidget {
                                           ),
                                           SizedBox(width: 20)
                                         ]))),
-                            onTap: () {
+                            onTap: () async {
                               chatController.currentLessonId = item.lessonId;
-                              ChatAPI.authenticateUser();
-                              ChatAPI.saveMessagesToDB(ChatAPI.fetchMessages(chatController.currentLessonId));
-                              Navigator.pushNamed(context, ChatScreen.routeName);
+                              await chatController.navigateToChat(context);
                             },
                           );
 

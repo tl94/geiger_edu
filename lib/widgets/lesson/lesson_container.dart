@@ -25,13 +25,10 @@ class LessonContainer extends StatelessWidget {
                 child: GestureDetector(
                   child: Image.asset("assets/img/my_comments.png",
                       width: 30, color: Colors.black),
-                  onTap: () {
+                  onTap: () async {
                     chatController.currentLessonId =
                         lessonController.currentLesson.lessonId;
-                    ChatAPI.authenticateUser();
-                    ChatAPI.saveMessagesToDB(
-                        ChatAPI.fetchMessages(chatController.currentLessonId));
-                    Navigator.pushNamed(context, ChatScreen.routeName);
+                    chatController.navigateToChat(context);
                   },
                 ),
                 margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
