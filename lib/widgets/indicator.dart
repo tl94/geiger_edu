@@ -31,10 +31,10 @@ class _IndicatorState extends State<Indicator> {
     maxLessons = widget.lessonController.getNumberOfLessons();
     percentage = completedLessons == 0 ? 0 : (completedLessons / maxLessons);
 
-    if (percentage < 0.25 && percentage >= 0) label = 'low';
-    if (percentage < 0.5 && percentage > 0.25) label = 'medium';
-    if (percentage < 0.75 && percentage > 0.5) label = 'good';
-    if (percentage <= 1 && percentage > 0.75) label = 'excellent';
+    if (percentage < 0.25 && percentage >= 0) label = 'IndicatorLow'.tr;
+    if (percentage < 0.5 && percentage > 0.25) label = 'IndicatorMedium'.tr;
+    if (percentage < 0.75 && percentage > 0.5) label = 'IndicatorGood'.tr;
+    if (percentage <= 1 && percentage > 0.75) label = 'IndicatorExcellent'.tr;
   }
 
   @override
@@ -47,7 +47,7 @@ class _IndicatorState extends State<Indicator> {
         height: 200,
         width: 200,
         child:       Column(children: [
-          Text("Your Progress",
+          Text("IndicatorYourProgress".tr,
               style: TextStyle(fontSize: 20, color: txtColor)),
           SizedBox(height: 10),
           Container(

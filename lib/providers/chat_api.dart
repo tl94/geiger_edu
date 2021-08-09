@@ -35,7 +35,6 @@ class ChatAPI {
       DB.getUserBox().put('default', user);
       // user.save();
     }
-    print("authenticateUser done");
   }
 
   static Future<void> sendMessage(Comment comment) async {
@@ -222,9 +221,7 @@ class ChatAPI {
   }
 
   static void sendUpdatedUserData() async {
-    print("authenticating");
     await authenticateUser();
-    print("authenticated");
 
     User user = DB.getDefaultUser()!;
 

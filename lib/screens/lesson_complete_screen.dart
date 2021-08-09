@@ -18,13 +18,13 @@ class LessonCompleteScreen extends StatelessWidget {
         lessonCompleteController.getQuizResultsGroups();
 
     return Scaffold(
-      appBar: AppBar(leading: Container(), title: Text("Complete!")),
+      appBar: AppBar(leading: Container(), title: Text("LessonCompleteComplete".tr)),
       body: Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text("Congratulations!"),
+            Text("LessonCompleteCongratulations".tr),
             SvgPicture.asset(
               lessonCompleteController.icon1,
             ),
@@ -34,17 +34,17 @@ class LessonCompleteScreen extends StatelessWidget {
             Column(children: [
               Center(child: Text('+' + quizController.score.toString())),
               Center(
-                child: Text("Learn-Score"),
+                child: Text("LessonCompleteLearnScore".tr),
               )
             ]),
             Text(
-                "If you now and in the future follow all the recommendations given in this tutorial your passwords will be safe."),
+                "LessonCompleteText1".tr),
             Text(
-                "It is recommended that you revisit this lesson in the future to keep practising."),
-            Text("Remind me:"),
+                "LessonCompleteText2".tr),
+            Text("LessonCompleteRemindMe".tr),
             ElevatedButton(
                 onPressed: () => lessonCompleteController.selectDate(context),
-                child: Text("Set Reminder")),
+                child: Text("LessonCompleteSetReminder".tr)),
             if (lessonCompleteController.selectedDate != null)
               Text(lessonCompleteController.selectDate.toString()),
             Center(
@@ -52,7 +52,7 @@ class LessonCompleteScreen extends StatelessWidget {
                     onPressed: () {
                       lessonCompleteController.onFinishLessonPressed(context);
     },
-    child: const Text("Finish Lesson"))),
+    child: Text("LessonCompleteFinishLesson".tr))),
             if (quizResultsGroups.isNotEmpty)
               Expanded(
                 child: SizedBox(

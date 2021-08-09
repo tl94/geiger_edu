@@ -50,7 +50,7 @@ class HomeScreen extends StatelessWidget {
                                     NavigationContainer(
                                         imagePath:
                                             "assets/img/continue_lesson.png",
-                                        text: "Current Lesson",
+                                        text: "HomeContinueLesson".tr,
                                         passedRoute: LessonScreen.routeName,
                                     continueLessonFunction: () async {
                                           return await lessonController.continueLesson(context);
@@ -59,24 +59,24 @@ class HomeScreen extends StatelessWidget {
                                     NavigationContainer(
                                         imagePath:
                                             "assets/img/select_lesson.png",
-                                        text: "Select Lesson",
+                                        text: "HomeSelectLesson".tr,
                                         passedRoute:
                                             LessonCategorySelectionScreen
                                                 .routeName),
                                     NavigationContainer(
                                         imagePath: "assets/img/my_comments.png",
-                                        text: "My Comments",
+                                        text: "HomeMyComments".tr,
                                         passedRoute: CommentsScreen.routeName),
                                     SizedBox(height: 50),
                                     NavigationContainer(
                                         imagePath:
                                             "assets/img/profile/user_icon.png",
-                                        text: "Profile",
+                                        text: "HomeProfile".tr,
                                         passedRoute: ProfileScreen.routeName),
                                     NavigationContainer(
                                         imagePath:
                                             "assets/img/settings_icon.png",
-                                        text: "Settings",
+                                        text: "HomeSettings".tr,
                                         passedRoute: SettingsScreen.routeName)
                                   ]))
                         ]),

@@ -25,14 +25,13 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var defaultUser = globalController.defaultUser;
     var userImg = globalController.userImg;
-    // globalController.getConnectionMode();
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: Text("Profile"),
+        title: Text("ProfileTitle".tr),
         centerTitle: true,
         backgroundColor: ProfileScreen.bckColor,
       ),
@@ -83,7 +82,7 @@ class ProfileScreen extends StatelessWidget {
                                                   fit: BoxFit.fitHeight);
                                             },
                                           ))),
-                                      Text("Change Avatar",
+                                      Text("ProfileChangeAvatar".tr,
                                           style: TextStyle(
                                               fontWeight: FontWeight.normal,
                                               fontSize: 20,
@@ -99,7 +98,7 @@ class ProfileScreen extends StatelessWidget {
                                   builder: (box) {
                                     return LabeledTextField(
                                         icon: userImg,
-                                        label: "Username",
+                                        label: "ProfileUserName".tr,
                                         text: DB
                                             .getUserBox()
                                             .get('default')!
@@ -117,7 +116,7 @@ class ProfileScreen extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text(
-                                        "Lessonscore",
+                                        "ProfileLearnScore".tr,
                                         style: TextStyle(fontSize: 25),
                                       ),
                                       SizedBox(height: 20),
@@ -150,7 +149,7 @@ class ProfileScreen extends StatelessWidget {
                                           ]),
                                       SizedBox(height: 40),
                                       Text(
-                                        "The Lessonscore can help you indentify other peoples overall progress and knowledge base on the discussion-plattform. Share your score with your co-workers to see who is the furthest.\n\nImprove your score by finishing lessons.",
+                                        "ProfileText1".tr,
                                         style: TextStyle(fontSize: 20),
                                       )
                                     ]),
@@ -176,7 +175,7 @@ class ProfileScreen extends StatelessWidget {
                                             color: color, width: 2);
                                       })),
                                   onPressed: null,
-                                  child: Text('Export Learning Progress',
+                                  child: Text('ProfileExportLearningProgress'.tr,
                                       style: TextStyle(fontSize: 20)),
                                 ),
                                 SizedBox(height: 40),

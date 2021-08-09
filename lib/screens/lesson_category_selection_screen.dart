@@ -31,7 +31,7 @@ class LessonCategorySelectionScreen extends StatelessWidget {
           icon: Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: Text("Topic Selection"),
+        title: Text("LessonTopicSelection".tr),
         centerTitle: true,
         backgroundColor: bckColor,
       ),

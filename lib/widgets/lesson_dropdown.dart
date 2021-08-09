@@ -123,7 +123,7 @@ class _LessonDropdownState extends State<LessonDropdown> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("Motivation",
+                                    Text("LessonSelectionMotivation".tr,
                                         style: TextStyle(
                                             color: widget.titleColor,
                                             fontSize: widget.fontSize)),
@@ -146,7 +146,7 @@ class _LessonDropdownState extends State<LessonDropdown> {
                                   key: UniqueKey(),
                                 ),
                                 SizedBox(width: 20),
-                                Text("Länge",
+                                Text("LessonSelectionLength".tr,
                                     style: TextStyle(
                                         color: widget.titleColor, fontSize: widget.fontSize)),
                                 Expanded(child: SizedBox(width: 1)),
@@ -163,11 +163,11 @@ class _LessonDropdownState extends State<LessonDropdown> {
                                   key: UniqueKey(),
                                 ),
                                 SizedBox(width: 20),
-                                Text("Difficulty",
+                                Text("LessonSelectionDifficulty".tr,
                                     style: TextStyle(
                                         color: widget.titleColor, fontSize: widget.fontSize)),
                                 Expanded(child: SizedBox(width: 1)),
-                                Text(widget.lesson.difficulty.toString(),
+                                Text(widget.lesson.difficulty.toString().tr,
                                     style: TextStyle(fontSize: widget.fontSize))
                               ],
                             ),
@@ -209,7 +209,7 @@ class _LessonDropdownState extends State<LessonDropdown> {
                                             context, LessonScreen.routeName,
                                             arguments: {'title': widget.lesson.title});
                                       },
-                                      child: Text('Start',
+                                      child: Text('LessonSelectionStart'.tr,
                                           style: TextStyle(
                                               fontSize: 20,
                                               color: Colors.white)),

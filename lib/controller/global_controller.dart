@@ -42,7 +42,6 @@ class GlobalController extends GetxController {
 
   bool checkInternetConnection() {
     var conResult = source.keys.toList().first;
-    print(conResult.toString());
     if (conResult == ConnectivityResult.none) {
       return false;
     } else {

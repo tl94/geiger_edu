@@ -32,11 +32,21 @@ class SettingsController extends GetxController {
   }
 
 // TODO: use this function
-  void changeLanguage() {
+  void changeLanguage(String language) {
     DB.editDefaultSetting(null, null);
   }
 
   String getLanguage() {
     return language;
+  }
+
+  void setLessonLanguageForLocale() {
+    var locale = Get.locale;
+    if (locale.toString().startsWith('en')) {
+      language = 'eng';
+    }
+    if (locale.toString().startsWith('de')) {
+      language = 'ger';
+    }
   }
 }

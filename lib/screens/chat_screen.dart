@@ -23,15 +23,13 @@ class ChatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    // globalController.getConnectionMode();
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () => Navigator.of(context).pop(),
           ),
-          title: Text("Chat " + chatController.currentLessonId),
+          title: Text("ChatTitle".tr + chatController.currentLessonId),
           centerTitle: true,
           backgroundColor: chatController.bckColor,
         ),
@@ -46,7 +44,7 @@ class ChatScreen extends StatelessWidget {
                       child: Container(
                           width: context.width * 0.75,
                           child: Text(
-                              "NO INTERNET CONNECTION AVAILABLE\n\nMake sure you have a stable connection to the internet in order to be able to use the GEIGER Mobile chat functionality.",
+                              "ChatNoInternetConnection".tr,
                               textAlign: TextAlign.left)))),
             if (globalController.source.keys.toList().first !=
                 ConnectivityResult.none)
@@ -146,9 +144,9 @@ class ChatScreen extends StatelessWidget {
                                                                 context: context,
                                                                 builder: (_) => AlertDialog(
                                                                   title:
-                                                                  Text("Delete Message?"),
+                                                                  Text("ChatDeleteMessage".tr),
                                                                   content: Text(
-                                                                      "By deleting your message you will delete it for everybody.\n\nAre you sure you want to do this?"),
+                                                                      "ChatDeleteMessagePopup".tr),
                                                                   actions: [
                                                                     OutlinedButton(
                                                                         onPressed: () {
@@ -156,13 +154,13 @@ class ChatScreen extends StatelessWidget {
                                                                           //SystemChannels.textInput.invokeMethod('TextInput.hide');
                                                                           Navigator.of(context,rootNavigator:true).pop('dialog');
                                                                         },
-                                                                        child: Text("NO")),
+                                                                        child: Text("ChatDeleteMessageNo".tr)),
                                                                     OutlinedButton(
                                                                         onPressed: () {
                                                                           chatController.deleteComment(items[index].id);
                                                                           Navigator.of(context, rootNavigator: true).pop('dialog');
                                                                         },
-                                                                        child: Text("YES")),
+                                                                        child: Text("ChatDeleteMessageYes".tr)),
                                                                   ],
                                                                 ),
                                                               );
@@ -187,9 +185,9 @@ class ChatScreen extends StatelessWidget {
                                                                 context: context,
                                                                 builder: (_) => AlertDialog(
                                                                   title:
-                                                                  Text("Delete Message?"),
+                                                                  Text("ChatDeleteMessage".tr),
                                                                   content: Text(
-                                                                      "By deleting your message you will delete it for everybody.\n\nAre you sure you want to do this?"),
+                                                                      "ChatDeleteMessagePopup".tr),
                                                                   actions: [
                                                                     OutlinedButton(
                                                                         onPressed: () {
@@ -199,7 +197,7 @@ class ChatScreen extends StatelessWidget {
                                                                               true)
                                                                               .pop('dialog');
                                                                         },
-                                                                        child: Text("NO")),
+                                                                        child: Text("ChatDeleteMessageNo".tr)),
                                                                     OutlinedButton(
                                                                         onPressed: () {
                                                                           chatController
@@ -211,7 +209,7 @@ class ChatScreen extends StatelessWidget {
                                                                               true)
                                                                               .pop('dialog');
                                                                         },
-                                                                        child: Text("YES")),
+                                                                        child: Text("ChatDeleteMessageYes".tr)),
                                                                     //OutlineButton("NO"),
                                                                   ],
                                                                 ),
@@ -285,7 +283,7 @@ class ChatScreen extends StatelessWidget {
                               // when user presses enter it will adapt to it
                               controller: chatController.msgController,
                               decoration: InputDecoration(
-                                hintText: "Write a comment...",
+                                hintText: "ChatWriteMessage".tr,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(20),
                                 ),

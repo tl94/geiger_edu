@@ -5,6 +5,7 @@ import 'package:geiger_edu/controller/lesson_controller.dart';
 import 'package:geiger_edu/controller/profile_controller.dart';
 import 'package:geiger_edu/controller/quiz_controller.dart';
 import 'package:geiger_edu/controller/settings_controller.dart';
+import 'package:geiger_edu/providers/app_translations.dart';
 import 'package:geiger_edu/route_generator.dart';
 import 'package:geiger_edu/screens/chat_screen.dart';
 import 'package:geiger_edu/screens/home_screen.dart';
@@ -29,8 +30,11 @@ void main() async {
   await localhostServer.start();
 
   runApp(GetMaterialApp(
-    title: 'GEIGER mobile learning',
+    title: 'GEIGER Mobile Learning',
     theme: ThemeData(primaryColor: Color(0xFF5dbcd2)),
+    locale: Get.deviceLocale,
+    translationsKeys: AppTranslations.translationsKeys,
+    fallbackLocale: Locale('en'),
     home: MyApp(),
     onGenerateRoute: RouteGenerator.generateRoute,
   ));
@@ -63,6 +67,9 @@ class _MyAppState extends State<MyApp> {
 
     //** start internet connection check **
     widget.globalController.getConnectionMode();
+
+    //** set lesson language **
+    widget.settingsController.setLessonLanguageForLocale();
 
     Future.delayed(Duration(seconds: 3), () {
       widget.lessonController.getLessonNumbers();

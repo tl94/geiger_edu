@@ -28,7 +28,7 @@ class CommentsScreen extends StatelessWidget {
             icon: Icon(Icons.arrow_back),
             onPressed: () => Navigator.of(context).pop(),
           ),
-          title: Text("My Comments"),
+          title: Text("MyCommentsTitle".tr),
           centerTitle: true,
           backgroundColor: bckColor,
         ),
@@ -68,7 +68,7 @@ class CommentsScreen extends StatelessWidget {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                           content:
-                                          Text(item.text + ' dismissed')));
+                                          Text(item.text + 'MyCommentsDismissed'.tr)));
                                 },
                                 child: Container(
                                     height: 90,
@@ -90,7 +90,7 @@ class CommentsScreen extends StatelessWidget {
                                               crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                               children: [
-                                                Text("Topic: " + item.lessonId),
+                                                Text("MyCommentsTopic".tr + item.lessonId),
                                                 Container(
                                                     width: context.width - 80,
                                                     child: Text(commentsController
@@ -132,7 +132,7 @@ class CommentsScreen extends StatelessWidget {
                       Container(
                           width: context.width - 80,
                           child: Text(
-                              "Your comments written in the different lessons will appear here. \n \nSo far you have either not written any or dismissed them all",
+                              "MyCommentsNoComments".tr,
                               style:
                                   TextStyle(fontSize: 16, color: Colors.grey)
                           )
@@ -154,7 +154,7 @@ class CommentsScreen extends StatelessWidget {
                       Container(
                           width: context.width - 70,
                           child: Text(
-                              "To dismiss comments drag them to the all the way to the left",
+                              "MyCommentsDismissInstruction".tr,
                               style:
                                   TextStyle(fontSize: 16, color: Colors.grey)))
                     ],

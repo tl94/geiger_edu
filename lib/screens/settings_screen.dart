@@ -27,7 +27,7 @@ class SettingsScreen extends StatelessWidget {
             icon: Icon(Icons.arrow_back),
             onPressed: () => Navigator.of(context).pop(),
           ),
-        title: Text("Settings"),
+        title: Text("SettingsTitle".tr),
         centerTitle: true,
         backgroundColor: bckColor,
       ),
@@ -46,7 +46,7 @@ class SettingsScreen extends StatelessWidget {
                           keys: [ defaultSetting ], // keys is optional to specify listening value changes
                           builder: (box) {
                             return LabeledSwitch(
-                              label: "Darkmode",
+                              label: "SettingsDarkMode".tr,
                               isSelected: DB.getDefaultSetting()!.darkmode,
                               onChanged: settingsController.switchDarkMode,
                             );
@@ -54,13 +54,13 @@ class SettingsScreen extends StatelessWidget {
                         ),
 
                         SizedBox(height: 20),
-                        Text("Lessons", style: TextStyle(fontSize: 20)),
+                        Text("SettingsLessons".tr, style: TextStyle(fontSize: 20)),
 
                         HiveListener(
                           box: DB.getUserBox(),
                           builder: (box) {
                             return LabeledSwitch(
-                              label: "Display your alias on the discussion platform",
+                              label: "SettingsSetDisplayAnonymous".tr,
                               isSelected: DB.getDefaultUser()!.showAlias,
                               onChanged: settingsController.switchShowAlias,
                             );
@@ -71,7 +71,7 @@ class SettingsScreen extends StatelessWidget {
                           box: DB.getUserBox(),
                           builder: (box) {
                             return LabeledSwitch(
-                              label: "Display your own score on the discussion platform",
+                              label: "SettingsSetDisplayScore".tr,
                               isSelected: DB.getDefaultUser()!.showScore,
                               onChanged: settingsController.switchShowScore,
                             );
