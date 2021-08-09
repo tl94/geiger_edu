@@ -16,20 +16,25 @@ class LessonContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
             actions: [
-              IconButton(
-                icon: Icon(Icons.arrow_back),
-                onPressed: () {
-                  chatController.currentLessonId = lessonController.currentLesson.lessonId;
-                  ChatAPI.authenticateUser();
-                  ChatAPI.saveMessagesToDB(ChatAPI.fetchMessages(chatController.currentLessonId));
-                  Navigator.pushNamed(context, ChatScreen.routeName);
-                }
-                ,
+              Container(
+                child: GestureDetector(
+                  child: Image.asset("assets/img/my_comments.png",
+                      width: 30, color: Colors.black),
+                  onTap: () {
+                    chatController.currentLessonId =
+                        lessonController.currentLesson.lessonId;
+                    ChatAPI.authenticateUser();
+                    ChatAPI.saveMessagesToDB(
+                        ChatAPI.fetchMessages(chatController.currentLessonId));
+                    Navigator.pushNamed(context, ChatScreen.routeName);
+                  },
+                ),
+                margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
               )
             ],
             title: Obx(() => Text(lessonController.currentTitle.value)),
