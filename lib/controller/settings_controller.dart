@@ -1,8 +1,12 @@
+import 'package:geiger_edu/controller/global_controller.dart';
 import 'package:geiger_edu/providers/chat_api.dart';
 import 'package:geiger_edu/services/db.dart';
 import 'package:get/get.dart';
 
 class SettingsController extends GetxController {
+
+  final GlobalController globalController = Get.find();
+
   //** LANGUAGE SETTING **
   String language = 'eng';
 
@@ -15,12 +19,16 @@ class SettingsController extends GetxController {
 
   void switchShowAlias() {
     DB.editDefaultUser(null, null, null, !DB.getDefaultUser()!.showAlias, null);
-    ChatAPI.sendUpdatedUserData();
+    if (globalController.checkInternetConnection()) {
+      ChatAPI.sendUpdatedUserData();
+    }
   }
 
   void switchShowScore() {
     DB.editDefaultUser(null, null, null, null, !DB.getDefaultUser()!.showScore);
-    ChatAPI.sendUpdatedUserData();
+    if (globalController.checkInternetConnection()) {
+      ChatAPI.sendUpdatedUserData();
+    }
   }
 
 // TODO: use this function

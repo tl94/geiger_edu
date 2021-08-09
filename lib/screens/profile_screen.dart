@@ -25,7 +25,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var defaultUser = globalController.defaultUser;
     var userImg = globalController.userImg;
-
+    // globalController.getConnectionMode();
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(

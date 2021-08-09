@@ -14,7 +14,7 @@ class ImageViewFullScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    globalController.getConnectionMode();
+    // globalController.getConnectionMode();
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(

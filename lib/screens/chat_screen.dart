@@ -24,7 +24,7 @@ class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    globalController.getConnectionMode();
+    // globalController.getConnectionMode();
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
@@ -38,7 +38,7 @@ class ChatScreen extends StatelessWidget {
         body: Obx(
           () => Container(
               child: Column(children: [
-            if (globalController.source.keys.toList()[0] ==
+            if (globalController.source.keys.toList().first ==
                 ConnectivityResult.none)
               //** Internet Connection not available **
               Expanded(
@@ -48,7 +48,7 @@ class ChatScreen extends StatelessWidget {
                           child: Text(
                               "NO INTERNET CONNECTION AVAILABLE\n\nMake sure you have a stable connection to the internet in order to be able to use the GEIGER Mobile chat functionality.",
                               textAlign: TextAlign.left)))),
-            if (globalController.source.keys.toList()[0] !=
+            if (globalController.source.keys.toList().first !=
                 ConnectivityResult.none)
               //** Chat Messages **
               HiveListener(
@@ -250,7 +250,7 @@ class ChatScreen extends StatelessWidget {
                 },
               ),
 
-            if (globalController.source.keys.toList()[0] !=
+            if (globalController.source.keys.toList().first !=
                 ConnectivityResult.none)
               //** INPUT BAR **
 

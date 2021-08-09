@@ -58,8 +58,11 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
-    //** LOAD LESSON DATA **
+    //** load lesson data **
     widget.ioController.loadLessonData(context);
+
+    //** start internet connection check **
+    widget.globalController.getConnectionMode();
 
     Future.delayed(Duration(seconds: 3), () {
       widget.lessonController.getLessonNumbers();
