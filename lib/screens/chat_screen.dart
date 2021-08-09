@@ -226,7 +226,6 @@ class ChatScreen extends StatelessWidget {
                                                   mainAxisAlignment:
                                                   MainAxisAlignment.spaceBetween,
                                                   children: [
-                                                    Text("Antworten"),
                                                     Text(chatController.getCommentDate(items[index].id))
                                                   ],
                                                 )
