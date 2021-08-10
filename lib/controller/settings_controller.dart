@@ -31,9 +31,8 @@ class SettingsController extends GetxController {
     }
   }
 
-// TODO: use this function
   void changeLanguage(String language) {
-    DB.editDefaultSetting(null, null);
+    DB.editDefaultSetting(null, language);
   }
 
   String getLanguage() {
@@ -48,5 +47,6 @@ class SettingsController extends GetxController {
     if (locale.toString().startsWith('de')) {
       language = 'ger';
     }
+    changeLanguage(language);
   }
 }

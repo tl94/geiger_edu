@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:geiger_edu/controller/chat_controller.dart';
+import 'package:geiger_edu/controller/io_controller.dart';
 import 'package:geiger_edu/controller/lesson_controller.dart';
 import 'package:geiger_edu/controller/profile_controller.dart';
 import 'package:geiger_edu/controller/quiz_controller.dart';
 import 'package:geiger_edu/controller/settings_controller.dart';
 import 'package:geiger_edu/providers/app_translations.dart';
 import 'package:geiger_edu/route_generator.dart';
-import 'package:geiger_edu/screens/chat_screen.dart';
 import 'package:geiger_edu/screens/home_screen.dart';
 import 'package:geiger_edu/services/db.dart';
-import 'package:geiger_edu/controller/io_controller.dart';
 import 'package:geiger_edu/widgets/loading_animation.dart';
 import 'package:get/get.dart';
 
@@ -73,8 +72,11 @@ class _MyAppState extends State<MyApp> {
 
     Future.delayed(Duration(seconds: 3), () {
       widget.lessonController.getLessonNumbers();
+      widget.lessonController.updateIndicator();
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => HomeScreen()));//HomeScreen()));
+          context,
+          MaterialPageRoute(
+              builder: (context) => HomeScreen())); //HomeScreen()));
     });
   }
 

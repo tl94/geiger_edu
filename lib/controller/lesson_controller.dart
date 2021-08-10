@@ -14,10 +14,6 @@ class LessonController extends GetxController {
   SettingsController settingsController = Get.find();
   IOController ioController = Get.find();
 
-  //** GEIGER INDICATOR **
-  int completedLessons = 0;
-  int maxLessons = 0;
-
   //** LESSON CATEGORIES **
   late List<LessonCategory> lessonCategories;
 
@@ -180,14 +176,20 @@ class LessonController extends GetxController {
       currentLesson.completed = true;
       DB.getLessonBox().put(currentLesson.lessonId, currentLesson);
       incrementCompletedLessons();
+      updateIndicator();
     }
     saveCurrentLesson();
   }
 
-  //** LESSON NUMBERS **
+
+  //** GEIGER INDICATOR **
+  int completedLessons = 0;
+  int maxLessons = 0;
+  var completedLessonPercentage = 0.0.obs;
+  var label = ''.obs;
+
   void getLessonNumbers() {
-    completedLessons =
-        DB.getLessonBox().values.where((lesson) => lesson.completed).length;
+    completedLessons = DB.getLessonBox().values.where((lesson) => lesson.completed).length;
     maxLessons = DB.getLessonBox().values.length;
   }
 
@@ -201,5 +203,13 @@ class LessonController extends GetxController {
 
   void incrementCompletedLessons() {
     completedLessons++;
+  }
+
+  void updateIndicator() {
+    completedLessonPercentage(completedLessons == 0 ? 0 : (completedLessons / maxLessons));
+    if (completedLessonPercentage.value < 0.25 && completedLessonPercentage.value >= 0) label('IndicatorLow'.tr);
+    if (completedLessonPercentage.value < 0.5 && completedLessonPercentage.value > 0.25) label('IndicatorMedium'.tr);
+    if (completedLessonPercentage.value < 0.75 && completedLessonPercentage.value > 0.5) label('IndicatorGood'.tr);
+    if (completedLessonPercentage.value <= 1 && completedLessonPercentage.value > 0.75) label('IndicatorExcellent'.tr);
   }
 }

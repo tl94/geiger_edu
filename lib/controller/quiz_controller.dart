@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:geiger_edu/controller/io_controller.dart';
 import 'package:geiger_edu/model/quiz/answer.dart';
 import 'package:geiger_edu/model/quiz/question.dart';
 import 'package:geiger_edu/screens/lesson_complete_screen.dart';
 import 'package:geiger_edu/services/db.dart';
-import 'package:geiger_edu/controller/io_controller.dart';
 import 'package:geiger_edu/widgets/lesson/question_group.dart';
 import 'package:get/get.dart';
 import 'package:html/parser.dart';
@@ -31,7 +31,8 @@ class QuizController extends GetxController {
 
   /// get path for this lesson's quiz file
   Future<List<String>> getQuizPath(BuildContext context) async {
-    var lessonPath = ioController.getLocalizedLessonPath(lessonController.currentLesson.path);
+    var lessonPath = ioController
+        .getLocalizedLessonPath(lessonController.currentLesson.path);
     RegExp regExp = RegExp(lessonPath + "quiz\*");
     List<String> filePaths =
         await ioController.getDirectoryFilePaths(context, regExp);
@@ -118,15 +119,14 @@ class QuizController extends GetxController {
 
   /// if all questions were answered, finish quiz, award score and move on to next screen
   void finishQuiz() {
-    if (!lessonController.getCurrentLesson().completed) {
-      if (checkAnswers()) {
+    if (checkAnswers()) {
+      if (!lessonController.getCurrentLesson().completed) {
         var score = evaluateAnswers();
 
         lessonController.setLessonCompleted();
         DB.modifyUserScore(score);
-
-        Get.to(() => LessonCompleteScreen());
       }
+      Get.to(() => LessonCompleteScreen());
     }
   }
 }
