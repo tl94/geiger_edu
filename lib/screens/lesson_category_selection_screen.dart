@@ -1,61 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:geiger_edu/controller/global_controller.dart';
+import 'package:geiger_edu/controller/lesson_category_selection_controller.dart';
+import 'package:geiger_edu/controller/lesson_controller.dart';
+import 'package:geiger_edu/controller/settings_controller.dart';
 import 'package:geiger_edu/globals.dart' as globals;
 import 'package:geiger_edu/model/lessonCategoryObj.dart';
 import 'package:geiger_edu/model/lessonObj.dart';
 import 'package:geiger_edu/screens/home_screen.dart';
 import 'package:geiger_edu/screens/lesson_selection_screen.dart';
 import 'package:geiger_edu/services/db.dart';
-import 'package:geiger_edu/widgets/NavigationContainer.dart';
+import 'package:geiger_edu/widgets/navigation_container.dart';
+import 'package:get/get.dart';
 
-class SelectionScreen extends StatelessWidget {
-  static const routeName = '/selection';
+class LessonCategorySelectionScreen extends StatelessWidget {
+  static const routeName = '/lessoncategoryselection';
 
-  static const bckColor = const Color(0xFF5dbcd2); //0xFFedb879
+  final SettingsController settingsController = Get.find();
+  final LessonCategorySelectionController lessonCategorySelectionController = Get.find();
 
-  int categoryCount = 0;
-
-  List<LessonCategory> getList() {
-    var lessonCategories = DB.getLessonCategoryBox().values.toList();
-    return lessonCategories;
-  }
-
-  List<Lesson> getLessonListForCategory(String lessonCategoryId) {
-    var lessonList = DB
-        .getLessonBox()
-        .values
-        .where((lesson) => lesson.lessonCategoryId == lessonCategoryId)
-        .toList();
-    return lessonList;
-  }
-
-  Map<String, int> getCompleted(String lessonCategoryId) {
-    Map<String, int> result = {};
-    int completedCount = 0;
-
-    var lessonList = getLessonListForCategory(lessonCategoryId);
-
-    for (var lesson in lessonList) {
-      if (lesson.completed) completedCount++;
-    }
-    print(lessonCategoryId);
-    print(lessonList);
-    result["completed"] = completedCount;
-    result["allLessons"] = lessonList.length;
-    return result;
-  }
 
   @override
   Widget build(BuildContext context) {
-    var categories = getList();
+    var categories = lessonCategorySelectionController.getLessonCategories();
+    var bckColor = GlobalController.bckColor;
 
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pushNamed(context, HomeScreen.routeName),
+          onPressed: () => Navigator.of(context).pop(),
         ),
-        title: Text("Topic Selection"),
+        title: Text("LessonTopicSelection".tr),
         centerTitle: true,
         backgroundColor: bckColor,
       ),
@@ -74,16 +50,16 @@ class SelectionScreen extends StatelessWidget {
                     shrinkWrap: true,
                     itemCount: categories.length,
                     itemBuilder: (BuildContext context, int i) {
-                      var lessonSpecs = getCompleted(categories[i].lessonCategoryId);
+                      var lessonSpecs = lessonCategorySelectionController.getCompletedLessonsForCategory(categories[i].lessonCategoryId);
                       return Container(
                         margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
                         child: NavigationContainer(
                           imagePath: "assets/img/password_icon.png",
-                          text: categories[i].title[globals.language]!,
+                          text: categories[i].title[settingsController.language]!,
                           passedRoute: LessonSelectionScreen.routeName,
                           currentValue: lessonSpecs["completed"]!,
                           maxValue: lessonSpecs["allLessons"]!,
-                          passedLessons: getLessonListForCategory(categories[i].lessonCategoryId),
+                          passedLessons: lessonCategorySelectionController.getLessonListForCategory(categories[i].lessonCategoryId),
                         ),
                       );
                     }),

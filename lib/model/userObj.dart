@@ -1,13 +1,18 @@
 import 'dart:convert';
+
+import 'package:geiger_edu/services/db.dart';
 import 'package:hive/hive.dart';
+
+import 'lessonObj.dart';
 
 part 'userObj.g.dart';
 
-User userFromJson(String str)=> User.fromJson(json.decode(str));
+User userFromJson(String str) => User.fromJson(json.decode(str));
+
 String userToJson(User data) => json.encode(data.toJson());
 
 @HiveType(typeId: 0)
-class User extends HiveObject{
+class User extends HiveObject {
   @HiveField(0)
   String userName;
 
@@ -17,23 +22,42 @@ class User extends HiveObject{
   @HiveField(2)
   int userScore;
 
-  User({
-    required this.userName,
-    required this.userImagePath,
-    this.userScore = 0
-  });
+  @HiveField(3)
+  String userId;
+
+  @HiveField(4)
+  bool showAlias;
+
+  @HiveField(5)
+  bool showScore;
+
+  @HiveField(6)
+  Lesson? currentLesson;
+
+  User(
+      {required this.userName,
+      required this.userImagePath,
+      this.userScore = 0,
+      this.userId = "default",
+      this.showAlias = false,
+      this.showScore = true,
+      this.currentLesson});
 
   //not used
-  factory User.fromJson(Map<String, dynamic> json)=> User(
-    userName: json["username"],
-    userImagePath: json["image"],
-    userScore: json["score"],
-  );
+  factory User.fromJson(Map<String, dynamic> json) => User(
+        userName: json["name"],
+        userImagePath: json["profileImage"],
+        userScore: json["learnScore"],
+    showAlias: json["isAnonymous"],
+    showScore: json["showLearnScore"],
+      );
 
   //not used
   Map<String, dynamic> toJson() => {
-      'username': userName,
-      'image': userImagePath,
-      'score': userScore
-    };
+        'name': userName,
+        'profileImage': userImagePath,
+        'learnScore': userScore,
+        'isAnonymous': showAlias,
+        'showLearnScore': showScore
+      };
 }

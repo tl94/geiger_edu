@@ -1,21 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
-class SlideContainer extends StatefulWidget {
-  final String title;
+class SlideContainer extends StatelessWidget {
   final String slidePath;
 
-  SlideContainer({required this.title, required this.slidePath}) : super();
-
-  _SlideContainerState createState() => _SlideContainerState();
-}
-
-class _SlideContainerState extends State<SlideContainer> {
+  SlideContainer({required this.slidePath}) : super();
 
   Widget build(BuildContext context) {
     return InAppWebView(
         initialUrlRequest: URLRequest(
-            url: Uri.parse("http://localhost:8080/" + widget.slidePath)),
+            url: Uri.parse("http://localhost:8080/" + slidePath)),
         initialOptions: InAppWebViewGroupOptions(),
         onWebViewCreated: (InAppWebViewController controller) {
 

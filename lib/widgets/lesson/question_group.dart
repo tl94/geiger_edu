@@ -34,7 +34,6 @@ class _QuestionGroup extends State<QuestionGroup> {
         var answer = answers[i];
         var button = ElevatedButton(
             onPressed: () {
-              print(answer.answer);
               _selectionIndex = i;
               widget.answerSelectedCallback(widget.questionIndex, _selectionIndex);
             },
@@ -42,7 +41,6 @@ class _QuestionGroup extends State<QuestionGroup> {
         );
         buttons.add(button);
       }
-    print("BUTTONS GENERATED");
     return buttons;
   }
 

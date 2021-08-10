@@ -1,51 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:geiger_edu/controller/global_controller.dart';
+import 'package:geiger_edu/controller/settings_controller.dart';
 import 'package:geiger_edu/services/db.dart';
-import 'package:geiger_edu/widgets/LabledSwitch.dart';
+import 'package:geiger_edu/widgets/labeled_switch.dart';
+import 'package:get/get.dart';
 import 'package:hive_listener/hive_listener.dart';
 import '../globals.dart' as globals;
 import 'home_screen.dart';
 
-class SettingsScreen extends StatefulWidget {
+class SettingsScreen extends StatelessWidget {
   static const routeName = '/settings';
 
-  static const bckColor = const Color(0xFF5dbcd2); //0xFFedb879
-  static const borderColor = const Color(0xff0085ff);
+  final GlobalController globalController = Get.find();
+  final SettingsController settingsController = Get.find();
 
-  _SettingsScreenState createState() => _SettingsScreenState();
-}
-
-class _SettingsScreenState extends State<SettingsScreen>{
-
-  static const bckColor = const Color(0xFF5dbcd2);
-  bool isSwitched = false; //0xFFedb879
-
-  switchDarkmode(){
-    DB.editDefaultSetting(!DB.getDefaultSetting()!.darkmode, null, null, null);
-  }
-
-  switchShowAlias(){
-    DB.editDefaultSetting(null, !DB.getDefaultSetting()!.showAlias, null, null);
-  }
-
-  switchShowScore(){
-    DB.editDefaultSetting(null, null, !DB.getDefaultSetting()!.showScore, null);
-  }
-
-  // TODO: use this function
-  changeLanguage(){
-    DB.editDefaultSetting(null, null, null, null);
-  }
 
   @override
   Widget build(BuildContext context) {
+    var defaultSetting = globalController.defaultSetting;
+    var bckColor = GlobalController.bckColor;
+
     return Scaffold(
       appBar: AppBar(
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
-            onPressed: () => Navigator.pushNamed(context, HomeScreen.routeName),
+            onPressed: () => Navigator.of(context).pop(),
           ),
-        title: Text("Settings"),
+        title: Text("SettingsTitle".tr),
         centerTitle: true,
         backgroundColor: bckColor,
       ),
@@ -61,39 +43,37 @@ class _SettingsScreenState extends State<SettingsScreen>{
                       children: <Widget>[
                         HiveListener(
                           box: DB.getSettingBox(),
-                          keys: [ globals.defaultSetting ], // keys is optional to specify listening value changes
+                          keys: [ defaultSetting ], // keys is optional to specify listening value changes
                           builder: (box) {
                             return LabeledSwitch(
-                              label: "Darkmode",
+                              label: "SettingsDarkMode".tr,
                               isSelected: DB.getDefaultSetting()!.darkmode,
-                              onChanged: switchDarkmode,
+                              onChanged: settingsController.switchDarkMode,
                             );
                           },
                         ),
 
                         SizedBox(height: 20),
-                        Text("Lessons", style: TextStyle(fontSize: 20)),
+                        Text("SettingsLessons".tr, style: TextStyle(fontSize: 20)),
 
                         HiveListener(
-                          box: DB.getSettingBox(),
-                          keys: [ globals.defaultSetting ], // keys is optional to specify listening value changes
+                          box: DB.getUserBox(),
                           builder: (box) {
                             return LabeledSwitch(
-                              label: "Display your alias on the discussion platform",
-                              isSelected: DB.getDefaultSetting()!.showAlias,
-                              onChanged: switchShowAlias,
+                              label: "SettingsSetDisplayAnonymous".tr,
+                              isSelected: DB.getDefaultUser()!.showAlias,
+                              onChanged: settingsController.switchShowAlias,
                             );
                           },
                         ),
 
                         HiveListener(
-                          box: DB.getSettingBox(),
-                          keys: [ globals.defaultSetting ], // keys is optional to specify listening value changes
+                          box: DB.getUserBox(),
                           builder: (box) {
                             return LabeledSwitch(
-                              label: "Display your own score on the discussion platform",
-                              isSelected: DB.getDefaultSetting()!.showScore,
-                              onChanged: switchShowScore,
+                              label: "SettingsSetDisplayScore".tr,
+                              isSelected: DB.getDefaultUser()!.showScore,
+                              onChanged: settingsController.switchShowScore,
                             );
                           },
                         ),
@@ -103,7 +83,7 @@ class _SettingsScreenState extends State<SettingsScreen>{
           ),
           Container(
             margin: EdgeInsets.fromLTRB(20, 20, 20, 20),
-            child: Text("Mobile Learning v"+globals.appVersion, style: TextStyle(fontSize: 20, color: Colors.grey)),
+            child: Text("Mobile Learning v" + settingsController.appVersion, style: TextStyle(fontSize: 20, color: Colors.grey)),
           )
         ])
         ),

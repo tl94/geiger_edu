@@ -20,15 +20,19 @@ class CommentAdapter extends TypeAdapter<Comment> {
       id: fields[0] as String,
       text: fields[1] as String,
       dateTime: fields[2] as DateTime,
-      reply: fields[3] as bool,
-      lessonId: fields[4] as String,
+      parentMsgId: fields[3] as String?,
+      childMsgIds: (fields[4] as List?)?.cast<String>(),
+      lessonId: fields[5] as String,
+      userId: fields[6] as String,
+      imageId: fields[7] as String?,
+      imageFilePath: fields[8] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Comment obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -36,9 +40,17 @@ class CommentAdapter extends TypeAdapter<Comment> {
       ..writeByte(2)
       ..write(obj.dateTime)
       ..writeByte(3)
-      ..write(obj.reply)
+      ..write(obj.parentMsgId)
       ..writeByte(4)
-      ..write(obj.lessonId);
+      ..write(obj.childMsgIds)
+      ..writeByte(5)
+      ..write(obj.lessonId)
+      ..writeByte(6)
+      ..write(obj.userId)
+      ..writeByte(7)
+      ..write(obj.imageId)
+      ..writeByte(8)
+      ..write(obj.imageFilePath);
   }
 
   @override

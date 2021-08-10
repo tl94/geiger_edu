@@ -1,95 +1,63 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_svg/parser.dart';
-import 'package:geiger_edu/globals.dart';
-import 'package:geiger_edu/model/lessonObj.dart';
-import 'package:geiger_edu/model/quiz/question.dart';
-import 'package:geiger_edu/screens/home_screen.dart';
-import 'package:geiger_edu/widgets/lesson/quiz_results_group.dart';
+import 'package:geiger_edu/controller/lesson_complete_controller.dart';
+import 'package:geiger_edu/controller/lesson_controller.dart';
+import 'package:geiger_edu/controller/quiz_controller.dart';
+import 'package:get/get.dart';
 
-class LessonCompleteScreen extends StatefulWidget {
+class LessonCompleteScreen extends StatelessWidget {
   static const routeName = '/lessoncompletescreen';
-  final Lesson lesson;
-  final List<Question>? answeredQuestions;
 
-  LessonCompleteScreen({required this.lesson, this.answeredQuestions});
-
-  @override
-  State<StatefulWidget> createState() => _LessonCompleteScreenState();
-}
-
-class _LessonCompleteScreenState extends State<LessonCompleteScreen> {
-  static const String icon1 = "assets/img/congratulations_icon.svg";
-  static const String icon2 = "assets/img/trophy_icon.svg";
-  DateTime? _selectedDate;
-
-  void _onFinishLessonPressed() {
-    Navigator.pushNamed(context, HomeScreen.routeName);
-  }
-
-  List<Widget> getQuizResultsGroups() {
-    List<Widget> quizResultsGroups = [];
-    // TODO: don't do this step if lesson has no quiz
-    for (var question in widget.answeredQuestions!) {
-      quizResultsGroups.add(QuizResultsGroup(answeredQuestion: question));
-    }
-    return quizResultsGroups;
-  }
-
-  Future<void> _selectDate() async {
-    final DateTime? selectedDate = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime.now(),
-        lastDate: DateTime.utc(2100, 12, 31));
-    if (selectedDate != null) {
-      setState(() {
-        _selectedDate = selectedDate;
-      });
-    }
-  }
+  final LessonController lessonController = Get.find();
+  final QuizController quizController = Get.find();
+  final LessonCompleteController lessonCompleteController = Get.find();
 
   Widget build(BuildContext context) {
-    List<Widget> quizResultsGroups = getQuizResultsGroups();
+    List<Widget> quizResultsGroups =
+        lessonCompleteController.getQuizResultsGroups();
 
     return Scaffold(
-      appBar: AppBar(leading: Container(), title: Text("Complete!")),
+      appBar: AppBar(leading: Container(), title: Text("LessonCompleteComplete".tr)),
       body: Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text("Congratulations!"),
+            Text("LessonCompleteCongratulations".tr),
             SvgPicture.asset(
-              icon1,
+              lessonCompleteController.icon1,
             ),
             SvgPicture.asset(
-              icon2,
+              lessonCompleteController.icon2,
             ),
             Column(children: [
-              Center(child: Text("+25")),
+              Center(child: Text('+' + quizController.score.toString())),
               Center(
-                child: Text("Learn-Score"),
+                child: Text("LessonCompleteLearnScore".tr),
               )
             ]),
             Text(
-                "If you now and in the future follow all the recommendations given in this tutorial your passwords will be safe."),
+                "LessonCompleteText1".tr),
             Text(
-                "It is recommended that you revisit this lesson in the future to keep practising."),
-            Text("Remind me:"),
+                "LessonCompleteText2".tr),
+            Text("LessonCompleteRemindMe".tr),
             ElevatedButton(
-                onPressed: _selectDate,
-                child: Text("Set Reminder")),
-            if (_selectedDate != null) Text(_selectedDate.toString()),
+                onPressed: () => lessonCompleteController.selectDate(context),
+                child: Text("LessonCompleteSetReminder".tr)),
+            if (lessonCompleteController.selectedDate != null)
+              Text(lessonCompleteController.selectDate.toString()),
             Center(
                 child: ElevatedButton(
-                    onPressed: _onFinishLessonPressed, child: const Text("Finish Lesson"))),
-            if (answeredQuestions.isNotEmpty)
+                    onPressed: () {
+                      lessonCompleteController.onFinishLessonPressed(context);
+    },
+    child: Text("LessonCompleteFinishLesson".tr))),
+            if (quizResultsGroups.isNotEmpty)
               Expanded(
                 child: SizedBox(
                     child: ListView.builder(
-                        itemCount: answeredQuestions.length,
+                        itemCount: quizController.questions.length,
                         itemBuilder: (context, index) {
                           return Center(child: quizResultsGroups[index]);
                         })),
