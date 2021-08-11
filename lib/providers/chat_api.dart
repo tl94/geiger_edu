@@ -11,14 +11,7 @@ import 'package:http_parser/http_parser.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ChatAPI {
-  static String host = "10.0.2.2";
-  static int port = 3000;
-
-  static String baseUri = "http://10.0.2.2:3000/geiger-edu-chat";
-
-  String getChatServerAddress() {
-    return host + ":" + port.toString() + "/geiger-edu-chat";
-  }
+  static String baseUri = "http://86.119.42.103:3000/geiger-edu-chat";
 
   static Future<void> authenticateUser() async {
     var user = DB.getDefaultUser();
