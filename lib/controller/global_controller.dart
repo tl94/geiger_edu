@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:ui';
 
 import 'package:connectivity/connectivity.dart';
@@ -34,9 +33,7 @@ class GlobalController extends GetxController {
     //print("ENTER::");
     _connectivity.initialise();
     _connectivity.myStream.listen((src) {
-      //_source = source;
       source.assignAll(src);
-      //print("MATRIX CHANGED:: " + source.keys.toList()[0].toString());
     });
   }
 

@@ -11,13 +11,16 @@ import 'package:http_parser/http_parser.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ChatAPI {
-  static String baseUri = "http://86.119.42.103:3000/geiger-edu-chat";
+
+  static String serverIp = "86.119.42.103";
+  static int port = 3000;
+  static String serviceAddress = "http://" + serverIp + ":" + port.toString() + "/geiger-edu-chat";
 
   static Future<void> authenticateUser() async {
     var user = DB.getDefaultUser();
 
     if (user!.userId == 'default') {
-      Uri request = Uri.parse(baseUri + "/users");
+      Uri request = Uri.parse(serviceAddress + "/users");
 
       final response = await http.post(request,
           headers: <String, String>{
@@ -32,7 +35,7 @@ class ChatAPI {
 
   static Future<void> sendMessage(Comment comment) async {
     Uri request =
-        Uri.parse(baseUri + "/rooms/" + comment.lessonId + "/messages");
+        Uri.parse(serviceAddress + "/rooms/" + comment.lessonId + "/messages");
 
     final response = await http.post(request,
         headers: <String, String>{
@@ -66,7 +69,7 @@ class ChatAPI {
     var length = await imageFile.length();
 
     // string to uri
-    var uri = Uri.parse(baseUri + "/rooms/" + currentLessonId + "/images");
+    var uri = Uri.parse(serviceAddress + "/rooms/" + currentLessonId + "/images");
 
     // create multipart request
     var request = new http.MultipartRequest("POST", uri);
@@ -101,7 +104,7 @@ class ChatAPI {
 
   static Future<Messages> fetchMessages(String roomId) async {
     // Uri request = Uri(host: host, port: port, path: "/geiger-edu-chat/rooms/" + roomId + "/messages");
-    Uri request = Uri.parse(baseUri + "/rooms/" + roomId + "/messages");
+    Uri request = Uri.parse(serviceAddress + "/rooms/" + roomId + "/messages");
 
     final response = await http.get(request);
 
@@ -120,7 +123,7 @@ class ChatAPI {
 
   static Future<Messages> fetchUserMessages(String userId) async {
     // Uri request = Uri(host: host, port: port, path: "/geiger-edu-chat/rooms/" + roomId + "/messages");
-    Uri request = Uri.parse(baseUri + "/users/" + userId + "/messages");
+    Uri request = Uri.parse(serviceAddress + "/users/" + userId + "/messages");
 
     final response = await http.get(request);
 
@@ -138,7 +141,7 @@ class ChatAPI {
   }
 
   static Future<List<int>> fetchImage(String imageId) async {
-    Uri request = Uri.parse(baseUri + "/images/" + imageId);
+    Uri request = Uri.parse(serviceAddress + "/images/" + imageId);
 
     final response = await http.get(request);
 
@@ -180,9 +183,9 @@ class ChatAPI {
 
     print(commentId);
 
-    Uri request = Uri.parse(baseUri + "/messages/" + commentId);
+    Uri request = Uri.parse(serviceAddress + "/messages/" + commentId);
 
-    print(baseUri + "/messages/" + commentId);
+    print(serviceAddress + "/messages/" + commentId);
 
     final response = await http.delete(request);
 
@@ -197,7 +200,7 @@ class ChatAPI {
   }
 
   static Future<User> getForeignUserData(String requestedUserId) async {
-    Uri request = Uri.parse(baseUri + "/users/" + requestedUserId);
+    Uri request = Uri.parse(serviceAddress + "/users/" + requestedUserId);
 
     final response = await http.get(request);
 
@@ -218,7 +221,7 @@ class ChatAPI {
 
     User user = DB.getDefaultUser()!;
 
-    Uri request = Uri.parse(baseUri + "/users/" + user.userId);
+    Uri request = Uri.parse(serviceAddress + "/users/" + user.userId);
 
     var data = json.encode(user.toJson());
     print(data);

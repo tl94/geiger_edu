@@ -8,6 +8,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:connectivity/connectivity.dart';
+import 'package:geiger_edu/providers/chat_api.dart';
 
 class MyConnectivity {
   MyConnectivity._internal();
@@ -33,7 +34,8 @@ class MyConnectivity {
   void _checkStatus(ConnectivityResult result) async {
     bool isOnline = false;
     try {
-      final result = await InternetAddress.lookup('google.com');
+      print(ChatAPI.serverIp);
+      final result = await InternetAddress.lookup(ChatAPI.serverIp);
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         isOnline = true;
       } else
@@ -43,6 +45,5 @@ class MyConnectivity {
     }
     controller.sink.add({result: isOnline});
   }
-
   void disposeStream() => controller.close();
 }
