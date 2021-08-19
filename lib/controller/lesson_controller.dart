@@ -40,22 +40,22 @@ class LessonController extends GetxController {
   RxBool isOnLastSlide = false.obs;
 
 
-  /// This method gets the current lesson
+  /// This method gets the current lesson.
   Lesson getCurrentLesson() {
     return currentLesson;
   }
 
-  /// This method gets the current lesson of the user
+  /// This method gets the current lesson of the user.
   Lesson? getCurrentLessonFromDB() {
     return DB.getDefaultUser()!.currentLesson;
   }
 
-  /// This method saves the current lesson to the user
+  /// This method saves the current lesson to the user.
   void saveCurrentLesson() {
     DB.saveCurrentLesson(currentLesson);
   }
 
-  /// This method starts a lesson
+  /// This method starts a lesson.
   ///
   /// @param context The build context of the parent widget
   /// @param lesson The lesson to be set as active
@@ -73,7 +73,7 @@ class LessonController extends GetxController {
     saveCurrentLesson();
   }
 
-  /// This method starts the last selected lesson
+  /// This method starts the last selected lesson.
   ///
   /// @param context The build context of the parent widget
   Future<bool> continueLesson(BuildContext context) async {
@@ -97,7 +97,7 @@ class LessonController extends GetxController {
 
   ///** LessonContainer functions **///
 
-  /// This method gets the corresponding slides of a lesson
+  /// This method gets the corresponding slides of a lesson.
   List<Widget> getSlides() {
     List<Widget> newSlides = [];
     for (var sp in slidePaths) {
@@ -114,12 +114,12 @@ class LessonController extends GetxController {
     return slides;
   }
 
-  /// This method gets the title of a lesson
+  /// This method gets the title of a lesson.
   String getLessonTitle(BuildContext context) {
     return currentLesson.title[settingsController.language]!;
   }
 
-  /// This method gets the subtitle of a slide
+  /// This method gets the subtitle of a slide.
   ///
   /// @param context The build context of the parent widget
   /// @param slidePath The path of the slide
@@ -134,7 +134,7 @@ class LessonController extends GetxController {
     return title;
   }
 
-  /// This method gets the subtitle of a slide
+  /// This method gets the subtitle of a slide.
   ///
   /// @param context The build context of the parent widget
   Future<List<String>> getSlideTitles(BuildContext context) async {
@@ -149,28 +149,28 @@ class LessonController extends GetxController {
     return slideTitles;
   }
 
-  /// This method gets the page controller of the current slide
+  /// This method gets the page controller of the current slide.
   PageController getLessonPageController() {
     return PageController(initialPage: currentLessonSlideIndex.value);
   }
 
-  /// This method checks if the slide is the first slide
+  /// This method checks if the slide is the first slide.
   bool isOnFirstPage() {
     return currentLessonSlideIndex.value == 0;
   }
 
-  /// This method checks if the slide is the last slide
+  /// This method checks if the slide is the last slide.
   bool isOnLastPage() {
     return currentLessonSlideIndex.value + 1 == slides.length;
   }
 
-  /// This method updates the navigation buttons
+  /// This method updates the navigation buttons.
   void updateNavigatorButtons() {
     isOnFirstSlide(isOnFirstPage());
     isOnLastSlide(isOnLastPage());
   }
 
-  /// This method updates the values on slide change
+  /// This method updates the values on slide change.
   ///
   /// @param page The index of the current page
   Future<VoidCallback?> onSlideChanged(int page) async {
@@ -182,14 +182,14 @@ class LessonController extends GetxController {
     updateNavigatorButtons();
   }
 
-  /// This method navigates to the previous page
+  /// This method navigates to the previous page.
   void previousPage() async {
     if (!isOnFirstSlide.value) {
       await pageController.previousPage(duration: _kDuration, curve: _kCurve);
     }
   }
 
-  /// This method navigates to the next page
+  /// This method navigates to the next page.
   void nextPage() async {
     if (!isOnLastSlide.value) {
       await pageController.nextPage(duration: _kDuration, curve: _kCurve);
@@ -201,7 +201,7 @@ class LessonController extends GetxController {
     }
   }
 
-  /// This method sets the current lesson completed
+  /// This method sets the current lesson completed.
   void setLessonCompleted() {
     currentLesson.lastIndex = 0;
     if (!currentLesson.completed) {
@@ -228,22 +228,22 @@ class LessonController extends GetxController {
 
   /// HELPER METHODS ///
 
-  /// This method gets the completed lessons
+  /// This method gets the completed lessons.
   int getCompletedLessons() {
     return completedLessons;
   }
 
-  /// This method gets the maximum number of lessons
+  /// This method gets the maximum number of lessons.
   int getNumberOfLessons() {
     return maxLessons;
   }
 
-  /// This method increments the completed lessons
+  /// This method increments the completed lessons.
   void incrementCompletedLessons() {
     completedLessons++;
   }
 
-  /// This method updates the GEIGER indicator values
+  /// This method updates the GEIGER indicator values.
   void updateIndicator() {
     completedLessonPercentage(completedLessons == 0 ? 0 : (completedLessons / maxLessons));
     if (completedLessonPercentage.value < 0.25 && completedLessonPercentage.value >= 0) label('IndicatorLow'.tr);
