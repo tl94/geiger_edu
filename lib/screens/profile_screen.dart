@@ -9,9 +9,6 @@ import 'package:geiger_edu/widgets/labeled_text_field.dart';
 import 'package:get/get.dart';
 import 'package:hive_listener/hive_listener.dart';
 
-import '../globals.dart';
-import 'home_screen.dart';
-
 class ProfileScreen extends StatelessWidget {
   static const routeName = '/profilescreen';
 

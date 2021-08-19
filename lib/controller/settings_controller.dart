@@ -10,9 +10,6 @@ class SettingsController extends GetxController {
   //** LANGUAGE SETTING **
   String language = 'eng';
 
-  //** APP VERSION **
-  final appVersion = "0.4.210727";
-
   void switchDarkMode() {
     DB.editDefaultSetting(!DB.getDefaultSetting()!.darkmode, null);
   }

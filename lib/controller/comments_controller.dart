@@ -9,9 +9,10 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 /// @author Turan Ledermann
 
 class CommentsController extends GetxController {
+
+  final ChatController chatController = Get.find();
   var items = List.empty(growable: true).obs;
   RxBool hasComments = false.obs;
-  final ChatController chatController = Get.find();
 
   /// This method gets all the comments (chat messages) from the db and puts
   /// them in a list.
