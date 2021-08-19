@@ -3,6 +3,11 @@ import 'package:hive/hive.dart';
 
 part 'lessonObj.g.dart';
 
+/// This class models a lesson object.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
+
 @HiveType(typeId: 3)
 class Lesson {
 
@@ -45,7 +50,7 @@ class Lesson {
   @HiveField(12)
   String apiUrl;
 
-
+  /// Lesson object constructor.
   Lesson({
     required this.lessonId,         //unique id of the lesson
     required this.lessonCategoryId, //id of lesson category this lesson belongs to

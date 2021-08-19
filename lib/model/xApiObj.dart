@@ -2,6 +2,11 @@ import 'package:hive/hive.dart';
 
 part 'xApiObj.g.dart';
 
+/// This class models a xApi object.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
+
 @HiveType(typeId: 2)
 class XApiObj {
   //** AGENT **
@@ -26,6 +31,7 @@ class XApiObj {
   @HiveField(7)
   final Map<String, String> definitionDescription;
 
+  /// XApi object constructor.
   XApiObj({
     //Agent
     required this.mbox,
@@ -40,6 +46,8 @@ class XApiObj {
     required this.definitionDescription
   });
 
+  ///This method overrides the toString method of the object and gets the xApi
+  ///statement as a string.
   @override
   String toString() {
     return  'Statement( \n'
@@ -60,5 +68,4 @@ class XApiObj {
             '  ),\n'
             '),\n';
   }
-
 }

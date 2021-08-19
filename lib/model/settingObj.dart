@@ -2,6 +2,11 @@ import 'package:hive/hive.dart';
 
 part 'settingObj.g.dart';
 
+/// This class models a settings object.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
+
 @HiveType(typeId: 1)
 class Setting {
 
@@ -11,6 +16,7 @@ class Setting {
   @HiveField(1)
   String language;
 
+  /// Settings object constructor.
   Setting({
     required this.darkmode,
     required this.language

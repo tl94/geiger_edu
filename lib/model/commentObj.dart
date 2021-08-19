@@ -2,6 +2,11 @@ import 'package:hive/hive.dart';
 
 part 'commentObj.g.dart';
 
+/// This class models a comment object.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
+
 @HiveType(typeId: 6)
 class Comment extends HiveObject {
   @HiveField(0)
@@ -34,6 +39,7 @@ class Comment extends HiveObject {
   @HiveField(8)
   String? imageFilePath;
 
+  /// Comment constructor.
   Comment(
       {required this.id,
       required this.text,
@@ -45,6 +51,7 @@ class Comment extends HiveObject {
       this.imageId,
       this.imageFilePath});
 
+  /// This method maps values to the object from a json.
   factory Comment.fromJson(Map<String, dynamic> parsedJson) {
     var roomId = parsedJson['roomId'];
     var dateTime = parsedJson['timestamp'];
@@ -59,6 +66,7 @@ class Comment extends HiveObject {
     imageId: parsedJson['imageId']);
   }
 
+  /// This method maps values of an object to a json.
   Map<String, dynamic> toJson() => {
     'roomId': lessonId,
     'userId': userId,

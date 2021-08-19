@@ -1,15 +1,12 @@
-import 'dart:convert';
-
-import 'package:geiger_edu/services/db.dart';
 import 'package:hive/hive.dart';
-
 import 'lessonObj.dart';
 
 part 'userObj.g.dart';
 
-User userFromJson(String str) => User.fromJson(json.decode(str));
-
-String userToJson(User data) => json.encode(data.toJson());
+/// This class models a user object.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
 
 @HiveType(typeId: 0)
 class User extends HiveObject {
@@ -34,6 +31,7 @@ class User extends HiveObject {
   @HiveField(6)
   Lesson? currentLesson;
 
+  /// User object constructor.
   User(
       {required this.userName,
       required this.userImagePath,
@@ -43,7 +41,7 @@ class User extends HiveObject {
       this.showScore = true,
       this.currentLesson});
 
-  //not used
+  /// This method maps values to the object from a json.
   factory User.fromJson(Map<String, dynamic> json) => User(
         userName: json["name"],
         userImagePath: json["profileImage"],
@@ -52,7 +50,7 @@ class User extends HiveObject {
     showScore: json["showLearnScore"],
       );
 
-  //not used
+  /// This method maps values of an object to a json.
   Map<String, dynamic> toJson() => {
         'name': userName,
         'profileImage': userImagePath,
