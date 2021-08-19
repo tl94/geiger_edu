@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:geiger_edu/globals.dart';
-import 'package:geiger_edu/screens/home_screen.dart';
 import 'dart:math' as math;
 
 class LoadingAnimation extends StatefulWidget {

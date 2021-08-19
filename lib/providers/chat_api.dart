@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:path_provider/path_provider.dart';
 
-/// This class handles all HiveDB box logic.
+/// This class handles all communication with the communications server.
 ///
 /// @author Felix Mayer
 /// @author Turan Ledermann

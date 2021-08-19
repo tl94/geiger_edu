@@ -4,6 +4,11 @@ import 'package:geiger_edu/widgets/lesson/lesson_container.dart';
 import 'package:geiger_edu/controller/lesson_controller.dart';
 import 'package:get/get.dart';
 
+/// LessonScreen Widget.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
+
 class LessonScreen extends StatelessWidget {
   static const routeName = '/lessonscreen';
 

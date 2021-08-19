@@ -7,13 +7,15 @@ import 'package:flutter/services.dart';
 import 'package:geiger_edu/controller/chat_controller.dart';
 import 'package:geiger_edu/controller/global_controller.dart';
 import 'package:geiger_edu/model/userObj.dart';
-import 'package:geiger_edu/providers/chat_api.dart';
 import 'package:geiger_edu/screens/image_view_full_screen.dart';
 import 'package:geiger_edu/services/db.dart';
 import 'package:get/get.dart';
 import 'package:hive_listener/hive_listener.dart';
 
-import 'home_screen.dart';
+/// ChatScreen Widget.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
 
 class ChatScreen extends StatelessWidget {
   static const routeName = '/chatScreen';

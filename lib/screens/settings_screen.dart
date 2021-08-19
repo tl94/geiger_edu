@@ -6,15 +6,17 @@ import 'package:geiger_edu/services/db.dart';
 import 'package:geiger_edu/widgets/labeled_switch.dart';
 import 'package:get/get.dart';
 import 'package:hive_listener/hive_listener.dart';
-import '../globals.dart' as globals;
-import 'home_screen.dart';
+
+/// SettingsScreen Widget.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
 
 class SettingsScreen extends StatelessWidget {
   static const routeName = '/settings';
 
   final GlobalController globalController = Get.find();
   final SettingsController settingsController = Get.find();
-
 
   @override
   Widget build(BuildContext context) {

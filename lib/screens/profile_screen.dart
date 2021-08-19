@@ -9,6 +9,11 @@ import 'package:geiger_edu/widgets/labeled_text_field.dart';
 import 'package:get/get.dart';
 import 'package:hive_listener/hive_listener.dart';
 
+/// ProfileScreen Widget.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
+
 class ProfileScreen extends StatelessWidget {
   static const routeName = '/profilescreen';
 

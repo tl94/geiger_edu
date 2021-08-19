@@ -12,6 +12,11 @@ import 'package:get/get.dart';
 import 'comments_screen.dart';
 import 'lesson_screen.dart';
 
+/// HomeScreen Widget.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
+
 class HomeScreen extends StatelessWidget {
   static const routeName = '/homescreen';
 
