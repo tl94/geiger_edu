@@ -58,7 +58,7 @@ class ChatController extends GetxController {
   Future getImage() async {
     final pickedFile = await _picker.getImage(source: ImageSource.gallery);
     if (pickedFile != null) {
-      currentImage(pickedFile.path.toString());
+      currentImage ( pickedFile.path.toString() );
     } else {
       print('No image selected.');
     }
@@ -139,17 +139,16 @@ class ChatController extends GetxController {
 
   /// This method saves a image locally.
   void saveImageLocally() async {
-    final File file = File(currentImage.value);
-    final fileName = currentImage.value.split("/").last;
-    file.copy(await getFilePath() + fileName);
+    final File file = File( currentImage.value );
+    file.copy(await getFilePath());
   }
 
   /// This method gets the file path of the application.
   Future<String> getFilePath() async {
+    var fileName = currentImage.value.split("/");
     Directory appDocumentsDirectory = await getApplicationDocumentsDirectory();
     String appDocumentsPath = appDocumentsDirectory.path;
-    String filePath = '$appDocumentsPath/';
-
+    String filePath = '$appDocumentsPath/' + fileName.last;
     return filePath;
   }
 
