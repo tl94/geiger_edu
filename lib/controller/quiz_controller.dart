@@ -11,6 +11,11 @@ import 'package:string_validator/string_validator.dart';
 
 import 'lesson_controller.dart';
 
+/// This class handles the business logic of the quiz.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
+
 class QuizController extends GetxController {
   final LessonController lessonController = Get.find();
   final IOController ioController = Get.find();
@@ -21,7 +26,7 @@ class QuizController extends GetxController {
   List<Widget> questionGroups = [];
   int score = 0;
 
-  /// initialize quiz state
+  /// This method initialises quiz state.
   void initializeQuiz() {
     questions = [];
     introText = "";
@@ -29,7 +34,9 @@ class QuizController extends GetxController {
     score = 0;
   }
 
-  /// get path for this lesson's quiz file
+  /// This method gets the path for this lesson's quiz file.
+  ///
+  /// @param context The BuildContext of the parent widget
   Future<List<String>> getQuizPath(BuildContext context) async {
     var lessonPath = ioController
         .getLocalizedLessonPath(lessonController.currentLesson.path);
@@ -39,7 +46,9 @@ class QuizController extends GetxController {
     return filePaths;
   }
 
-  /// get questions and answers from html file
+  /// This method gets the questions and answers of the quiz from the html file.
+  ///
+  /// @param context The BuildContext of the parent widget
   Future<List<Question>> getQuiz(BuildContext context) async {
     initializeQuiz();
     var quizPath = await getQuizPath(context);
@@ -74,7 +83,9 @@ class QuizController extends GetxController {
     return questions;
   }
 
-  /// create QuestionGroup for each question
+  /// This method creates a QuestionGroup for each question.
+  ///
+  /// @param context The BuildContext of the parent widget
   Future<List<Widget>> getQuestionGroups(BuildContext context) async {
     List<Question> questions = await getQuiz(context);
     questions = questions;
@@ -92,13 +103,16 @@ class QuizController extends GetxController {
     return questionGroups;
   }
 
-  /// set answer to selected
+  /// This method sets for a question the index of the selects an answer.
+  ///
+  /// @param questionIndex The index of the question
+  /// @param selectionIndex The index of the selection
   void addSelectedAnswer(int questionIndex, int selectionIndex) {
     var question = questions[questionIndex];
     question.setSelectionIndex(selectionIndex);
   }
 
-  /// check if an answer was selected for all questions
+  /// This method checks if an answer was selected for all questions.
   bool checkAnswers() {
     for (var question in questions) {
       if (question.selectionIndex == -1) return false;
@@ -106,7 +120,7 @@ class QuizController extends GetxController {
     return true;
   }
 
-  /// evaluate answers
+  /// This method evaluates the given answers.
   int evaluateAnswers() {
     for (var question in questions) {
       var answer = question.answers[question.selectionIndex];
@@ -117,7 +131,8 @@ class QuizController extends GetxController {
     return score;
   }
 
-  /// if all questions were answered, finish quiz, award score and move on to next screen
+  /// This method checks if all questions were answered, finishes the quiz,
+  /// awards the score and moves on to the next screen.
   void finishQuiz() {
     if (checkAnswers()) {
       if (!lessonController.getCurrentLesson().completed) {

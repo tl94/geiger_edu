@@ -4,12 +4,14 @@ import 'package:geiger_edu/providers/chat_api.dart';
 import 'package:geiger_edu/services/db.dart';
 import 'package:get/get.dart';
 
+/// This class handles the business logic of the user profile.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
+
 class ProfileController extends GetxController {
 
   final GlobalController globalController = Get.find();
-
-  RxBool isVisible = false.obs;
-
   final List<String> imagePaths = [
     "assets/img/profile/default.png",
     "assets/img/profile/user-01.png",
@@ -23,21 +25,28 @@ class ProfileController extends GetxController {
     "assets/img/profile/user-04.png",
     "assets/img/profile/user-10.png"
   ];
+  RxBool isVisible = false.obs;
 
-  /// sets isVisible
+  /// This method changes the image selector visibility.
   void displayImageSelector() {
     isVisible(!isVisible.value);
   }
 
-  void saveNewProfileImage(String? s) {
-    if (s != null && DB.getDefaultUser()!.userImagePath != s) {
-      DB.editDefaultUser(null, s, null, null, null);
+  /// This method saves the new profile image.
+  ///
+  /// @param imagePath The path of the new profile image
+  void saveNewProfileImage(String? imagePath) {
+    if (imagePath != null && DB.getDefaultUser()!.userImagePath != imagePath) {
+      DB.editDefaultUser(null, imagePath, null, null, null);
       if (globalController.checkInternetConnection()) {
         ChatAPI.sendUpdatedUserData();
       }
     }
   }
 
+  /// This method saves a given username.
+  ///
+  /// @param name New username to be set
   void saveNewUserName(String name) {
     DB.editDefaultUser(name, null, null, null, null);
     if (globalController.checkInternetConnection()) {
@@ -45,7 +54,8 @@ class ProfileController extends GetxController {
     }
   }
 
-  /// returns list of widgets with images that can be selected via tap
+  /// This method returns a list of widgets containing all the possible user
+  /// images that can be selected by a tap gesture.
   List<Widget> getImageSelection() {
     List<Widget> gst = <Widget>[];
     for (var i in imagePaths) {
