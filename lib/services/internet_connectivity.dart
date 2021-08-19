@@ -1,7 +1,7 @@
 /// ********************
-/// The following class has been
+/// The following class has been integrated from
 /// https://stackoverflow.com/questions/49648022/check-whether-there-is-an-internet-connection-available-on-flutter-app
-/// Credit to : connectivity and Günter Zöchbauer
+/// Credit to: connectivity and Günter Zöchbauer
 /// ********************
 
 import 'dart:async';

@@ -9,6 +9,11 @@ import 'package:geiger_edu/providers/boxes.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+/// This class handles the main database interactions.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
+
 class DB {
   static Box<User> userBox = Boxes.getUsers();
   static Box<Setting> settingBox = Boxes.getSettings();
@@ -16,6 +21,7 @@ class DB {
   static Box<LessonCategory> lessonCategoryBox = Boxes.getLessonCategories();
   static Box<Comment> commentBox = Boxes.getComments();
 
+  /// Initialisation method.
   static Future<void> init() async {
     //** Hive DB Setup **
     WidgetsFlutterBinding.ensureInitialized();
@@ -54,22 +60,17 @@ class DB {
     if (!lessonCategoriesIsOpen) {
       await Hive.openBox<LessonCategory>('lessonCategories');
     }
-    // if(DB.getLessonCategoryBox().keys.isEmpty)
-    print("LESSON CATEGORIES OPEN");
 
     if (!lessonsIsOpen) {
       await Hive.openBox<Lesson>('lessons');
     }
-    // if (getLessonBox().isEmpty) { createTestLessons(); }
 
     if (!commentsIsOpen) {
       await Hive.openBox<Comment>('comments');
     }
-    /*if (DB.getCommentBox().keys.isEmpty) {
-      createTestComments();
-    }*/
   }
 
+  /// This method validated if the database already exists.
   static Future<bool> databaseExists() async {
     print("DATABASE EXISTS?");
     return await Hive.boxExists('users') &&
@@ -78,10 +79,9 @@ class DB {
         await Hive.boxExists('lessonCategories');
   }
 
-  static void updateLessonBox() {
-    //TODO: validate lesson box on start check files for new lessons add them tho the lesson category
-  }
-
+  /// This method returns the all the comments of a chatroom.
+  ///
+  /// @param lessonId The id of the lesson.
   static List<Comment> getComments(String lessonId){
     List<Comment> commentsOfLesson = [];
     for(var lesson in getCommentBox().values){
@@ -93,248 +93,45 @@ class DB {
     return commentsOfLesson;
   }
 
-  static void createTestComments() {
-    addComment(Comment(
-        id: "C001",
-        text: "Gibt es ein Programm welches mir meine EMail bereinigt?",
-        dateTime: DateTime.now(),
-        lessonId: "LPW001",
-        userId: "610ebdb0d6f3d93048080a79"));
-    addComment(Comment(
-        id: "C002",
-        text: "Hab mir das neue Office geholt, ist das sicher?",
-        dateTime: DateTime.now(),
-        lessonId: "LPW001",
-        userId: "610ebdb0d6f3d93048080a79"));
-    addComment(Comment(
-        id: "C003",
-        text:
-            "Wie habt ihr das gelöst mit der Verankerung des neuen Kaspersky-Cleaner??",
-        dateTime: DateTime.now(),
-        lessonId: "LPW003",
-        userId: "610ebdb0d6f3d93048080a79"));
-
-    //
-    addComment(Comment(
-        id: "C004",
-        text:
-        "Wie habt ihr das gelöst mit der Verankerung des neuen Kaspersky-Cleaner??",
-        dateTime: DateTime.now(),
-        lessonId: "LPW004",
-        userId: "XYZ"));
-    addComment(Comment(
-        id: "C005",
-        text:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-        dateTime: DateTime.now(),
-        lessonId: "LPW005",
-        userId: "XYZ"));
-    addComment(Comment(
-        id: "C006",
-        text:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-        dateTime: DateTime.now(),
-        lessonId: "LPW006",
-        userId: "XYZ"));
-    addComment(Comment(
-        id: "C007",
-        text:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-        dateTime: DateTime.now(),
-        lessonId: "LPW006",
-        userId: "XYZ"));
-    addComment(Comment(
-        id: "C008",
-        text:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-        dateTime: DateTime.now(),
-        lessonId: "LPW006",
-        userId: "XYZ"));
-    addComment(Comment(
-        id: "C009",
-        text:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-        dateTime: DateTime.now(),
-        lessonId: "LPW006",
-        userId: "XYZ"));
-    addComment(Comment(
-        id: "C010",
-        text:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-        dateTime: DateTime.now(),
-        lessonId: "LPW006",
-        userId: "XYZ"));
-    addComment(Comment(
-        id: "C011",
-        text:
-        "Wie habt ihr das gelöst mit der Verankerung des neuen Kaspersky-Cleaner??",
-        dateTime: DateTime.now(),
-        lessonId: "LPW006",
-        userId: "XYZ"));
-    addComment(Comment(
-        id: "C012",
-        text:
-        "Wie habt ihr das gelöst mit der Verankerung des neuen Kaspersky-Cleaner??",
-        dateTime: DateTime.now(),
-        lessonId: "LPW006",
-        userId: "XYZ"));
-  }
-
+  /// This method adds a comment to the comment box in the db.
+  ///
+  /// @param c Comment to be added.
   static void addComment(Comment c) {
     getCommentBox().put(c.id, c);
   }
 
+  /// This method deletes a comment from the comment box in the db.
+  ///
+  /// @param id Id of the comment to be deleted.
   static void deleteComment(String id){
-    print("F:: " +id);
-    print(getCommentBox().containsKey(id));
     getCommentBox().delete(id);
-    print(getCommentBox().containsKey(id));
   }
 
-  static void createTestLessons() {
-    //TODO: replace with updateLessonBox
-    Lesson l1 = new Lesson(
-        lessonId: "LPW001",
-        lessonCategoryId: "CID001",
-        title: {"eng": "Password Safety", "ger": "Passwortsicherheit"},
-        completed: true,
-        recommended: false,
-        lastIndex: 0,
-        maxIndex: 6,
-        motivation: {
-          "eng": "Improve your password security!",
-          "ger": "Verbessere deine Passwortsicherheit!"
-        },
-        difficulty: Difficulty.beginner,
-        duration: 5,
-        apiUrl: '',
-        path: '',
-        hasQuiz: true);
-    Lesson l2 = new Lesson(
-        lessonId: "LPW002",
-        lessonCategoryId: "CID001",
-        title: {"eng": "Password Safety", "ger": "Passwortsicherheit"},
-        completed: false,
-        recommended: false,
-        lastIndex: 5,
-        maxIndex: 8,
-        motivation: {
-          "eng": "Improve your password security!",
-          "ger": "Verbessere deine Passwortsicherheit!"
-        },
-        difficulty: Difficulty.advanced,
-        duration: 8,
-        apiUrl: '',
-        path: '',
-        hasQuiz: false);
-    Lesson l3 = new Lesson(
-        lessonId: "LPW003",
-        lessonCategoryId: "CID001",
-        title: {"eng": "Password Safety", "ger": "Passwortsicherheit"},
-        completed: false,
-        recommended: false,
-        lastIndex: 2,
-        maxIndex: 4,
-        motivation: {
-          "eng": "Improve your password security!",
-          "ger": "Verbessere deine Passwortsicherheit!"
-        },
-        difficulty: Difficulty.master,
-        duration: 10,
-        apiUrl: '',
-        path: '',
-        hasQuiz: false);
-    List<Lesson> l = [l1, l2, l3];
-
-    for (var lesson in l) {
-      DB.getLessonBox().put(lesson.lessonId, lesson);
-    }
-
-    LessonCategory c1 = new LessonCategory(
-      lessonCategoryId: "CID001",
-      title: {"eng": "Passwords", "ger": "Passwörter"},
-      path: "assets/lesson/password",
-    );
-    getLessonCategoryBox().put(c1.lessonCategoryId, c1);
-
-    Lesson k1 = new Lesson(
-        lessonId: "LMW001",
-        lessonCategoryId: "CID002",
-        title: {"eng": "Password Safety", "ger": "Passwortsicherheit"},
-        completed: true,
-        recommended: false,
-        lastIndex: 0,
-        maxIndex: 6,
-        motivation: {
-          "eng": "Improve your password security!",
-          "ger": "Verbessere deine Passwortsicherheit!"
-        },
-        difficulty: Difficulty.beginner,
-        duration: 5,
-        apiUrl: '',
-        path: '',
-        hasQuiz: true);
-    Lesson k2 = new Lesson(
-        lessonId: "LMW002",
-        lessonCategoryId: "CID002",
-        title: {"eng": "Password Safety", "ger": "Passwortsicherheit"},
-        completed: false,
-        recommended: false,
-        lastIndex: 5,
-        maxIndex: 8,
-        motivation: {
-          "eng": "Improve your password security!",
-          "ger": "Verbessere deine Passwortsicherheit!"
-        },
-        difficulty: Difficulty.advanced,
-        duration: 8,
-        apiUrl: '',
-        path: '',
-        hasQuiz: false);
-    Lesson k3 = new Lesson(
-        lessonId: "LMW003",
-        lessonCategoryId: "CID002",
-        title: {"eng": "Password Safety", "ger": "Passwortsicherheit"},
-        completed: false,
-        recommended: false,
-        lastIndex: 2,
-        maxIndex: 4,
-        motivation: {
-          "eng": "Improve your password security!",
-          "ger": "Verbessere deine Passwortsicherheit!"
-        },
-        difficulty: Difficulty.master,
-        duration: 10,
-        apiUrl: '',
-        path: '',
-        hasQuiz: false);
-    List<Lesson> k = [k1, k2, k3];
-
-    for (var lesson in k) {
-      DB.getLessonBox().put(lesson.lessonId, lesson);
-    }
-
-    LessonCategory c2 = new LessonCategory(
-        lessonCategoryId: "CID002",
-        title: {"eng": "Malware", "ger": "Malware"},
-        path: "assets/lesson/password");
-    getLessonCategoryBox().put(c2.lessonCategoryId, c2);
-  }
-
+  /// This method creates a default user.
   static void createDefaultUser() {
     //add default user to box
     User defaultUser = new User(
-        userName: 'Daniel',
+        userName: 'user',
         userImagePath: 'assets/img/profile/default.png',
-        userScore: 100,
+        userScore: 0,
         userId: "default");
     userBox.put("default", defaultUser);
   }
 
+  /// This method gets the default user.
   static User? getDefaultUser() {
     return userBox.get("default");
   }
 
+  /// This method edits the default user data.
+  ///
+  /// @param userName       The name of the user
+  /// @param userImagePath  The path of the user image
+  /// @param userScore      The user score
+  /// @param showAlias      Variable to check if userName is shown in the
+  /// chatroom
+  /// @param showScore      Variable to check if userScore is shown in the
+  /// chatroom
   static void editDefaultUser(
       String? userName, String? userImagePath, int? userScore, bool? showAlias, bool? showScore) {
     User? tempUser = getDefaultUser();
@@ -358,6 +155,10 @@ class DB {
     userBox.put("default", tempUser);
   }
 
+  /// This method edits the application settings.
+  ///
+  /// @param darkmode Variable to check if darkmode is enabled
+  /// @param language The language
   static void editDefaultSetting(
       bool? darkmode, String? language) {
     Setting? tempSetting = getDefaultSetting();
@@ -373,20 +174,21 @@ class DB {
     settingBox.put("default", tempSetting);
   }
 
+  /// The method adds score to the user.
   static void modifyUserScore(int score) {
     User? tempUser = getDefaultUser();
     tempUser!.userScore += score;
     userBox.put("default", tempUser);
   }
 
-  /// save current lesson state to db for later continuation
+  /// This method saves current lesson state to db for later continuation.
   static void saveCurrentLesson(Lesson lesson) {
-    print("CURRENT LESSON SAVING");
     User? tempUser = getDefaultUser();
     tempUser!.currentLesson = lesson;
     userBox.put("default", tempUser);
   }
 
+  /// This method creates the default user.
   static void createDefaultSettings() {
     //add default settings to box
     Setting defaultSetting = new Setting(
@@ -394,31 +196,37 @@ class DB {
     settingBox.put("default", defaultSetting);
   }
 
+  /// This method gets the default settings.
   static Setting? getDefaultSetting() {
     return settingBox.get("default");
   }
 
-
+  /// This method gets the user box.
   static Box<User> getUserBox() {
     return userBox;
   }
 
+  /// This method gets the settings box.
   static Box<Setting> getSettingBox() {
     return settingBox;
   }
 
+  /// This method gets the lesson box.
   static Box<Lesson> getLessonBox() {
     return lessonBox;
   }
 
+  /// This method gets the box of the lesson categories
   static Box<LessonCategory> getLessonCategoryBox() {
     return lessonCategoryBox;
   }
 
+  /// This method gets the comment box
   static Box<Comment> getCommentBox() {
     return commentBox;
   }
 
+  /// Helper method to safely delete all boxes
   static void wipeDB() async {
     //delete the hive-boxes, clears the file content from the device
     await Hive.deleteBoxFromDisk('users');
