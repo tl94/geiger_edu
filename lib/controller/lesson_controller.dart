@@ -10,6 +10,11 @@ import 'package:geiger_edu/widgets/lesson/slide_container.dart';
 import 'package:get/get.dart';
 import 'package:html/parser.dart';
 
+/// This class handles the business logic of a lesson.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
+
 class LessonController extends GetxController {
   SettingsController settingsController = Get.find();
   IOController ioController = Get.find();
@@ -20,7 +25,7 @@ class LessonController extends GetxController {
   //** LESSON STATE **
   late Lesson currentLesson;
 
-  /// LessonContainer State
+  // LessonContainer State
   final _kDuration = const Duration(milliseconds: 300);
   final _kCurve = Curves.ease;
 
@@ -34,22 +39,27 @@ class LessonController extends GetxController {
   RxBool isOnFirstSlide = false.obs;
   RxBool isOnLastSlide = false.obs;
 
-  //** Functions **
 
+  /// This method gets the current lesson
   Lesson getCurrentLesson() {
     return currentLesson;
   }
 
+  /// This method gets the current lesson of the user
   Lesson? getCurrentLessonFromDB() {
     return DB.getDefaultUser()!.currentLesson;
   }
 
+  /// This method saves the current lesson to the user
   void saveCurrentLesson() {
     DB.saveCurrentLesson(currentLesson);
   }
 
+  /// This method starts a lesson
+  ///
+  /// @param context The build context of the parent widget
+  /// @param lesson The lesson to be set as active
   Future<void> setLesson(BuildContext context, Lesson lesson) async {
-    print("SET LESSON CALLED");
     currentLesson = lesson;
     currentLessonSlideIndex(0);
     slidePaths = await ioController.getSlidePaths(context, currentLesson.path);
@@ -63,6 +73,9 @@ class LessonController extends GetxController {
     saveCurrentLesson();
   }
 
+  /// This method starts the last selected lesson
+  ///
+  /// @param context The build context of the parent widget
   Future<bool> continueLesson(BuildContext context) async {
     var currentLessonFromDB = getCurrentLessonFromDB();
     var currentLessonIsNull = currentLessonFromDB == null;
@@ -82,7 +95,9 @@ class LessonController extends GetxController {
     return currentLessonIsNull;
   }
 
-  //** LessonContainer functions **
+  ///** LessonContainer functions **///
+
+  /// This method gets the corresponding slides of a lesson
   List<Widget> getSlides() {
     List<Widget> newSlides = [];
     for (var sp in slidePaths) {
@@ -99,10 +114,15 @@ class LessonController extends GetxController {
     return slides;
   }
 
+  /// This method gets the title of a lesson
   String getLessonTitle(BuildContext context) {
     return currentLesson.title[settingsController.language]!;
   }
 
+  /// This method gets the subtitle of a slide
+  ///
+  /// @param context The build context of the parent widget
+  /// @param slidePath The path of the slide
   Future<String> getSlideTitle(BuildContext context, String slidePath) async {
     var doc = parse(await DefaultAssetBundle.of(context).loadString(slidePath));
     var elems = doc.getElementsByTagName("title");
@@ -114,6 +134,9 @@ class LessonController extends GetxController {
     return title;
   }
 
+  /// This method gets the subtitle of a slide
+  ///
+  /// @param context The build context of the parent widget
   Future<List<String>> getSlideTitles(BuildContext context) async {
     List<String> newSlideTitles = [];
     newSlideTitles.add(getLessonTitle(context));
@@ -126,24 +149,30 @@ class LessonController extends GetxController {
     return slideTitles;
   }
 
+  /// This method gets the page controller of the current slide
   PageController getLessonPageController() {
-    print("CURRENT SLIDE: " + currentLessonSlideIndex.toString());
     return PageController(initialPage: currentLessonSlideIndex.value);
   }
 
+  /// This method checks if the slide is the first slide
   bool isOnFirstPage() {
     return currentLessonSlideIndex.value == 0;
   }
 
+  /// This method checks if the slide is the last slide
   bool isOnLastPage() {
     return currentLessonSlideIndex.value + 1 == slides.length;
   }
 
+  /// This method updates the navigation buttons
   void updateNavigatorButtons() {
     isOnFirstSlide(isOnFirstPage());
     isOnLastSlide(isOnLastPage());
   }
 
+  /// This method updates the values on slide change
+  ///
+  /// @param page The index of the current page
   Future<VoidCallback?> onSlideChanged(int page) async {
     currentLessonSlideIndex.value = page;
     currentLesson.lastIndex = page;
@@ -153,12 +182,14 @@ class LessonController extends GetxController {
     updateNavigatorButtons();
   }
 
+  /// This method navigates to the previous page
   void previousPage() async {
     if (!isOnFirstSlide.value) {
       await pageController.previousPage(duration: _kDuration, curve: _kCurve);
     }
   }
 
+  /// This method navigates to the next page
   void nextPage() async {
     if (!isOnLastSlide.value) {
       await pageController.nextPage(duration: _kDuration, curve: _kCurve);
@@ -170,6 +201,7 @@ class LessonController extends GetxController {
     }
   }
 
+  /// This method sets the current lesson completed
   void setLessonCompleted() {
     currentLesson.lastIndex = 0;
     if (!currentLesson.completed) {
@@ -181,30 +213,37 @@ class LessonController extends GetxController {
     saveCurrentLesson();
   }
 
-
-  //** GEIGER INDICATOR **
+  ///** GEIGER INDICATOR ** ///
   int completedLessons = 0;
   int maxLessons = 0;
   var completedLessonPercentage = 0.0.obs;
   var label = ''.obs;
 
-  void getLessonNumbers() {
+  /// This method counts the overall lessons available, the completed ones and
+  /// sets them accordingly.
+  void setLessonNumbers() {
     completedLessons = DB.getLessonBox().values.where((lesson) => lesson.completed).length;
     maxLessons = DB.getLessonBox().values.length;
   }
 
+  /// HELPER METHODS ///
+
+  /// This method gets the completed lessons
   int getCompletedLessons() {
     return completedLessons;
   }
 
+  /// This method gets the maximum number of lessons
   int getNumberOfLessons() {
     return maxLessons;
   }
 
+  /// This method increments the completed lessons
   void incrementCompletedLessons() {
     completedLessons++;
   }
 
+  /// This method updates the GEIGER indicator values
   void updateIndicator() {
     completedLessonPercentage(completedLessons == 0 ? 0 : (completedLessons / maxLessons));
     if (completedLessonPercentage.value < 0.25 && completedLessonPercentage.value >= 0) label('IndicatorLow'.tr);

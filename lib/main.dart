@@ -71,7 +71,7 @@ class _MyAppState extends State<MyApp> {
     widget.settingsController.setLessonLanguageForLocale();
 
     Future.delayed(Duration(seconds: 3), () {
-      widget.lessonController.getLessonNumbers();
+      widget.lessonController.setLessonNumbers();
       widget.lessonController.updateIndicator();
       Navigator.pushReplacement(
           context,
