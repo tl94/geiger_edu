@@ -7,13 +7,15 @@ import 'package:flutter/services.dart';
 import 'package:geiger_edu/controller/chat_controller.dart';
 import 'package:geiger_edu/controller/global_controller.dart';
 import 'package:geiger_edu/model/userObj.dart';
-import 'package:geiger_edu/providers/chat_api.dart';
 import 'package:geiger_edu/screens/image_view_full_screen.dart';
 import 'package:geiger_edu/services/db.dart';
 import 'package:get/get.dart';
 import 'package:hive_listener/hive_listener.dart';
 
-import 'home_screen.dart';
+/// ChatScreen Widget.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
 
 class ChatScreen extends StatelessWidget {
   static const routeName = '/chatScreen';
@@ -62,14 +64,12 @@ class ChatScreen extends StatelessWidget {
                           itemCount: length,
                           itemBuilder: (context, index) {
                             chatController.setRequestedUserId(items[index].id);
-                            // print(chatController.requestedUserId);
                             var commentImagePath = chatController.getCommentImagePath(items[index].id);
                             return Container(
                                 margin: EdgeInsets.all(10),
                                 child: FutureBuilder(
                                   future: chatController.getRequestedUser(chatController.requestedUserId),
                                   builder: (context, AsyncSnapshot<User> snapshot) {
-                                    // print(chatController.requestedUserId);
                                     if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
                                       return Row(
                                         mainAxisAlignment:

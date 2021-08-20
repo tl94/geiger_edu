@@ -2,7 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geiger_edu/model/quiz/question.dart';
 
-import '../../model/quiz/answer.dart';
+/// QuestionGroup Widget.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
 
 class QuestionGroup extends StatefulWidget {
 

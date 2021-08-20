@@ -4,13 +4,12 @@ import 'package:geiger_edu/controller/chat_controller.dart';
 import 'package:geiger_edu/controller/comments_controller.dart';
 import 'package:geiger_edu/controller/global_controller.dart';
 import 'package:geiger_edu/model/commentObj.dart';
-import 'package:geiger_edu/providers/chat_api.dart';
-import 'package:geiger_edu/screens/home_screen.dart';
-import 'package:geiger_edu/services/db.dart';
 import 'package:get/get.dart';
-import 'package:hive_listener/hive_listener.dart';
 
-import 'chat_screen.dart';
+/// CommentsScreen Widget.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
 
 class CommentsScreen extends StatelessWidget {
   static const routeName = '/commentsScreen';

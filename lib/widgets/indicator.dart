@@ -3,6 +3,11 @@ import 'package:geiger_edu/controller/global_controller.dart';
 import 'package:geiger_edu/controller/lesson_controller.dart';
 import 'package:get/get.dart';
 
+/// Indicator Widget.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
+
 class Indicator extends StatelessWidget {
   final LessonController lessonController = Get.find();
 

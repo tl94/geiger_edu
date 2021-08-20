@@ -1,8 +1,11 @@
 import 'package:hive/hive.dart';
 
-import 'lessonObj.dart';
-
 part 'lessonCategoryObj.g.dart';
+
+/// This class models a lessonCategory object.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
 
 @HiveType(typeId: 4)
 class LessonCategory {
@@ -16,6 +19,7 @@ class LessonCategory {
   @HiveField(2)
   String path;
 
+  /// LessonCategory constructor.
   LessonCategory({
     required this.lessonCategoryId,       //unique id of the lesson category
     required this.title,    //map with lesson category titles for all supported languages

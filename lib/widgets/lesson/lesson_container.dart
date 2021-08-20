@@ -2,10 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geiger_edu/controller/chat_controller.dart';
 import 'package:geiger_edu/controller/lesson_controller.dart';
-import 'package:geiger_edu/providers/chat_api.dart';
-import 'package:geiger_edu/screens/chat_screen.dart';
 import 'package:get/get.dart';
 import 'package:page_view_indicators/step_page_indicator.dart';
+
+/// LessonContainer Widget.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
 
 class LessonContainer extends StatelessWidget {
   final LessonController lessonController = Get.find();

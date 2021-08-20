@@ -19,6 +19,12 @@ import 'controller/lesson_category_selection_controller.dart';
 import 'controller/lesson_complete_controller.dart';
 import 'controller/lesson_selection_controller.dart';
 
+/// Entry point of the application.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
+
+// local server to run the lessons on
 InAppLocalhostServer localhostServer = new InAppLocalhostServer();
 
 void main() async {
@@ -39,7 +45,13 @@ void main() async {
   ));
 }
 
+/// This class functions as the initialisation point.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
+
 class MyApp extends StatefulWidget {
+  //** INITIALISE CONTROLLERS **
   final globalController = Get.put(GlobalController());
   final settingsController = Get.put(SettingsController());
   final ioController = Get.put(IOController());
@@ -70,8 +82,9 @@ class _MyAppState extends State<MyApp> {
     //** set lesson language **
     widget.settingsController.setLessonLanguageForLocale();
 
+    /// Application splashscreen.
     Future.delayed(Duration(seconds: 3), () {
-      widget.lessonController.getLessonNumbers();
+      widget.lessonController.setLessonNumbers();
       widget.lessonController.updateIndicator();
       Navigator.pushReplacement(
           context,
@@ -95,6 +108,10 @@ class _MyAppState extends State<MyApp> {
                           fit: BoxFit.fitWidth),
                       SizedBox(height: 40),
                       LoadingAnimation(width: 140)
-                    ]))));
+                    ]
+                )
+            )
+        )
+    );
   }
 }

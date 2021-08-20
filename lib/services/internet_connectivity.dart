@@ -1,7 +1,7 @@
 /// ********************
-/// The following class has been
+/// The following class has been integrated from
 /// https://stackoverflow.com/questions/49648022/check-whether-there-is-an-internet-connection-available-on-flutter-app
-/// Credit to : connectivity and Günter Zöchbauer
+/// Credit to: connectivity and Günter Zöchbauer
 /// ********************
 
 import 'dart:async';
@@ -34,7 +34,6 @@ class MyConnectivity {
   void _checkStatus(ConnectivityResult result) async {
     bool isOnline = false;
     try {
-      print(ChatAPI.serverIp);
       final result = await InternetAddress.lookup(ChatAPI.serverIp);
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         isOnline = true;
