@@ -24,7 +24,6 @@ class QuizSlide extends StatelessWidget {
                   Center(child: Text(quizController.introText)),
                   /* add QuestionGroups */
                   for (var qg in snapshot.data!) qg,
-                  Spacer(),
                   ElevatedButton(
                       onPressed: quizController.finishQuiz,
                       child: Text("QuizFinishQuiz".tr))
