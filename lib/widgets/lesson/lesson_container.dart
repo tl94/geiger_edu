@@ -5,6 +5,11 @@ import 'package:geiger_edu/controller/lesson_controller.dart';
 import 'package:get/get.dart';
 import 'package:page_view_indicators/step_page_indicator.dart';
 
+/// LessonContainer Widget.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
+
 class LessonContainer extends StatelessWidget {
   final LessonController lessonController = Get.find();
   final ChatController chatController = Get.find();

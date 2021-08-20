@@ -7,6 +7,11 @@ import 'package:geiger_edu/model/lessonObj.dart';
 import 'package:geiger_edu/screens/lesson_screen.dart';
 import 'package:get/get.dart';
 
+/// LessonDropdown Widget.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
+
 class LessonDropdown extends StatefulWidget {
 
   final LessonController lessonController = Get.find();

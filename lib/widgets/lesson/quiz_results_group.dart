@@ -2,6 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geiger_edu/model/quiz/question.dart';
 
+/// QuizResultsGroup Widget.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
+
 class QuizResultsGroup extends StatelessWidget {
   final Question answeredQuestion;
 

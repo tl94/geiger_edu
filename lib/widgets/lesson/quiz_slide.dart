@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:geiger_edu/controller/quiz_controller.dart';
 import 'package:get/get.dart';
 
+/// QuizSlide Widget.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
+
 class QuizSlide extends StatelessWidget {
   final QuizController quizController = Get.find();
 

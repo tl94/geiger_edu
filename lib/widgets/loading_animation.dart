@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
+/// LoadingAnimation Widget.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
+
 class LoadingAnimation extends StatefulWidget {
 
   final double width;

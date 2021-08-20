@@ -56,7 +56,7 @@ class ProfileController extends GetxController {
 
   /// This method returns a list of widgets containing all the possible user
   /// images that can be selected by a tap gesture.
-  List<Widget> getImageSelection() {
+  List<Widget> getImageSelection(BuildContext context) {
     List<Widget> gst = <Widget>[];
     for (var i in imagePaths) {
       GestureDetector g = new GestureDetector(
@@ -64,7 +64,10 @@ class ProfileController extends GetxController {
             displayImageSelector();
             saveNewProfileImage(i);
           },
-          child: Image.asset(i));
+          child: Container(
+              width: 5,
+              child: Image.asset(i)));
+
       gst.add(g);
     }
     return gst;
