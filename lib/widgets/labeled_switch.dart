@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 
+/// LabeledSwitch Widget.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
+
 class LabeledSwitch extends StatefulWidget{
 
   final String label;
-  bool isSelected = false;
+  bool isSelected;
   final String? isSelectedText;
   final String? isDeselectedText;
   final Function onChanged;
 
   LabeledSwitch({
     required this.label,
-    required this.isSelected,
+    this.isSelected = false,
     this.isSelectedText,
     this.isDeselectedText,
     required this.onChanged

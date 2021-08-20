@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 
+/// LabeledTextField Widget.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
+
 class LabeledTextField extends StatefulWidget{
 
   final String icon;

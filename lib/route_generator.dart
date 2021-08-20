@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:geiger_edu/controller/lesson_controller.dart';
-import 'package:geiger_edu/globals.dart' as globals;
 import 'package:geiger_edu/screens/chat_screen.dart';
 import 'package:geiger_edu/screens/comments_screen.dart';
 import 'package:geiger_edu/screens/home_screen.dart';
@@ -8,17 +6,17 @@ import 'package:geiger_edu/screens/lesson_complete_screen.dart';
 import 'package:geiger_edu/screens/lesson_screen.dart';
 import 'package:geiger_edu/screens/lesson_selection_screen.dart';
 import 'package:geiger_edu/screens/profile_screen.dart';
-import 'package:geiger_edu/screens/quiz_results_screen.dart';
-import 'package:geiger_edu/widgets/lesson/quiz_slide.dart';
 import 'package:geiger_edu/screens/lesson_category_selection_screen.dart';
 import 'package:geiger_edu/screens/settings_screen.dart';
-import 'package:get/get.dart';
+
+/// This class handles the application routing.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
 
 class RouteGenerator {
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
-
-    final LessonController lessonController = Get.find();
 
     switch (settings.name) {
 

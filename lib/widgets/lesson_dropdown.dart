@@ -3,10 +3,14 @@ import 'package:geiger_edu/controller/global_controller.dart';
 import 'package:geiger_edu/controller/lesson_category_selection_controller.dart';
 import 'package:geiger_edu/controller/lesson_controller.dart';
 import 'package:geiger_edu/controller/settings_controller.dart';
-import 'package:geiger_edu/globals.dart';
 import 'package:geiger_edu/model/lessonObj.dart';
 import 'package:geiger_edu/screens/lesson_screen.dart';
 import 'package:get/get.dart';
+
+/// LessonDropdown Widget.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
 
 class LessonDropdown extends StatefulWidget {
 
@@ -200,9 +204,6 @@ class _LessonDropdownState extends State<LessonDropdown> {
                                       ),
                                       onPressed: () async {
                                         //TODO: Put this in its own function
-                                        print("SETTING LESSON TO: " +
-                                            widget.lesson.title[
-                                            widget.settingsController.language]!);
                                         await widget.lessonController.setLesson(
                                             context, widget.lesson);
                                         Navigator.pushNamed(

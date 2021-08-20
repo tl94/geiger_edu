@@ -5,6 +5,11 @@ import 'package:geiger_edu/controller/lesson_selection_controller.dart';
 import 'package:geiger_edu/model/lessonObj.dart';
 import 'package:get/get.dart';
 
+/// NavigationContainer Widget.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
+
 class NavigationContainer extends StatelessWidget {
   final LessonSelectionController lessonSelectionController = Get.find();
   final LessonCategorySelectionController lessonCategorySelectionController =
@@ -46,12 +51,15 @@ class NavigationContainer extends StatelessWidget {
             lessonSelectionController.setCategoryTitle(text);
             lessonSelectionController.setLessons(passedLessons!);
           }
-          /// check if current lesson is null for continue lesson (lesson screen) route
+          /// check if current lesson is null for continue lesson
+          /// (lesson screen) route
           var currentLessonIsNull = false;
           if (continueLessonFunction != null) {
             currentLessonIsNull = await continueLessonFunction!();
           }
-          // TODO: this makes the button do nothing in certain cases, however in the future button should just be disabled and display as such instead
+          // TODO: this makes the button do nothing in certain cases,
+          //  however in the future button should just be disabled and
+          //  display as such instead
           if (passedLessons != null || !currentLessonIsNull) {
             Navigator.pushNamed(
               context,

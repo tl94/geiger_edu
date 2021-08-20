@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:async/async.dart';
 import 'package:geiger_edu/model/commentObj.dart';
 import 'package:geiger_edu/model/userObj.dart';
@@ -10,21 +9,23 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:path_provider/path_provider.dart';
 
+/// This class handles all communication with the communications server.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
+
 class ChatAPI {
-  static String host = "10.0.2.2";
+
+  static String serverIp = "86.119.42.103";
   static int port = 3000;
+  static String serviceAddress = "http://" + serverIp + ":" + port.toString() + "/geiger-edu-chat";
 
-  static String baseUri = "http://10.0.2.2:3000/geiger-edu-chat";
-
-  String getChatServerAddress() {
-    return host + ":" + port.toString() + "/geiger-edu-chat";
-  }
-
+  /// This method authenticates the user on the server.
   static Future<void> authenticateUser() async {
     var user = DB.getDefaultUser();
 
     if (user!.userId == 'default') {
-      Uri request = Uri.parse(baseUri + "/users");
+      Uri request = Uri.parse(serviceAddress + "/users");
 
       final response = await http.post(request,
           headers: <String, String>{
@@ -33,13 +34,15 @@ class ChatAPI {
           body: json.encode(user.toJson()));
       user.userId = json.decode(response.body);
       DB.getUserBox().put('default', user);
-      // user.save();
     }
   }
 
+  /// This method sends a comment to the server.
+  ///
+  /// @param comment The comment object that is to be sent.
   static Future<void> sendMessage(Comment comment) async {
     Uri request =
-        Uri.parse(baseUri + "/rooms/" + comment.lessonId + "/messages");
+        Uri.parse(serviceAddress + "/rooms/" + comment.lessonId + "/messages");
 
     final response = await http.post(request,
         headers: <String, String>{
@@ -47,21 +50,20 @@ class ChatAPI {
         },
         body: json.encode(comment.toJson()));
 
-    // print(response.body);
-
     if (response.statusCode == 201) {
-      // If the server did return a 200 OK response,
+      // If the server did return a 201 OK response,
       // then parse the JSON.
       Comment c = Comment.fromJson(json.decode(response.body));
       comment.id = c.id;
       DB.addComment(comment);
     } else {
-      // If the server did not return a 200 OK response,
+      // If the server did not return a 201 OK response,
       // then throw an exception.
       throw Exception('Failed to send message');
     }
   }
 
+  /// This method sends the selected image to the server.
   static Future<String> sendImage(
       String imageFilePath, String currentLessonId) async {
     var imageFile = File(imageFilePath);
@@ -73,7 +75,7 @@ class ChatAPI {
     var length = await imageFile.length();
 
     // string to uri
-    var uri = Uri.parse(baseUri + "/rooms/" + currentLessonId + "/images");
+    var uri = Uri.parse(serviceAddress + "/rooms/" + currentLessonId + "/images");
 
     // create multipart request
     var request = new http.MultipartRequest("POST", uri);
@@ -106,9 +108,12 @@ class ChatAPI {
     }
   }
 
+  /// This method obtains all the comments from the server.
+  ///
+  /// @param roomId The id of the selected chatroom.
   static Future<Messages> fetchMessages(String roomId) async {
     // Uri request = Uri(host: host, port: port, path: "/geiger-edu-chat/rooms/" + roomId + "/messages");
-    Uri request = Uri.parse(baseUri + "/rooms/" + roomId + "/messages");
+    Uri request = Uri.parse(serviceAddress + "/rooms/" + roomId + "/messages");
 
     final response = await http.get(request);
 
@@ -125,9 +130,12 @@ class ChatAPI {
     }
   }
 
+  /// This method obtains all the comments of a specific user from the server.
+  ///
+  /// @param userId The id of the user
   static Future<Messages> fetchUserMessages(String userId) async {
     // Uri request = Uri(host: host, port: port, path: "/geiger-edu-chat/rooms/" + roomId + "/messages");
-    Uri request = Uri.parse(baseUri + "/users/" + userId + "/messages");
+    Uri request = Uri.parse(serviceAddress + "/users/" + userId + "/messages");
 
     final response = await http.get(request);
 
@@ -144,8 +152,11 @@ class ChatAPI {
     }
   }
 
+  /// This method obtains an image from the server.
+  ///
+  /// @param imageId The id of the image
   static Future<List<int>> fetchImage(String imageId) async {
-    Uri request = Uri.parse(baseUri + "/images/" + imageId);
+    Uri request = Uri.parse(serviceAddress + "/images/" + imageId);
 
     final response = await http.get(request);
 
@@ -162,6 +173,9 @@ class ChatAPI {
     }
   }
 
+  /// This method saves all the comments to the database.
+  ///
+  /// @param messages Messages to be saved
   static void saveMessagesToDB(Future<Messages> messages) async {
     var msgs = await messages;
 
@@ -178,19 +192,16 @@ class ChatAPI {
           element.imageFilePath = imageFile.path;
         }
       }
-
+      // if the db doesn't contain the element then persist it to the db
       if (!DB.getCommentBox().keys.contains(element.id)) DB.addComment(element);
     });
   }
 
+  /// This method deletes a comment from the server.
+  ///
+  /// @param commentId The id of the comment to be deleted
   static void deleteMessage(String commentId) async {
-
-    print(commentId);
-
-    Uri request = Uri.parse(baseUri + "/messages/" + commentId);
-
-    print(baseUri + "/messages/" + commentId);
-
+    Uri request = Uri.parse(serviceAddress + "/messages/" + commentId);
     final response = await http.delete(request);
 
     if (response.statusCode == 200) {
@@ -203,9 +214,11 @@ class ChatAPI {
     }
   }
 
+  /// This method gets the user data of a requested user from the server.
+  ///
+  /// @param requestedUserId The id of the user to be requested
   static Future<User> getForeignUserData(String requestedUserId) async {
-    Uri request = Uri.parse(baseUri + "/users/" + requestedUserId);
-
+    Uri request = Uri.parse(serviceAddress + "/users/" + requestedUserId);
     final response = await http.get(request);
 
     if (response.statusCode == 200) {
@@ -220,15 +233,15 @@ class ChatAPI {
     }
   }
 
+  /// This method updates the user data on the server.
   static void sendUpdatedUserData() async {
     await authenticateUser();
 
     User user = DB.getDefaultUser()!;
 
-    Uri request = Uri.parse(baseUri + "/users/" + user.userId);
+    Uri request = Uri.parse(serviceAddress + "/users/" + user.userId);
 
     var data = json.encode(user.toJson());
-    print(data);
     final response = await http.put(request,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -246,15 +259,23 @@ class ChatAPI {
   }
 }
 
+/// This class  all HiveDB box logic.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
+
 class Messages {
   final List<Comment> messages;
 
+  /// Messages constructor.
   Messages({required this.messages});
 
+  /// This method generates a new messages object with parsed json data.
   factory Messages.fromJson(List<dynamic> json) {
     return Messages(messages: parseMessages(json));
   }
 
+  /// This method parses a list of comments from json data.
   static List<Comment> parseMessages(messagesJson) {
     var list = messagesJson as List;
     List<Comment> messagesList =

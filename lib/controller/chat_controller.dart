@@ -1,118 +1,91 @@
-import 'package:connectivity/connectivity.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:geiger_edu/controller/global_controller.dart';
 import 'package:geiger_edu/controller/io_controller.dart';
 import 'package:geiger_edu/model/commentObj.dart';
 import 'package:geiger_edu/model/userObj.dart';
-import 'package:geiger_edu/providers/chat_api.dart';
+import 'package:geiger_edu/services/chat_api.dart';
 import 'package:geiger_edu/screens/chat_screen.dart';
 import 'package:geiger_edu/services/db.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'dart:io';
-
 import 'package:path_provider/path_provider.dart';
 
+/// This class handles all the business logic of the chat.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
+
 class ChatController extends GetxController {
-
-
   final GlobalController globalController = Get.find();
   final IOController ioController = Get.find();
-
   final ImagePicker _picker = ImagePicker();
+  var msgController = TextEditingController();
+  var scrollController = ScrollController();
+  var bckColor = GlobalController.bckColor;
+  var lastMessageId = 0;
   var currentImage = "".obs;
+  var currentLessonId = "";
+  var message = "";
+  var image = "";
+  var requestedUserId = "";
+
+  /// This method lets a user select an image from the gallery.
   Future getImage() async {
     final pickedFile = await _picker.getImage(source: ImageSource.gallery);
     if (pickedFile != null) {
-      currentImage ( pickedFile.path.toString() );
-    } else {
-      print('No image selected.');
+      currentImage(pickedFile.path.toString());
     }
   }
 
-  var bckColor = GlobalController.bckColor;
-  var message = "";
-  var lastMessageId = 0;
-  var currentLessonId = "LPW001";
-  var msgController = TextEditingController();
-  var image = "";
-
-  String getCommentImagePath(String commentId){
+  /// This method gets the file path of a comment containing a image.
+  ///
+  /// @param commentId The id a comment has.
+  String getCommentImagePath(String commentId) {
     var imageFilePath = DB.getCommentBox().get(commentId)!.imageFilePath;
-    if(imageFilePath != null){
+    if (imageFilePath != null) {
       return image = imageFilePath;
     }
     return image = "";
   }
 
-  /*var items = List<Comment>.generate(5, (i) => new Comment(
-      id: "C00"+i.toString(),
-      text:
-      "Text: $i",
-      dateTime: DateTime.now(),
-      lessonId: "LPW001",
-      userId: "default")).obs;*/
-  var scrollController = ScrollController();
-
-  //unused
-  List<Comment> loadLessons() {
-    return DB.getComments("LPW001");
-  }
-
-  // var items = DB.getComments("LPW001").obs;
-
-  var requestedUserId = "XYZ";
-
-  String getDefaultUserId() {
-    return DB.getDefaultUser()!.userId;
-  }
-
-  String getUserImagePath() {
-    //print(DB.getComments("LPW001").length);
-
-    if (requestedUserId == getDefaultUserId()) {
-      return DB.getDefaultUser()!.userImagePath.toString();
-    } else {
-      //TODO: SERVER REQUEST)
-      return "assets/img/profile/user-09.png";
-    }
-  }
-
+  /// This method sets the author id of the comment.
+  ///
+  /// @param commentId The id a comment has.
   void setRequestedUserId(String commentId) {
     requestedUserId = DB.getCommentBox().get(commentId)!.userId;
   }
 
+  /// This method gets the author name of a comment.
   Future<String> getUserName() async {
     if (requestedUserId == getDefaultUserId()) {
-      if(!DB.getDefaultUser()!.showAlias){
+      if (!DB.getDefaultUser()!.showAlias) {
         return ("Anonymous");
       }
       return DB.getDefaultUser()!.userName;
     } else {
       User requestedUser = await getRequestedUser(requestedUserId);
-
-      //TODO: SERVER REQUEST)
       return requestedUser.userName;
     }
   }
 
-  Future<User> getRequestedUser(String requestedUserId) async {
-    User user = await ChatAPI.getForeignUserData(requestedUserId);
-    return user;
-  }
-
+  /// This method gets the user score of the comments author.
+  ///
+  /// @param user The user object of a comment.
   String getUserScore(User user) {
     if (!user.showScore) {
-        return ("-");
+      return ("-");
     } else {
       return user.userScore.toString();
     }
   }
 
-  //if its a comment of the user messages are displayed right
-  MainAxisAlignment getMainAxisAlignment(){
+  ///This method sets the position of an element to either the left or the right
+  /// of the screen.
+  MainAxisAlignment getMainAxisAlignment() {
     //if (requestedUserId == defaultUserId) {
     //  return MainAxisAlignment.end;
     //}else{
@@ -120,10 +93,18 @@ class ChatController extends GetxController {
     //}
   }
 
+  /// This method gets the date of the individual comment from the db.
+  ///
+  /// @param commentId The id a comment has.
   String getCommentDate(String commentId) {
-    return DateFormat.yMMMd().format(DB.getCommentBox().get(commentId)!.dateTime);
+    return DateFormat.yMMMd()
+        .format(DB.getCommentBox().get(commentId)!.dateTime);
   }
 
+  /// This method deletes selected comment from the db and requests deletion on
+  /// the server.
+  ///
+  /// @param commentId The id a comment has.
   Future<void> deleteComment(String commentId) async {
     var comment = DB.getCommentBox().get(commentId);
     if (comment!.imageFilePath != null && comment.imageFilePath != '') {
@@ -133,52 +114,51 @@ class ChatController extends GetxController {
     ChatAPI.deleteMessage(commentId);
   }
 
-  Future<String> getFilePath() async {
-    var fileName = currentImage.value.split("/");
-
-    Directory appDocumentsDirectory = await getApplicationDocumentsDirectory();
-    String appDocumentsPath = appDocumentsDirectory.path;
-    String filePath = '$appDocumentsPath/'+ fileName.last;
-//geiger_edu/$currentLessonId
-    return filePath;
-  }
-
+  /// This method saves a image locally.
   void saveImageLocally() async {
-    final File file = File( currentImage.value );
+    final File file = File(currentImage.value);
     file.copy(await getFilePath());
   }
 
+  /// This method gets the file path of the application.
+  Future<String> getFilePath() async {
+    var fileName = currentImage.value.split("/");
+    Directory appDocumentsDirectory = await getApplicationDocumentsDirectory();
+    String appDocumentsPath = appDocumentsDirectory.path;
+    String filePath = '$appDocumentsPath/' + fileName.last;
+    return filePath;
+  }
+
+  /// This method sends the message to the server and resets the input field.
   Future<void> sendMessage() async {
     if (message != "" || currentImage.value != "") {
       //add message
       var attachedImage;
       var imageId = '';
-      if(currentImage.value != ""){
+      if (currentImage.value != "") {
         attachedImage = await getFilePath();
         imageId = await ChatAPI.sendImage(currentImage.value, currentLessonId);
         saveImageLocally();
-
-      }else{
+      } else {
         attachedImage = null;
       }
 
       //generate comment object
       Comment comment = new Comment(
-          id: "C00_"+DateTime.now().toString(), //TODO: SERVER RESPONSE
+          id: "C00_" + DateTime.now().toString(), //TODO: SERVER RESPONSE
           text: message,
           dateTime: DateTime.now(),
           lessonId: currentLessonId,
           userId: DB.getDefaultUser()!.userId,
           imageId: imageId,
           imageFilePath: attachedImage);
-      // items.add(comment);
       ChatAPI.sendMessage(comment);
 
-      //print("MATRIXX::: " + DB.commentBox.get(comment)!.imageFilePath!);
       //clear text input
       msgController.clear();
-      message="";
-      currentImage.value = "" ;
+      message = "";
+      currentImage.value = "";
+
       //scroll to the bottom of the list view
       scrollController.animateTo(
         scrollController.position.maxScrollExtent, //+height of new item
@@ -188,100 +168,27 @@ class ChatController extends GetxController {
     }
   }
 
+  /// This method navigates to the chat of the currently selected lesson.
+  ///
+  /// @param context The context of the parent widget.
   Future<void> navigateToChat(BuildContext context) async {
     await ChatAPI.authenticateUser();
     ChatAPI.saveMessagesToDB(ChatAPI.fetchMessages(currentLessonId));
     Navigator.pushNamed(context, ChatScreen.routeName);
   }
 
-/*
-//unused
-  Expanded getContentWidget(){
-    if(globalController.source.keys.toList()[0] == ConnectivityResult.none){
-      return Expanded(child: Text("NO INTERNET CONNECTION AVAILABLE"));
-    }
-    return Expanded(
-      child: Container(
-          child: ListView.builder(
-            controller: scrollController,
-            itemCount: items.length,
-            itemBuilder: (context, index) {
-              setRequestedUserId(index);
-              return Container(
-                  margin: EdgeInsets.all(10),
-                  child: Row(
-                    mainAxisAlignment: getMainAxisAlignment(),
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Column(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black54,
-                                  blurRadius: 4.0,
-                                  offset: Offset(0.0, 4),
-                                ),
-                              ],
-                            ),
-                            child: ClipOval(
-                                child: Image.asset(getUserImagePath(),
-                                    width: 50)),
-                          ),
-                          Text(getUserScore())
-                        ],
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Container(
-                        width: context.width / 2,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(10),
-                              margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: Color.fromRGBO(234, 240, 243, 1),
-                              ),
-                              child: Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.start,
-                                children: [
-                                  Text(getUserName()),
-                                  Container(
-                                    width: context.width,
-                                    child: Text(items[index].text),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("Antworten"),
-                                Text(getCommentDate(index))
-                              ],
-                            )
-                          ],
-                        ),
-                      )
-                    ],
-                  )
-                //child: ListTile(
-                //  title: Text(items[index].text),subtitle: Text(items[index].dateTime.toString()),
-                //)
-              );
-            },
-          )),
-    );
-  }
-*/
+  /// HELPER METHODS ///
 
+  /// This method returns the user of a comment.
+  ///
+  /// @param requestedUserId The id of the requested user.
+  Future<User> getRequestedUser(String requestedUserId) async {
+    User user = await ChatAPI.getForeignUserData(requestedUserId);
+    return user;
+  }
+
+  /// This method get the default user id.
+  String getDefaultUserId() {
+    return DB.getDefaultUser()!.userId;
+  }
 }

@@ -10,34 +10,20 @@ import 'package:get/get.dart';
 
 import '../services/db.dart';
 
+/// This class handles general io operations e.g. for lessons or other assets.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
+
+
+//TODO: COMMENT THIS CLASS
 class IOController extends GetxController {
 
   SettingsController settingsController = Get.find();
 
   void loadLessonData(BuildContext context) async {
-    // print("loading lesson data");
-
     await loadLessons(context);
     await loadLessonCategories(context);
-
-
-    /*var lessonCategoryMetaFiles =
-        await getAssetFiles(context, "lesson_category_meta.json");
-    print(lessonCategoryMetaFiles.length);
-    for (var s in lessonCategoryMetaFiles) {
-      print(s);
-    }
-
-    var lessonMetaFiles = await getAssetFiles(context, "lesson_meta.json");
-    print(lessonMetaFiles.length);
-    for (var s in lessonMetaFiles) {
-      print(s);
-    }*/
-
-    /*var htmlFiles = await getAssetFiles(context, ".html");
-    for (var s in lessonMetaFiles) {
-      print(s);
-    }*/
   }
 
   /* loads lessons from lesson_meta.json files

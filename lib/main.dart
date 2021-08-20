@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:geiger_edu/controller/chat_controller.dart';
+import 'package:geiger_edu/controller/io_controller.dart';
 import 'package:geiger_edu/controller/lesson_controller.dart';
 import 'package:geiger_edu/controller/profile_controller.dart';
 import 'package:geiger_edu/controller/quiz_controller.dart';
 import 'package:geiger_edu/controller/settings_controller.dart';
 import 'package:geiger_edu/providers/app_translations.dart';
 import 'package:geiger_edu/route_generator.dart';
-import 'package:geiger_edu/screens/chat_screen.dart';
 import 'package:geiger_edu/screens/home_screen.dart';
 import 'package:geiger_edu/services/db.dart';
-import 'package:geiger_edu/controller/io_controller.dart';
 import 'package:geiger_edu/widgets/loading_animation.dart';
 import 'package:get/get.dart';
 
@@ -20,6 +19,12 @@ import 'controller/lesson_category_selection_controller.dart';
 import 'controller/lesson_complete_controller.dart';
 import 'controller/lesson_selection_controller.dart';
 
+/// Entry point of the application.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
+
+// local server to run the lessons on
 InAppLocalhostServer localhostServer = new InAppLocalhostServer();
 
 void main() async {
@@ -40,7 +45,13 @@ void main() async {
   ));
 }
 
+/// This class functions as the initialisation point.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
+
 class MyApp extends StatefulWidget {
+  //** INITIALISE CONTROLLERS **
   final globalController = Get.put(GlobalController());
   final settingsController = Get.put(SettingsController());
   final ioController = Get.put(IOController());
@@ -71,10 +82,14 @@ class _MyAppState extends State<MyApp> {
     //** set lesson language **
     widget.settingsController.setLessonLanguageForLocale();
 
+    /// Application splashscreen.
     Future.delayed(Duration(seconds: 3), () {
-      widget.lessonController.getLessonNumbers();
+      widget.lessonController.setLessonNumbers();
+      widget.lessonController.updateIndicator();
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => HomeScreen()));//HomeScreen()));
+          context,
+          MaterialPageRoute(
+              builder: (context) => HomeScreen())); //HomeScreen()));
     });
   }
 
@@ -93,6 +108,10 @@ class _MyAppState extends State<MyApp> {
                           fit: BoxFit.fitWidth),
                       SizedBox(height: 40),
                       LoadingAnimation(width: 140)
-                    ]))));
+                    ]
+                )
+            )
+        )
+    );
   }
 }

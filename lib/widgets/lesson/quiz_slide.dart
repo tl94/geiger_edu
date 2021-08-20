@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:geiger_edu/controller/quiz_controller.dart';
 import 'package:get/get.dart';
 
+/// QuizSlide Widget.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
+
 class QuizSlide extends StatelessWidget {
   final QuizController quizController = Get.find();
 
@@ -19,11 +24,10 @@ class QuizSlide extends StatelessWidget {
                   Center(child: Text(quizController.introText)),
                   /* add QuestionGroups */
                   for (var qg in snapshot.data!) qg,
-                  Spacer(),
                   ElevatedButton(
                       onPressed: quizController.finishQuiz,
-                      child: Text("QuizFinishQuiz".tr))
-                ];
+                      child: Text("QuizFinishQuiz".tr)
+                  )];
               } else {
                 children = <Widget>[Container(color: Colors.white)];
               }
@@ -32,6 +36,8 @@ class QuizSlide extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return children[index];
                   });
-            }));
+            }
+            )
+    );
   }
 }

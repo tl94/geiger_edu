@@ -1,21 +1,22 @@
-import 'dart:convert';
 import 'dart:ui';
 
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:geiger_edu/services/internet_connectivity.dart';
+import 'package:geiger_edu/providers/internet_connectivity.dart';
 import 'package:get/get.dart';
+
+/// This class handles overarching business logic.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
 
 class GlobalController extends GetxController {
   static const txtColor = const Color(0xff2f4858);
-  static const bckColor = const Color(0xFF5dbcd2); //0xFFedb879
-  static const borderColor = const Color(0xff0085ff);
+  static const bckColor = const Color(0xFF5dbcd2);
 
-  final appVersion = "0.4.210727"; //current version of the app
-
-  bool appRunning = false;
-  bool isOnline = false;
+  //current version of the application
+  final appVersion = "0.9.20210820";
 
   //** USER DATA **
   //Hive-listener Key
@@ -29,17 +30,18 @@ class GlobalController extends GetxController {
   Map source = {ConnectivityResult.none: false}.obs;
   MyConnectivity _connectivity = MyConnectivity.instance;
 
+  //** IMAGE FULLSCREEN VIEW **
+  String selectedImage = "";
+
+  /// This method gets the connection mode of the device.
   void getConnectionMode() {
-    //online offline check
-    //print("ENTER::");
     _connectivity.initialise();
     _connectivity.myStream.listen((src) {
-      //_source = source;
       source.assignAll(src);
-      //print("MATRIX CHANGED:: " + source.keys.toList()[0].toString());
     });
   }
 
+  /// This method checks if a internet connection can be established.
   bool checkInternetConnection() {
     var conResult = source.keys.toList().first;
     if (conResult == ConnectivityResult.none) {
@@ -48,7 +50,4 @@ class GlobalController extends GetxController {
       return true;
     }
   }
-
-  //** IMAGE FULLSCREEN VIEW **
-  String selectedImage = "";
 }

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:geiger_edu/controller/global_controller.dart';
-import 'package:geiger_edu/model/lessonObj.dart';
 import 'package:geiger_edu/controller/io_controller.dart';
 import 'package:geiger_edu/widgets/lesson/lesson_container.dart';
 import 'package:geiger_edu/controller/lesson_controller.dart';
 import 'package:get/get.dart';
+
+/// LessonScreen Widget.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
 
 class LessonScreen extends StatelessWidget {
   static const routeName = '/lessonscreen';

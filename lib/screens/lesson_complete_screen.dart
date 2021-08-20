@@ -6,6 +6,11 @@ import 'package:geiger_edu/controller/lesson_controller.dart';
 import 'package:geiger_edu/controller/quiz_controller.dart';
 import 'package:get/get.dart';
 
+/// LessonCompleteScreen Widget.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
+
 class LessonCompleteScreen extends StatelessWidget {
   static const routeName = '/lessoncompletescreen';
 

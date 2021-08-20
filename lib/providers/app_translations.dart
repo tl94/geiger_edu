@@ -1,6 +1,12 @@
 import 'package:get/get.dart';
 
+/// This class handles all translation logic of the application.
+///
+/// @author Felix Mayer
+/// @author Turan Ledermann
+
 abstract class AppTranslations extends Translations {
+  // maps the vocabulary to the corresponding language.
   static Map<String, Map<String, String>> translationsKeys = {
     "en": en,
     "de": de
