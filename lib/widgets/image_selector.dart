@@ -14,8 +14,7 @@ class ImageSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     return Visibility(
         child: Container(
-            height: MediaQuery.of(context).size.height - 50,
-            width: MediaQuery.of(context).size.width - 50,
+            height: 460,//MediaQuery.of(context).size.height - 50,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(5.0),

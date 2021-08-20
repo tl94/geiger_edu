@@ -72,7 +72,8 @@ class HomeScreen extends StatelessWidget {
                                         imagePath: "assets/img/my_comments.png",
                                         text: "HomeMyComments".tr,
                                         passedRoute: CommentsScreen.routeName),
-                                    SizedBox(height: 50),
+                                    //SizedBox(height: 50),
+                                    SizedBox(height: MediaQuery.of(context).size.height - 82* 8),
                                     NavigationContainer(
                                         imagePath:
                                             "assets/img/profile/user_icon.png",
