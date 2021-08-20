@@ -64,14 +64,12 @@ class ChatScreen extends StatelessWidget {
                           itemCount: length,
                           itemBuilder: (context, index) {
                             chatController.setRequestedUserId(items[index].id);
-                            // print(chatController.requestedUserId);
                             var commentImagePath = chatController.getCommentImagePath(items[index].id);
                             return Container(
                                 margin: EdgeInsets.all(10),
                                 child: FutureBuilder(
                                   future: chatController.getRequestedUser(chatController.requestedUserId),
                                   builder: (context, AsyncSnapshot<User> snapshot) {
-                                    // print(chatController.requestedUserId);
                                     if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
                                       return Row(
                                         mainAxisAlignment:

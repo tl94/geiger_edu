@@ -72,7 +72,6 @@ class DB {
 
   /// This method validated if the database already exists.
   static Future<bool> databaseExists() async {
-    print("DATABASE EXISTS?");
     return await Hive.boxExists('users') &&
         await Hive.boxExists('settings') &&
         await Hive.boxExists('lessons') &&

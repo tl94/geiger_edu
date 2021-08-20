@@ -72,7 +72,6 @@ class QuizController extends GetxController {
         var lfld = labelFields[i];
         var value = toBoolean(ifld.attributes["value"]!);
         var answer = lfld.innerHtml;
-        print(answer.toString() + value.toString());
         Answer a = Answer(answer: answer, value: value);
         answers.add(a);
       }
@@ -99,7 +98,6 @@ class QuizController extends GetxController {
       questionGroups.add(questionGroup);
     }
     this.questionGroups = questionGroups;
-    print(questionGroups.length);
     return questionGroups;
   }
 

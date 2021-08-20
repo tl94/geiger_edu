@@ -22,7 +22,6 @@ class LessonSelectionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var bckColor = GlobalController.bckColor;
 
-    print(lessonSelectionController.categoryTitle);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(

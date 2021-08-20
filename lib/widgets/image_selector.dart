@@ -14,6 +14,7 @@ class ImageSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     return Visibility(
         child: Container(
+            //TODO: MAKE HEIGHT DYNAMIC
             height: 460,//MediaQuery.of(context).size.height - 50,
             decoration: BoxDecoration(
               color: Colors.white,

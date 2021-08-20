@@ -87,7 +87,6 @@ class LessonController extends GetxController {
       slideTitles = await getSlideTitles(context);
       pageController = getLessonPageController();
       currentPageNotifier = ValueNotifier<int>(currentLessonSlideIndex.value);
-      print(currentPageNotifier.toString());
       getSlides();
       isOnFirstSlide(isOnFirstPage());
       isOnLastSlide(isOnLastPage());
@@ -110,7 +109,6 @@ class LessonController extends GetxController {
       newSlides.add(QuizSlide());
     }
     slides = newSlides;
-    print(slides.length);
     return slides;
   }
 

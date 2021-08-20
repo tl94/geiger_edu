@@ -242,7 +242,6 @@ class ChatAPI {
     Uri request = Uri.parse(serviceAddress + "/users/" + user.userId);
 
     var data = json.encode(user.toJson());
-    print(data);
     final response = await http.put(request,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',

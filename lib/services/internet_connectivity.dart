@@ -34,7 +34,6 @@ class MyConnectivity {
   void _checkStatus(ConnectivityResult result) async {
     bool isOnline = false;
     try {
-      print(ChatAPI.serverIp);
       final result = await InternetAddress.lookup(ChatAPI.serverIp);
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         isOnline = true;

@@ -39,8 +39,6 @@ class ChatController extends GetxController {
     final pickedFile = await _picker.getImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       currentImage ( pickedFile.path.toString() );
-    } else {
-      print('No image selected.');
     }
   }
 
