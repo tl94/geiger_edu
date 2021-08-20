@@ -1,5 +1,5 @@
 import 'package:geiger_edu/controller/global_controller.dart';
-import 'package:geiger_edu/providers/chat_api.dart';
+import 'package:geiger_edu/services/chat_api.dart';
 import 'package:geiger_edu/services/db.dart';
 import 'package:get/get.dart';
 
@@ -9,7 +9,6 @@ import 'package:get/get.dart';
 /// @author Turan Ledermann
 
 class SettingsController extends GetxController {
-
   final GlobalController globalController = Get.find();
   String language = 'eng';
 

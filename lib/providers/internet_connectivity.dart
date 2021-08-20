@@ -8,7 +8,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:connectivity/connectivity.dart';
-import 'package:geiger_edu/providers/chat_api.dart';
+import 'package:geiger_edu/services/chat_api.dart';
 
 class MyConnectivity {
   MyConnectivity._internal();
@@ -44,5 +44,6 @@ class MyConnectivity {
     }
     controller.sink.add({result: isOnline});
   }
+
   void disposeStream() => controller.close();
 }

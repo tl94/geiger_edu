@@ -6,7 +6,7 @@ import 'package:geiger_edu/controller/global_controller.dart';
 import 'package:geiger_edu/controller/io_controller.dart';
 import 'package:geiger_edu/model/commentObj.dart';
 import 'package:geiger_edu/model/userObj.dart';
-import 'package:geiger_edu/providers/chat_api.dart';
+import 'package:geiger_edu/services/chat_api.dart';
 import 'package:geiger_edu/screens/chat_screen.dart';
 import 'package:geiger_edu/services/db.dart';
 import 'package:get/get.dart';
@@ -20,7 +20,6 @@ import 'package:path_provider/path_provider.dart';
 /// @author Turan Ledermann
 
 class ChatController extends GetxController {
-
   final GlobalController globalController = Get.find();
   final IOController ioController = Get.find();
   final ImagePicker _picker = ImagePicker();
@@ -38,7 +37,7 @@ class ChatController extends GetxController {
   Future getImage() async {
     final pickedFile = await _picker.getImage(source: ImageSource.gallery);
     if (pickedFile != null) {
-      currentImage ( pickedFile.path.toString() );
+      currentImage(pickedFile.path.toString());
     }
   }
 
@@ -63,7 +62,7 @@ class ChatController extends GetxController {
   /// This method gets the author name of a comment.
   Future<String> getUserName() async {
     if (requestedUserId == getDefaultUserId()) {
-      if(!DB.getDefaultUser()!.showAlias){
+      if (!DB.getDefaultUser()!.showAlias) {
         return ("Anonymous");
       }
       return DB.getDefaultUser()!.userName;
@@ -117,7 +116,7 @@ class ChatController extends GetxController {
 
   /// This method saves a image locally.
   void saveImageLocally() async {
-    final File file = File( currentImage.value );
+    final File file = File(currentImage.value);
     file.copy(await getFilePath());
   }
 
@@ -140,13 +139,13 @@ class ChatController extends GetxController {
         attachedImage = await getFilePath();
         imageId = await ChatAPI.sendImage(currentImage.value, currentLessonId);
         saveImageLocally();
-      }else{
+      } else {
         attachedImage = null;
       }
 
       //generate comment object
       Comment comment = new Comment(
-          id: "C00_"+DateTime.now().toString(), //TODO: SERVER RESPONSE
+          id: "C00_" + DateTime.now().toString(), //TODO: SERVER RESPONSE
           text: message,
           dateTime: DateTime.now(),
           lessonId: currentLessonId,
@@ -157,8 +156,8 @@ class ChatController extends GetxController {
 
       //clear text input
       msgController.clear();
-      message="";
-      currentImage.value = "" ;
+      message = "";
+      currentImage.value = "";
 
       //scroll to the bottom of the list view
       scrollController.animateTo(

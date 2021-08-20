@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:geiger_edu/controller/global_controller.dart';
-import 'package:geiger_edu/providers/chat_api.dart';
+import 'package:geiger_edu/services/chat_api.dart';
 import 'package:geiger_edu/services/db.dart';
 import 'package:get/get.dart';
 
@@ -10,7 +10,6 @@ import 'package:get/get.dart';
 /// @author Turan Ledermann
 
 class ProfileController extends GetxController {
-
   final GlobalController globalController = Get.find();
   final List<String> imagePaths = [
     "assets/img/profile/default.png",
@@ -64,9 +63,7 @@ class ProfileController extends GetxController {
             displayImageSelector();
             saveNewProfileImage(i);
           },
-          child: Container(
-              width: 5,
-              child: Image.asset(i)));
+          child: Container(width: 5, child: Image.asset(i)));
 
       gst.add(g);
     }

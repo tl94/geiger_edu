@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:geiger_edu/services/internet_connectivity.dart';
+import 'package:geiger_edu/providers/internet_connectivity.dart';
 import 'package:get/get.dart';
 
 /// This class handles overarching business logic.

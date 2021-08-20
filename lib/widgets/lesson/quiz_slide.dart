@@ -26,8 +26,8 @@ class QuizSlide extends StatelessWidget {
                   for (var qg in snapshot.data!) qg,
                   ElevatedButton(
                       onPressed: quizController.finishQuiz,
-                      child: Text("QuizFinishQuiz".tr))
-                ];
+                      child: Text("QuizFinishQuiz".tr)
+                  )];
               } else {
                 children = <Widget>[Container(color: Colors.white)];
               }
@@ -36,6 +36,8 @@ class QuizSlide extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return children[index];
                   });
-            }));
+            }
+            )
+    );
   }
 }

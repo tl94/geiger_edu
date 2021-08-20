@@ -71,24 +71,45 @@ class LessonContainer extends StatelessWidget {
                 if (!lessonController.isOnFirstSlide.value) {
                   return Align(
                       alignment: Alignment.centerLeft,
-                      child: Material(
-                          color: Colors.transparent,
-                          child: Ink(
-                              decoration: const ShapeDecoration(
-                                color: _buttonColor,
-                                shape: CircleBorder(),
-                              ),
+                      child: GestureDetector(
+                          onTap: () => lessonController.previousPage(),
+                          child: Container(
+                              width: 25,
+                              height: 75,
+                              decoration: BoxDecoration(
+                                  color: Color.fromRGBO(198, 198, 198, 0.7),
+                                  borderRadius: BorderRadius.horizontal(
+                                      right: Radius.circular(50))),
+                              child: Icon(Icons.chevron_left))));
+                  /*child: Material(
+                          color: Colors.red,
+
+                                  child: ClipPath(
+                                      clipper: ClipPathClass(),
                               child: IconButton(
+                                padding: const EdgeInsets.fromLTRB(20, 8,8, 8),
                                 icon: Icon(Icons.chevron_left),
                                 onPressed: () =>
                                     lessonController.previousPage(),
-                              ))));
+                              ))));*/
                 } else
                   return SizedBox.shrink();
               }),
               Obx(() {
                 if (!lessonController.isOnLastSlide.value ||
                     !lessonController.getCurrentLesson().hasQuiz) {
+                  return Align(
+                      alignment: Alignment.centerRight,
+                      child: GestureDetector(
+                          onTap: () => lessonController.nextPage(),
+                          child: Container(
+                              width: 25,
+                              height: 75,
+                              decoration: BoxDecoration(
+                                  color: Color.fromRGBO(198, 198, 198, 0.7),
+                                  borderRadius: BorderRadius.horizontal(
+                                      left: Radius.circular(50))),
+                              child: Icon(Icons.chevron_right))));
                   return Align(
                       alignment: Alignment.centerRight,
                       child: Material(
@@ -109,4 +130,30 @@ class LessonContainer extends StatelessWidget {
           ))
         ])));
   }
+}
+
+class ClipPathClass extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    var path = Path();
+    path.lineTo(0.0, size.height - 30);
+
+    var firstControlPoint = Offset(size.width / 4, size.height);
+    var firstPoint = Offset(size.width / 2, size.height);
+    path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy,
+        firstPoint.dx, firstPoint.dy);
+
+    var secondControlPoint = Offset(size.width - (size.width / 4), size.height);
+    var secondPoint = Offset(size.width, size.height - 30);
+    path.quadraticBezierTo(secondControlPoint.dx, secondControlPoint.dy,
+        secondPoint.dx, secondPoint.dy);
+
+    path.lineTo(size.width, 0.0);
+    path.close();
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
