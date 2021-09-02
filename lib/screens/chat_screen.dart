@@ -29,7 +29,10 @@ class ChatScreen extends StatelessWidget {
         appBar: AppBar(
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () {
+              chatController.cancelChatUpdateTask();
+              Navigator.of(context).pop();
+            },
           ),
           title: Text("ChatTitle".tr + chatController.currentLessonId),
           centerTitle: true,
@@ -56,7 +59,6 @@ class ChatScreen extends StatelessWidget {
                 builder: (box) {
                   var items = DB.getComments(chatController.currentLessonId);
                   var length = items.length;
-
                   return Expanded(
                     child: Container(
                         child: ListView.builder(

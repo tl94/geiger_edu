@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:connectivity/connectivity.dart';
+import 'package:cron/cron.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:geiger_edu/providers/internet_connectivity.dart';
@@ -26,12 +27,31 @@ class GlobalController extends GetxController {
   //** ICONS **
   String userImg = "assets/img/profile/user_icon.png";
 
+  //** IMAGE FULLSCREEN VIEW **
+  String selectedImage = "";
+
+  //** CRON **
+  final cron = Cron();
+  final List<ScheduledTask> tasks = List.empty(growable: true);
+
+  /// schedules a cron job
+  ScheduledTask scheduleJob(String schedule, VoidCallback function) {
+    final task = cron.schedule(Schedule.parse(schedule), () async {
+      function();
+    });
+    tasks.add(task);
+    return task;
+  }
+
+  /// cancels a cron job
+  void cancelJob(ScheduledTask task) {
+    tasks.remove(task);
+    task.cancel();
+  }
+
   //** INTERNET CONNECTIVITY **
   Map source = {ConnectivityResult.none: false}.obs;
   MyConnectivity _connectivity = MyConnectivity.instance;
-
-  //** IMAGE FULLSCREEN VIEW **
-  String selectedImage = "";
 
   /// This method gets the connection mode of the device.
   void getConnectionMode() {

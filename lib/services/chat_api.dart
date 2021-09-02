@@ -44,7 +44,6 @@ class ChatAPI {
   static Future<void> sendMessage(Comment comment) async {
     Uri request =
         Uri.parse(serviceAddress + "/rooms/" + comment.lessonId + "/messages");
-
     final response = await http.post(request,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -133,6 +132,30 @@ class ChatAPI {
     }
   }
 
+
+  /// This method obtains all new comments from the server since last update.
+  ///
+  /// @param roomId The id of the selected chatroom.
+  /// @param dateTime The date of the last update
+  static Future<Messages> fetchNewMessages(String roomId, DateTime dateTime) async {
+    // Uri request = Uri(host: host, port: port, path: "/geiger-edu-chat/rooms/" + roomId + "/messages");
+    Uri request = Uri.parse(serviceAddress + "/rooms/" + roomId + "/messages?dateFrom=" + dateTime.toString());
+
+    final response = await http.get(request);
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      Messages messages = Messages.fromJson(json.decode(response.body));
+
+      return messages;
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load messages');
+    }
+  }
+
   /// This method obtains all the comments of a specific user from the server.
   ///
   /// @param userId The id of the user
@@ -181,7 +204,6 @@ class ChatAPI {
   /// @param messages Messages to be saved
   static void saveMessagesToDB(Future<Messages> messages) async {
     var msgs = await messages;
-
     msgs.messages.forEach((element) async {
       if (element.imageId != null && element.imageId != '') {
         Directory appDocumentsDirectory =
@@ -196,7 +218,9 @@ class ChatAPI {
         }
       }
       // if the db doesn't contain the element then persist it to the db
-      if (!DB.getCommentBox().keys.contains(element.id)) DB.addComment(element);
+      if (!DB.getCommentBox().keys.contains(element.id)) {
+        DB.addComment(element);
+      }
     });
   }
 

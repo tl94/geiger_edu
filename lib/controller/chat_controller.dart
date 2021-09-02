@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cron/cron.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:geiger_edu/controller/global_controller.dart';
@@ -32,6 +33,9 @@ class ChatController extends GetxController {
   var message = "";
   var image = "";
   var requestedUserId = "";
+  var lastUpdateDate = DateTime.now();
+  ScheduledTask? chatUpdateTask;
+
 
   /// This method lets a user select an image from the gallery.
   Future getImage() async {
@@ -174,7 +178,22 @@ class ChatController extends GetxController {
   Future<void> navigateToChat(BuildContext context) async {
     await ChatAPI.authenticateUser();
     ChatAPI.saveMessagesToDB(ChatAPI.fetchMessages(currentLessonId));
+    lastUpdateDate = DateTime.now();
+    createChatUpdateTask();
     Navigator.pushNamed(context, ChatScreen.routeName);
+  }
+
+  void createChatUpdateTask() {
+    if (chatUpdateTask != null) cancelChatUpdateTask();
+    chatUpdateTask = globalController.scheduleJob("*/5 * * * * *", () {
+      ChatAPI.saveMessagesToDB(ChatAPI.fetchNewMessages(currentLessonId, lastUpdateDate));
+      lastUpdateDate = DateTime.now();
+    });
+  }
+
+  void cancelChatUpdateTask() {
+    globalController.cancelJob(chatUpdateTask!);
+    chatUpdateTask = null;
   }
 
   /// HELPER METHODS ///

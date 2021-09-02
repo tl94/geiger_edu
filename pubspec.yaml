@@ -60,6 +60,7 @@ dependencies:
   string_validator: ^0.3.0
   page_view_indicators: ^2.0.0
   get: ^4.3.0
+  cron: ^0.3.2
 
 dev_dependencies:
   flutter_test:
