@@ -53,7 +53,6 @@ class Comment extends HiveObject {
 
   /// This method maps values to the object from a json.
   factory Comment.fromJson(Map<String, dynamic> parsedJson) {
-    var roomId = parsedJson['roomId'];
     var dateTime = parsedJson['timestamp'];
     return Comment(
         id: parsedJson['id'],
@@ -61,7 +60,7 @@ class Comment extends HiveObject {
         parentMsgId: parsedJson['parentMsg'],
         childMsgIds: parsedJson['childMsgs'],
         dateTime: DateTime.parse(dateTime),
-        lessonId: roomId,
+        lessonId: parsedJson['roomId'],
         userId: parsedJson['userId'],
     imageId: parsedJson['imageId']);
   }

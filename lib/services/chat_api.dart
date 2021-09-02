@@ -17,6 +17,7 @@ import 'package:path_provider/path_provider.dart';
 class ChatAPI {
 
   static String serverIp = "86.119.42.103";
+  // static String serverIp = "10.0.2.2"; // IP address for locally hosted backend through Android Studio simulator
   static int port = 3000;
   static String serviceAddress = "http://" + serverIp + ":" + port.toString() + "/geiger-edu-chat";
 
@@ -55,6 +56,8 @@ class ChatAPI {
       // then parse the JSON.
       Comment c = Comment.fromJson(json.decode(response.body));
       comment.id = c.id;
+      comment.dateTime = c.dateTime;
+
       DB.addComment(comment);
     } else {
       // If the server did not return a 201 OK response,

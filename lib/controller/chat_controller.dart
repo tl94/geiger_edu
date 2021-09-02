@@ -145,7 +145,7 @@ class ChatController extends GetxController {
 
       //generate comment object
       Comment comment = new Comment(
-          id: "C00_" + DateTime.now().toString(), //TODO: SERVER RESPONSE
+          id: "C00_" + DateTime.now().toString(),
           text: message,
           dateTime: DateTime.now(),
           lessonId: currentLessonId,
