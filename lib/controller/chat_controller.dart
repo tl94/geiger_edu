@@ -163,13 +163,17 @@ class ChatController extends GetxController {
       message = "";
       currentImage.value = "";
 
-      //scroll to the bottom of the list view
-      scrollController.animateTo(
-        scrollController.position.maxScrollExtent, //+height of new item
-        duration: Duration(seconds: 1),
-        curve: Curves.fastOutSlowIn,
-      );
+      scrollToChatBottom();
     }
+  }
+
+  void scrollToChatBottom() {
+    //scroll to the bottom of the list view
+    scrollController.animateTo(
+      scrollController.position.maxScrollExtent, //+height of new item
+      duration: Duration(seconds: 1),
+      curve: Curves.fastOutSlowIn,
+    );
   }
 
   /// This method navigates to the chat of the currently selected lesson.
