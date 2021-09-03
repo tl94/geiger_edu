@@ -48,208 +48,244 @@ class ChatScreen extends StatelessWidget {
                   child: Center(
                       child: Container(
                           width: context.width * 0.75,
-                          child: Text(
-                              "ChatNoInternetConnection".tr,
+                          child: Text("ChatNoInternetConnection".tr,
                               textAlign: TextAlign.left)))),
             if (globalController.source.keys.toList().first !=
                 ConnectivityResult.none)
               //** Chat Messages **
-              HiveListener(
-                box: DB.getCommentBox(),
-                builder: (box) {
-                  var items = DB.getComments(chatController.currentLessonId);
-                  var length = items.length;
-                  return Expanded(
-                    child: Container(
-                        child: ListView.builder(
-                          controller: chatController.scrollController,
-                          itemCount: length,
-                          itemBuilder: (context, index) {
-                            chatController.setRequestedUserId(items[index].id);
-                            var commentImagePath = chatController.getCommentImagePath(items[index].id);
-                            return Container(
-                                margin: EdgeInsets.all(10),
-                                child: FutureBuilder(
-                                  future: chatController.getRequestedUser(chatController.requestedUserId),
-                                  builder: (context, AsyncSnapshot<User> snapshot) {
-                                    if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
-                                      return Row(
-                                        mainAxisAlignment:
-                                        chatController.getMainAxisAlignment(),
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Column(
-                                            children: [
-                                              Container(
-                                                decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(50),
-                                                  color: Colors.white,
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: Colors.black54,
-                                                      blurRadius: 4.0,
-                                                      offset: Offset(0.0, 4),
-                                                    ),
-                                                  ],
-                                                ),
-                                                child: ClipOval(
-                                                    child: Image.asset(
-                                                        snapshot.data!.userImagePath,
-                                                        width: 50)),
-                                              ),
-                                              Text(chatController.getUserScore(snapshot.data!))
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Container(
-                                            width: context.width / 2,
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+              Expanded(
+                  child: Container(
+                      child: HiveListener(
+                        box: DB.getCommentBox(),
+                        builder: (box) {
+                          var items =
+                              DB.getComments(chatController.currentLessonId);
+                          var length = items.length;
+                          return ListView.builder(
+                            padding: EdgeInsets.zero,
+                            controller: chatController.scrollController,
+                            itemCount: length,
+                            itemBuilder: (context, index) {
+                              var item = items[index];
+                              var userId = item.userId;
+                              chatController
+                                  .setRequestedUserId(item.id);
+                              var commentImagePath = chatController
+                                  .getCommentImagePath(item.id);
+                              return Container(
+                                  margin: EdgeInsets.all(10),
+                                  child: FutureBuilder(
+                                    future: chatController.getRequestedUser(
+                                        userId),
+                                    builder: (context,
+                                        AsyncSnapshot<User> snapshot) {
+                                      if (snapshot.connectionState ==
+                                              ConnectionState.done &&
+                                          snapshot.hasData) {
+                                        return Row(
+                                          mainAxisAlignment: chatController
+                                              .getMainAxisAlignment(),
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Column(
                                               children: [
                                                 Container(
-                                                  padding: EdgeInsets.all(10),
-                                                  margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
                                                   decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.circular(5),
-                                                    color: Color.fromRGBO(234, 240, 243, 1),
-                                                  ),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                    children: [
-                                                      Text(snapshot.data!.userName),
-                                                      SizedBox(height: 10),
-                                                      //** COMMENT HAS IMAGE ATTACHED **
-                                                      if (commentImagePath !=
-                                                          "") //chatController.items[index].image
-                                                        GestureDetector(
-                                                          child: Container(
-                                                            width: context.width,
-                                                            child: Image.file(File(
-                                                                commentImagePath)),
-                                                          ),
-                                                          onTap: () {
-                                                            globalController.selectedImage =
-                                                                commentImagePath;
-                                                            Navigator.push(context,
-                                                                MaterialPageRoute(
-                                                                    builder: (_) {
-                                                                      return ImageViewFullScreen();
-                                                                    }));
-                                                          },
-                                                          onLongPress: () {
-                                                            if (chatController.requestedUserId ==
-                                                                chatController.getDefaultUserId()) {
-                                                              showDialog(
-                                                                context: context,
-                                                                builder: (_) => AlertDialog(
-                                                                  title:
-                                                                  Text("ChatDeleteMessage".tr),
-                                                                  content: Text(
-                                                                      "ChatDeleteMessagePopup".tr),
-                                                                  actions: [
-                                                                    OutlinedButton(
-                                                                        onPressed: () {
-                                                                          //FocusScope.of(context).requestFocus(FocusNode());
-                                                                          //SystemChannels.textInput.invokeMethod('TextInput.hide');
-                                                                          Navigator.of(context,rootNavigator:true).pop('dialog');
-                                                                        },
-                                                                        child: Text("ChatDeleteMessageNo".tr)),
-                                                                    OutlinedButton(
-                                                                        onPressed: () {
-                                                                          chatController.deleteComment(items[index].id);
-                                                                          Navigator.of(context, rootNavigator: true).pop('dialog');
-                                                                        },
-                                                                        child: Text("ChatDeleteMessageYes".tr)),
-                                                                  ],
-                                                                ),
-                                                              );
-                                                            }
-                                                          },
-                                                        ),
-
-                                                      //** COMMENT HAS NO IMAGE ATTACHED **
-                                                      if (commentImagePath ==
-                                                          "") //chatController.items[index].image
-                                                        GestureDetector(
-                                                          child: Container(
-                                                            width: context.width,
-                                                            child: Text(items[index].text),
-                                                          ),
-                                                          onLongPress: () {
-                                                            if (chatController
-                                                                .requestedUserId ==
-                                                                chatController
-                                                                    .getDefaultUserId()) {
-                                                              showDialog(
-                                                                context: context,
-                                                                builder: (_) => AlertDialog(
-                                                                  title:
-                                                                  Text("ChatDeleteMessage".tr),
-                                                                  content: Text(
-                                                                      "ChatDeleteMessagePopup".tr),
-                                                                  actions: [
-                                                                    OutlinedButton(
-                                                                        onPressed: () {
-                                                                          Navigator.of(
-                                                                              context,
-                                                                              rootNavigator:
-                                                                              true)
-                                                                              .pop('dialog');
-                                                                        },
-                                                                        child: Text("ChatDeleteMessageNo".tr)),
-                                                                    OutlinedButton(
-                                                                        onPressed: () {
-                                                                          chatController
-                                                                              .deleteComment(
-                                                                              items[index].id);
-                                                                          Navigator.of(
-                                                                              context,
-                                                                              rootNavigator:
-                                                                              true)
-                                                                              .pop('dialog');
-                                                                        },
-                                                                        child: Text("ChatDeleteMessageYes".tr)),
-                                                                    //OutlineButton("NO"),
-                                                                  ],
-                                                                ),
-                                                              );
-                                                            }
-                                                          },
-                                                        ),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            50),
+                                                    color: Colors.white,
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color: Colors.black54,
+                                                        blurRadius: 4.0,
+                                                        offset: Offset(0.0, 4),
+                                                      ),
                                                     ],
                                                   ),
+                                                  child: ClipOval(
+                                                      child: Image.asset(
+                                                          snapshot.data!
+                                                              .userImagePath,
+                                                          width: 50)),
                                                 ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
-                                                  children: [
-                                                    Text(chatController.getCommentDate(items[index].id))
-                                                  ],
-                                                )
+                                                Text(
+                                                    chatController.getUserScore(
+                                                        snapshot.data!))
                                               ],
                                             ),
-                                          )
-                                        ],
-                                      );
-                                    } else {
-                                      return SizedBox.shrink();
-                                    }
-                                  },
-                                )
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Container(
+                                              width: context.width / 2,
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Container(
+                                                    padding: EdgeInsets.all(10),
+                                                    margin: EdgeInsets.fromLTRB(
+                                                        0, 0, 0, 5),
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5),
+                                                      color: Color.fromRGBO(
+                                                          234, 240, 243, 1),
+                                                    ),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(snapshot
+                                                            .data!.userName),
+                                                        SizedBox(height: 10),
+                                                        //** COMMENT HAS IMAGE ATTACHED **
+                                                        if (commentImagePath !=
+                                                            "") //chatController.items[index].image
+                                                          GestureDetector(
+                                                            child: Container(
+                                                              width:
+                                                                  context.width,
+                                                              child: Image.file(
+                                                                  File(
+                                                                      commentImagePath)),
+                                                            ),
+                                                            onTap: () {
+                                                              globalController
+                                                                      .selectedImage =
+                                                                  commentImagePath;
+                                                              Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                      builder:
+                                                                          (_) {
+                                                                return ImageViewFullScreen();
+                                                              }));
+                                                            },
+                                                            onLongPress: () {
+                                                              if (userId ==
+                                                                  chatController
+                                                                      .getDefaultUserId()) {
+                                                                showDialog(
+                                                                  context:
+                                                                      context,
+                                                                  builder: (_) =>
+                                                                      AlertDialog(
+                                                                    title: Text(
+                                                                        "ChatDeleteMessage"
+                                                                            .tr),
+                                                                    content: Text(
+                                                                        "ChatDeleteMessagePopup"
+                                                                            .tr),
+                                                                    actions: [
+                                                                      OutlinedButton(
+                                                                          onPressed:
+                                                                              () {
+                                                                            //FocusScope.of(context).requestFocus(FocusNode());
+                                                                            //SystemChannels.textInput.invokeMethod('TextInput.hide');
+                                                                            Navigator.of(context, rootNavigator: true).pop('dialog');
+                                                                          },
+                                                                          child:
+                                                                              Text("ChatDeleteMessageNo".tr)),
+                                                                      OutlinedButton(
+                                                                          onPressed:
+                                                                              () {
+                                                                            chatController.deleteComment(item.id);
+                                                                            Navigator.of(context, rootNavigator: true).pop('dialog');
+                                                                          },
+                                                                          child:
+                                                                              Text("ChatDeleteMessageYes".tr)),
+                                                                    ],
+                                                                  ),
+                                                                );
+                                                              }
+                                                            },
+                                                          ),
 
-                              //child: ListTile(
-                              //  title: Text(items[index].text),subtitle: Text(items[index].dateTime.toString()),
-                              //)
-                            );
-                          },
-                        )),
-                  );
-                },
-              ),
+                                                        //** COMMENT HAS NO IMAGE ATTACHED **
+                                                        if (commentImagePath ==
+                                                            "") //chatController.items[index].image
+                                                          GestureDetector(
+                                                            child: Container(
+                                                              width:
+                                                                  context.width,
+                                                              child: Text(
+                                                                  item.text),
+                                                            ),
+                                                            onLongPress: () {
+                                                              if (userId ==
+                                                                  chatController
+                                                                      .getDefaultUserId()) {
+                                                                showDialog(
+                                                                  context:
+                                                                      context,
+                                                                  builder: (_) =>
+                                                                      AlertDialog(
+                                                                    title: Text(
+                                                                        "ChatDeleteMessage"
+                                                                            .tr),
+                                                                    content: Text(
+                                                                        "ChatDeleteMessagePopup"
+                                                                            .tr),
+                                                                    actions: [
+                                                                      OutlinedButton(
+                                                                          onPressed:
+                                                                              () {
+                                                                            Navigator.of(context, rootNavigator: true).pop('dialog');
+                                                                          },
+                                                                          child:
+                                                                              Text("ChatDeleteMessageNo".tr)),
+                                                                      OutlinedButton(
+                                                                          onPressed:
+                                                                              () {
+                                                                            chatController.deleteComment(item.id);
+                                                                            Navigator.of(context, rootNavigator: true).pop('dialog');
+                                                                          },
+                                                                          child:
+                                                                              Text("ChatDeleteMessageYes".tr)),
+                                                                      //OutlineButton("NO"),
+                                                                    ],
+                                                                  ),
+                                                                );
+                                                              }
+                                                            },
+                                                          ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(chatController
+                                                          .getCommentDate(
+                                                              item.id))
+                                                    ],
+                                                  )
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        );
+                                      } else {
+                                        return SizedBox.shrink();
+                                      }
+                                    },
+                                  )
 
+                                  //child: ListTile(
+                                  //  title: Text(items[index].text),subtitle: Text(items[index].dateTime.toString()),
+                                  //)
+                                  );
+                            },
+                          );
+                        },
+                      ))),
             if (globalController.source.keys.toList().first !=
                 ConnectivityResult.none)
               //** INPUT BAR **
@@ -302,10 +338,9 @@ class ChatScreen extends StatelessWidget {
                           ),
                           GestureDetector(
                             onTap: () {
-
                               chatController.sendMessage();
                               FocusScope.of(context).requestFocus(FocusNode());
-                              },
+                            },
                             child: Container(
                                 child: InkWell(
                                     child: Image.asset(
