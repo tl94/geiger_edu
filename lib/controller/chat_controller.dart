@@ -180,10 +180,12 @@ class ChatController extends GetxController {
   ///
   /// @param context The context of the parent widget.
   Future<void> navigateToChat(BuildContext context) async {
-    await ChatAPI.authenticateUser();
-    ChatAPI.saveMessagesToDB(ChatAPI.fetchMessages(currentLessonId));
-    lastUpdateDate = DateTime.now();
-    createChatUpdateTask();
+    if (globalController.checkInternetConnection()) {
+      await ChatAPI.authenticateUser();
+      ChatAPI.saveMessagesToDB(ChatAPI.fetchMessages(currentLessonId));
+      lastUpdateDate = DateTime.now();
+      createChatUpdateTask();
+    }
     Navigator.pushNamed(context, ChatScreen.routeName);
   }
 
@@ -196,8 +198,10 @@ class ChatController extends GetxController {
   }
 
   void cancelChatUpdateTask() {
-    globalController.cancelJob(chatUpdateTask!);
-    chatUpdateTask = null;
+    if (chatUpdateTask != null) {
+      globalController.cancelJob(chatUpdateTask!);
+      chatUpdateTask = null;
+    }
   }
 
   /// HELPER METHODS ///
