@@ -173,11 +173,22 @@ class DB {
     settingBox.put("default", tempSetting);
   }
 
-  /// The method adds score to the user.
-  static void modifyUserScore(int score) {
+  /// The method adds to the user's score.
+  static void addUserScore(int score) {
     User? tempUser = getDefaultUser();
     tempUser!.userScore += score;
     userBox.put("default", tempUser);
+  }
+
+  /// The method subtracts from the user's score.
+  static void subtractUserScore(int score) {
+    User? tempUser = getDefaultUser();
+    tempUser!.userScore -= score;
+    userBox.put("default", tempUser);
+  }
+
+  static void updateLesson(Lesson lesson) {
+    lessonBox.put(lesson.lessonId, lesson);
   }
 
   /// This method saves current lesson state to db for later continuation.

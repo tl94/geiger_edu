@@ -85,7 +85,7 @@ class SettingsScreen extends StatelessWidget {
           ),
           Container(
             margin: EdgeInsets.fromLTRB(20, 20, 20, 20),
-            child: Text("Mobile Learning v" + globalController.appVersion, style: TextStyle(fontSize: 20, color: Colors.grey)),
+            child: Text("Mobile Learning v" + GlobalController.appVersion, style: TextStyle(fontSize: 20, color: Colors.grey)),
           )
         ])
         ),

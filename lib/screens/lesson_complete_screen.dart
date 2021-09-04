@@ -37,7 +37,7 @@ class LessonCompleteScreen extends StatelessWidget {
               lessonCompleteController.icon2,
             ),
             Column(children: [
-              Center(child: Text('+' + quizController.score.toString())),
+              Center(child: Text('+' + lessonCompleteController.calculateScore().toString())),
               Center(
                 child: Text("LessonCompleteLearnScore".tr),
               )

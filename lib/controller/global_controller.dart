@@ -17,7 +17,11 @@ class GlobalController extends GetxController {
   static const bckColor = const Color(0xFF5dbcd2);
 
   //current version of the application
-  final appVersion = "0.9.20210820";
+  static const appVersion = "0.9.20210820";
+
+  //base score rewards for completing lesson and correct answers on quiz
+  static const int baseLessonScoreReward = 0;
+  static const int baseQuizQuestionReward = 25;
 
   //** USER DATA **
   //Hive-listener Key

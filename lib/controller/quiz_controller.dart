@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:geiger_edu/controller/global_controller.dart';
 import 'package:geiger_edu/controller/io_controller.dart';
 import 'package:geiger_edu/model/quiz/answer.dart';
 import 'package:geiger_edu/model/quiz/question.dart';
@@ -46,6 +47,18 @@ class QuizController extends GetxController {
     return filePaths;
   }
 
+  ///This method calculates the maximum score possible in the quiz and stores it in the DB.
+  ///
+  /// @param questions The list of questions in the current lesson's quiz
+  void saveQuizMaxScore(List<Question> questions) {
+    var maxScore = questions.length * GlobalController.baseQuizQuestionReward;
+    var currentLesson = lessonController.getCurrentLesson();
+    if (currentLesson.maxQuizScore != maxScore) {
+      currentLesson.maxQuizScore = maxScore;
+      DB.getLessonBox().put(currentLesson.lessonId, currentLesson);
+    }
+  }
+
   /// This method gets the questions and answers of the quiz from the html file.
   ///
   /// @param context The BuildContext of the parent widget
@@ -79,6 +92,7 @@ class QuizController extends GetxController {
       questions.add(sq);
     }
     this.questions = questions;
+    saveQuizMaxScore(questions);
     return questions;
   }
 
@@ -123,7 +137,7 @@ class QuizController extends GetxController {
     for (var question in questions) {
       var answer = question.answers[question.selectionIndex];
       if (answer.value) {
-        score += 25;
+        score += GlobalController.baseQuizQuestionReward;
       }
     }
     return score;
@@ -133,12 +147,7 @@ class QuizController extends GetxController {
   /// awards the score and moves on to the next screen.
   void finishQuiz() {
     if (checkAnswers()) {
-      if (!lessonController.getCurrentLesson().completed) {
-        var score = evaluateAnswers();
-
-        lessonController.setLessonCompleted();
-        DB.modifyUserScore(score);
-      }
+      var score = evaluateAnswers();
       Get.to(() => LessonCompleteScreen());
     }
   }

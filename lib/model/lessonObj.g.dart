@@ -29,14 +29,16 @@ class LessonAdapter extends TypeAdapter<Lesson> {
       hasQuiz: fields[9] as bool,
       completed: fields[10] as bool,
       path: fields[11] as String,
-      apiUrl: fields[12] as String,
+      lastQuizScore: fields[12] as int,
+      maxQuizScore: fields[13] as int,
+      apiUrl: fields[14] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, Lesson obj) {
     writer
-      ..writeByte(13)
+      ..writeByte(15)
       ..writeByte(0)
       ..write(obj.lessonId)
       ..writeByte(1)
@@ -62,6 +64,10 @@ class LessonAdapter extends TypeAdapter<Lesson> {
       ..writeByte(11)
       ..write(obj.path)
       ..writeByte(12)
+      ..write(obj.lastQuizScore)
+      ..writeByte(13)
+      ..write(obj.maxQuizScore)
+      ..writeByte(14)
       ..write(obj.apiUrl);
   }
 

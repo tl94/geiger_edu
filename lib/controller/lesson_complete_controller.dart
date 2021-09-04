@@ -2,8 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geiger_edu/controller/lesson_controller.dart';
 import 'package:geiger_edu/controller/quiz_controller.dart';
+import 'package:geiger_edu/services/db.dart';
 import 'package:geiger_edu/widgets/lesson/quiz_results_group.dart';
 import 'package:get/get.dart';
+
+import 'global_controller.dart';
 
 /// This class handles the interaction and creation of UI elements on the lesson.
 /// complete screen
@@ -22,8 +25,36 @@ class LessonCompleteController extends GetxController {
 
   DateTime? selectedDate;
 
+  int difference = 0;
+
+  /// calculate score to display on screen
+  int calculateScore() {
+    var currentLesson = lessonController.currentLesson;
+    var oldScore = currentLesson.lastQuizScore;
+    var newScore = quizController.score;
+    var difference = 0;
+    if (newScore > oldScore) {
+      difference = newScore - oldScore;
+    } else {
+      difference = oldScore - newScore;
+    }
+    this.difference = difference;
+    return difference;
+  }
+
   /// navigate to home screen after finish lesson button press.
   void onFinishLessonPressed(BuildContext context) {
+    if (!lessonController.isMaxScoreReached() || !lessonController.getCurrentLesson().completed) {
+      lessonController.setLessonCompleted();
+      var currentLesson = lessonController.currentLesson;
+      var oldScore = currentLesson.lastQuizScore;
+      var newScore = quizController.score;
+      if (oldScore == 0 || newScore > oldScore) {
+        currentLesson.lastQuizScore = newScore;
+        DB.updateLesson(currentLesson);
+        DB.addUserScore(difference);
+      }
+    }
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
 

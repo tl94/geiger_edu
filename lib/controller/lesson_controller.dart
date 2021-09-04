@@ -211,6 +211,15 @@ class LessonController extends GetxController {
     saveCurrentLesson();
   }
 
+  void updateQuizScore(int score) {
+    currentLesson.lastQuizScore = score;
+  }
+
+  /// Check if maximum score was reached
+  bool isMaxScoreReached() {
+    return currentLesson.lastQuizScore == currentLesson.maxQuizScore;
+  }
+
   ///** GEIGER INDICATOR ** ///
   int completedLessons = 0;
   int maxLessons = 0;

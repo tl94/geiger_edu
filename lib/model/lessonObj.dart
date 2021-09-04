@@ -48,6 +48,12 @@ class Lesson {
   String path;
 
   @HiveField(12)
+  int lastQuizScore;
+
+  @HiveField(13)
+  int maxQuizScore;
+
+  @HiveField(14)
   String apiUrl;
 
   /// Lesson object constructor.
@@ -64,6 +70,8 @@ class Lesson {
     required this.hasQuiz,          //whether lesson has a quiz or not
     this.completed = false,         //whether lesson was completed before
     required this.path,             //path to physical location of lesson directory
+    this.lastQuizScore = 0,         //score last reached in quiz
+    this.maxQuizScore = 0,          //maximum score possible in quiz
     required this.apiUrl,           //URL provided by the geiger toolbox
   });
 }
