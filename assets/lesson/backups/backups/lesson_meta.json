@@ -1,0 +1,15 @@
+{
+  "lessonId": "LBK001",
+  "lessonCategoryId": "CID003",
+  "title": {
+    "eng": "Create Backups",
+    "ger": "Backups erstellen"
+  },
+  "motivation": {
+    "eng": "Learn how to create backups!",
+    "ger": "Lerne wie du Backups erstellen kannst!"
+  },
+  "duration": 7,
+  "difficulty": 1,
+  "hasQuiz": false
+}

@@ -100,6 +100,26 @@ flutter:
     - assets/lesson/password/password_safety/ger/
     - assets/lesson/password/password_safety/ger/img/
 
+    - assets/lesson/password/password_managers/
+    - assets/lesson/password/password_managers/eng/
+    - assets/lesson/password/password_managers/eng/img/
+    - assets/lesson/password/password_managers/ger/
+    - assets/lesson/password/password_managers/ger/img/
+
+    - assets/lesson/malware/
+    - assets/lesson/malware/malware/
+    - assets/lesson/malware/malware/eng/
+    - assets/lesson/malware/malware/eng/img/
+    - assets/lesson/malware/malware/ger/
+    - assets/lesson/malware/malware/ger/img/
+
+    - assets/lesson/backups/
+    - assets/lesson/backups/backups/
+    - assets/lesson/backups/backups/eng/
+    - assets/lesson/backups/backups/eng/img/
+    - assets/lesson/backups/backups/ger/
+    - assets/lesson/backups/backups/ger/img/
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

@@ -1,0 +1,15 @@
+{
+  "lessonId": "LPW002",
+  "lessonCategoryId": "CID001",
+  "title": {
+    "eng": "Password Managers",
+    "ger": "Passwortmanager"
+  },
+  "motivation": {
+    "eng": "Learn how to install a password manager!",
+    "ger": "Lerne wie du einen Passwortmanager installieren kannst!"
+  },
+  "duration": 9,
+  "difficulty": 1,
+  "hasQuiz": false
+}
