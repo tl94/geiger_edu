@@ -52,7 +52,7 @@ class LessonCategorySelectionScreen extends StatelessWidget {
                       return Container(
                         margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
                         child: NavigationContainer(
-                          imagePath: "assets/img/password_icon.png",
+                          imagePath: "assets/img/categories/password_icon.png",
                           text:
                               categories[i].title[settingsController.language]!,
                           passedRoute: LessonSelectionScreen.routeName,
