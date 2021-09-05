@@ -36,6 +36,7 @@ void main() async {
 
   runApp(GetMaterialApp(
     title: 'GEIGER Mobile Learning',
+    //TODO: HiveListener -> global lightTheme & darkTheme -> here if statement with switch
     theme: ThemeData(primaryColor: Color(0xff3ac279)),
     //Old Theme color: Color(0xFF5dbcd2);
     locale: Get.deviceLocale,
