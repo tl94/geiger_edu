@@ -21,8 +21,10 @@ class QuizResultsGroup extends StatelessWidget {
       if (i == answeredQuestion.selectionIndex) {
         if (answer.value) {
           answerContainer = Container(
+            padding: EdgeInsets.all(2),
             child: Text(answer.answer),
             decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
                 color: Colors.yellow[100],
                 border: Border.all(
                   color: Colors.green,
@@ -31,8 +33,10 @@ class QuizResultsGroup extends StatelessWidget {
           );
         } else {
           answerContainer = Container(
+            padding: EdgeInsets.all(2),
             child: Text(answer.answer),
             decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
                 color: Colors.yellow[100],
                 border: Border.all(
                   color: Colors.red,
@@ -52,18 +56,12 @@ class QuizResultsGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-        children: [
-          Center(
-            child: Text(answeredQuestion.question),
-          ),
-          Center(
-              child: Column(
-                  children: getMarkedAnswers()
-              )
-          )
-        ]);
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Text(answeredQuestion.question, style: TextStyle(fontSize: 20)),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [Column(children: getMarkedAnswers())],
+      )
+    ]);
   }
-
-
 }
