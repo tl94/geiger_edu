@@ -12,7 +12,6 @@ import 'package:geiger_edu/screens/home_screen.dart';
 import 'package:geiger_edu/services/db.dart';
 import 'package:geiger_edu/widgets/loading_animation.dart';
 import 'package:get/get.dart';
-
 import 'controller/comments_controller.dart';
 import 'controller/global_controller.dart';
 import 'controller/lesson_category_selection_controller.dart';
@@ -89,9 +88,7 @@ class _MyAppState extends State<MyApp> {
       lessonController.setLessonNumbers();
       lessonController.updateIndicator();
       Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) => HomeScreen())); //HomeScreen()));
+          context, MaterialPageRoute(builder: (context) => HomeScreen()));
     });
   }
 
