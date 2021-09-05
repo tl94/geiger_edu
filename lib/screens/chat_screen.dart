@@ -134,13 +134,18 @@ class ChatScreen extends StatelessWidget {
                                                 Text(snapshot.data!.userName),
                                                 SizedBox(height: 10),
                                                 //** COMMENT HAS IMAGE ATTACHED **
-                                                if (commentImagePath !=
-                                                    "") //chatController.items[index].image
+                                                if (commentImagePath != "")
                                                   GestureDetector(
                                                     child: Container(
                                                       width: context.width,
-                                                      child: Image.file(File(
-                                                          commentImagePath)),
+                                                      child: Column(children: [
+                                                        Image.file(
+                                                          File(
+                                                              commentImagePath),
+                                                        ),
+                                                        if (item.text != "")
+                                                          Text(item.text)
+                                                      ]),
                                                     ),
                                                     onTap: () {
                                                       globalController
@@ -170,8 +175,6 @@ class ChatScreen extends StatelessWidget {
                                                               OutlinedButton(
                                                                   onPressed:
                                                                       () {
-                                                                    //FocusScope.of(context).requestFocus(FocusNode());
-                                                                    //SystemChannels.textInput.invokeMethod('TextInput.hide');
                                                                     Navigator.of(
                                                                             context,
                                                                             rootNavigator:
@@ -206,8 +209,7 @@ class ChatScreen extends StatelessWidget {
                                                   ),
 
                                                 //** COMMENT HAS NO IMAGE ATTACHED **
-                                                if (commentImagePath ==
-                                                    "") //chatController.items[index].image
+                                                if (commentImagePath == "")
                                                   GestureDetector(
                                                     child: Container(
                                                       width: context.width,
@@ -257,7 +259,6 @@ class ChatScreen extends StatelessWidget {
                                                                   child: Text(
                                                                       "ChatDeleteMessageYes"
                                                                           .tr)),
-                                                              //OutlineButton("NO"),
                                                             ],
                                                           ),
                                                         );
@@ -284,20 +285,15 @@ class ChatScreen extends StatelessWidget {
                                 return SizedBox.shrink();
                               }
                             },
-                          )
-
-                          //child: ListTile(
-                          //  title: Text(items[index].text),subtitle: Text(items[index].dateTime.toString()),
-                          //)
-                          );
+                          ));
                     },
                   );
                 },
               ))),
             if (globalController.source.keys.toList().first !=
                 ConnectivityResult.none)
-              //** INPUT BAR **
 
+              //** INPUT BAR **
               Container(
                   margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
                   child: Column(
@@ -352,7 +348,6 @@ class ChatScreen extends StatelessWidget {
                               "assets/img/arrow_send.png",
                               width: 30,
                               height: 50,
-                              //color: Colors.blue,
                             ))),
                           )
                         ],
