@@ -46,7 +46,7 @@ final Map<String, String> en = {
   'LessonCompleteRemindMe': 'Remind me:',
   'LessonCompleteSetReminder': 'Set Reminder',
   'LessonCompleteFinishLesson': 'Done!',
-  'LessonCompleteQuiz': 'Quiz-Results',
+  'LessonCompleteQuiz': 'Quiz-Results:',
 //
   'QuizFinishQuiz': 'Done!',
 //

@@ -60,7 +60,11 @@ class QuizResultsGroup extends StatelessWidget {
       Text(answeredQuestion.question, style: TextStyle(fontSize: 20)),
       Row(
         mainAxisAlignment: MainAxisAlignment.end,
-        children: [Column(children: getMarkedAnswers())],
+        children: [
+          Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: getMarkedAnswers())
+        ],
       )
     ]);
   }
