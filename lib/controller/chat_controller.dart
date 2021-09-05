@@ -36,7 +36,6 @@ class ChatController extends GetxController {
   var lastUpdateDate = DateTime.now();
   ScheduledTask? chatUpdateTask;
 
-
   /// This method lets a user select an image from the gallery.
   Future getImage() async {
     final pickedFile = await _picker.getImage(source: ImageSource.gallery);
@@ -163,17 +162,14 @@ class ChatController extends GetxController {
       message = "";
       currentImage.value = "";
 
-      scrollToChatBottom();
+      //scrollToChatBottom();
     }
   }
 
   void scrollToChatBottom() {
     //scroll to the bottom of the list view
-    scrollController.animateTo(
-      scrollController.position.maxScrollExtent, //+height of new item
-      duration: Duration(seconds: 1),
-      curve: Curves.fastOutSlowIn,
-    );
+    scrollController.animateTo(scrollController.position.maxScrollExtent,
+        duration: Duration(milliseconds: 200), curve: Curves.easeInOut);
   }
 
   /// This method navigates to the chat of the currently selected lesson.
@@ -192,7 +188,8 @@ class ChatController extends GetxController {
   void createChatUpdateTask() {
     if (chatUpdateTask != null) cancelChatUpdateTask();
     chatUpdateTask = globalController.scheduleJob("*/5 * * * * *", () {
-      ChatAPI.saveMessagesToDB(ChatAPI.fetchNewMessages(currentLessonId, lastUpdateDate));
+      ChatAPI.saveMessagesToDB(
+          ChatAPI.fetchNewMessages(currentLessonId, lastUpdateDate));
       lastUpdateDate = DateTime.now();
     });
   }
