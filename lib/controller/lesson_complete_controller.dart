@@ -36,8 +36,6 @@ class LessonCompleteController extends GetxController {
     var difference = 0;
     if (newScore > oldScore) {
       difference = newScore - oldScore;
-    } else {
-      difference = oldScore - newScore;
     }
     this.difference = difference;
     return difference;
