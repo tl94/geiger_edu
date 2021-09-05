@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
@@ -13,10 +15,12 @@ class SlideContainer extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return InAppWebView(
-        initialUrlRequest: URLRequest(
-            url: Uri.parse("http://localhost:8080/" + slidePath)),
+        initialUrlRequest:
+            URLRequest(url: Uri.parse("http://localhost:8080/" + slidePath)),
         initialOptions: InAppWebViewGroupOptions(),
-        onWebViewCreated: (InAppWebViewController controller) {
-        });
+        gestureRecognizers: Set()
+          ..add(Factory<VerticalDragGestureRecognizer>(
+              () => VerticalDragGestureRecognizer())),
+        onWebViewCreated: (InAppWebViewController controller) {});
   }
 }
