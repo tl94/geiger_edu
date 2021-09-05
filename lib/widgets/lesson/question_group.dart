@@ -39,13 +39,6 @@ class _QuestionGroup extends State<QuestionGroup> {
     for (int i = 0; i < answers.length; i++) {
       var answer = answers[i];
       var button =
-          /*OutlinedButton(
-          onPressed: () {
-            _selectionIndex = i;
-            widget.answerSelectedCallback(
-                widget.questionIndex, _selectionIndex);
-          },
-          child: Text(answer.answer));*/
           Obx(() => Container(
                   child: ListTile(
                 contentPadding: EdgeInsets.all(0),
@@ -54,7 +47,6 @@ class _QuestionGroup extends State<QuestionGroup> {
                   value: answer.answer,
                   groupValue: _groupValue.value,
                   onChanged: (value) {
-                    //_selectedGender(value.toString());
                     _groupValue(value.toString());
                     _selectionIndex = i;
                     widget.answerSelectedCallback(

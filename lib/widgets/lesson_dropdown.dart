@@ -203,7 +203,6 @@ class _LessonDropdownState extends State<LessonDropdown> {
                                                         5.0))),
                                       ),
                                       onPressed: () async {
-                                        //TODO: Put this in its own function
                                         await widget.lessonController.setLesson(
                                             context, widget.lesson);
                                         Navigator.pushNamed(

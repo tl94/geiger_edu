@@ -19,7 +19,13 @@ class LessonContainer extends StatelessWidget {
         appBar: AppBar(
             leading: IconButton(
               icon: Icon(Icons.arrow_back),
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () async {
+                if (await lessonController.canGoBack()) {
+                  lessonController.goBack();
+                } else {
+                  Navigator.of(context).pop();
+                }
+              },
             ),
             actions: [
               Container(

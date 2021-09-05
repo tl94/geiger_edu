@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:geiger_edu/controller/io_controller.dart';
 import 'package:geiger_edu/controller/settings_controller.dart';
 import 'package:geiger_edu/model/lessonCategoryObj.dart';
@@ -30,6 +31,7 @@ class LessonController extends GetxController {
   final _kCurve = Curves.ease;
 
   late PageController pageController;
+  final Map<String, InAppWebViewController> webViewControllers = Map();
   late ValueNotifier<int> currentPageNotifier;
   RxInt currentLessonSlideIndex = 0.obs;
   List<String> slidePaths = [];
@@ -197,6 +199,19 @@ class LessonController extends GetxController {
         Get.to(() => LessonCompleteScreen());
       }
     }
+  }
+
+  /// check if webview can go back
+  Future<bool> canGoBack() async {
+    if (currentLessonSlideIndex.value >= slidePaths.length) return false;
+    var controller = webViewControllers[slidePaths[currentLessonSlideIndex.value]];
+    return await controller!.canGoBack();
+  }
+
+  /// go to previous page in webview
+  Future<void> goBack() async {
+    var controller = webViewControllers[slidePaths[currentLessonSlideIndex.value]];
+    controller!.goBack();
   }
 
   /// This method sets the current lesson completed.

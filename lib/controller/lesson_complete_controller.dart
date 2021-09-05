@@ -6,15 +6,12 @@ import 'package:geiger_edu/services/db.dart';
 import 'package:geiger_edu/widgets/lesson/quiz_results_group.dart';
 import 'package:get/get.dart';
 
-import 'global_controller.dart';
-
 /// This class handles the interaction and creation of UI elements on the lesson.
-/// complete screen
+/// complete screen.
 ///
 /// @author Felix Mayer
 /// @author Turan Ledermann
 
-//TODO: COMMENT THIS CLASS
 class LessonCompleteController extends GetxController {
   final QuizController quizController = Get.find();
   final LessonController lessonController = Get.find();
@@ -26,9 +23,10 @@ class LessonCompleteController extends GetxController {
   DateTime? selectedDate;
   var dateSelected = false.obs;
 
+  // difference between new and old score.
   int difference = 0;
 
-  /// calculate score to display on screen
+  /// calculate score to display on screen.
   int calculateScore() {
     var currentLesson = lessonController.currentLesson;
     var oldScore = currentLesson.lastQuizScore;
@@ -69,7 +67,7 @@ class LessonCompleteController extends GetxController {
     return quizResultsGroups;
   }
 
-  /// function for datepicker.
+  /// opens datepicker and saves selected date.
   Future<void> selectDate(BuildContext context) async {
     dateSelected(false);
     final DateTime? newSelectedDate = await showDatePicker(

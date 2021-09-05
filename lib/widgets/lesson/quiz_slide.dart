@@ -29,7 +29,7 @@ class QuizSlide extends StatelessWidget {
                   SizedBox(
                     height: 20,
                   ),
-                  /* add QuestionGroups */
+                  // add QuestionGroups
                   for (var qg in snapshot.data!) qg,
                   OutlinedButton(
                     style: ButtonStyle(

@@ -166,6 +166,7 @@ class ChatController extends GetxController {
     }
   }
 
+  /// scroll to the bottom of the list view.
   void scrollToChatBottom() {
     //scroll to the bottom of the list view
     scrollController.animateTo(scrollController.position.maxScrollExtent,
@@ -185,6 +186,7 @@ class ChatController extends GetxController {
     Navigator.pushNamed(context, ChatScreen.routeName);
   }
 
+  /// creates cron job to update chat
   void createChatUpdateTask() {
     if (chatUpdateTask != null) cancelChatUpdateTask();
     chatUpdateTask = globalController.scheduleJob("*/5 * * * * *", () {
@@ -194,6 +196,7 @@ class ChatController extends GetxController {
     });
   }
 
+  /// cancels update chat cron job
   void cancelChatUpdateTask() {
     if (chatUpdateTask != null) {
       globalController.cancelJob(chatUpdateTask!);
