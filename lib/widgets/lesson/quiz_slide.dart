@@ -7,8 +7,11 @@ import 'package:get/get.dart';
 /// @author Felix Mayer
 /// @author Turan Ledermann
 
+// ignore: must_be_immutable
 class QuizSlide extends StatelessWidget {
   final QuizController quizController = Get.find();
+
+  RxString _selectedGender = 'male'.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +25,15 @@ class QuizSlide extends StatelessWidget {
 
               if (snapshot.hasData) {
                 children = [
-                  Center(child: Text(quizController.introText)),
+                  Text(quizController.introText),
+                  SizedBox(
+                    height: 20,
+                  ),
                   /* add QuestionGroups */
                   for (var qg in snapshot.data!) qg,
+                  SizedBox(
+                    height: 20,
+                  ),
                   OutlinedButton(
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.resolveWith<Color>(
