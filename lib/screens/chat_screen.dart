@@ -138,14 +138,26 @@ class ChatScreen extends StatelessWidget {
                                                   GestureDetector(
                                                     child: Container(
                                                       width: context.width,
-                                                      child: Column(children: [
-                                                        Image.file(
-                                                          File(
-                                                              commentImagePath),
-                                                        ),
-                                                        if (item.text != "")
-                                                          Text(item.text)
-                                                      ]),
+                                                      child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Image.file(
+                                                              File(
+                                                                  commentImagePath),
+                                                            ),
+                                                            if (item.text != "")
+                                                              Column(
+                                                                children: [
+                                                                  SizedBox(
+                                                                      height:
+                                                                          10),
+                                                                  Text(
+                                                                      item.text)
+                                                                ],
+                                                              )
+                                                          ]),
                                                     ),
                                                     onTap: () {
                                                       globalController
