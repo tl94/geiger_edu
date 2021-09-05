@@ -203,6 +203,7 @@ class LessonController extends GetxController {
 
   /// check if webview can go back
   Future<bool> canGoBack() async {
+    if (currentLessonSlideIndex.value >= slidePaths.length) return false;
     var controller = webViewControllers[slidePaths[currentLessonSlideIndex.value]];
     return await controller!.canGoBack();
   }
