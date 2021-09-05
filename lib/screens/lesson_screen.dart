@@ -15,11 +15,11 @@ class LessonScreen extends StatelessWidget {
   final IOController ioController = Get.find();
   final LessonController lessonController = Get.find();
 
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<String>>(
-        future: ioController.getSlidePaths(context, lessonController.currentLesson.path),
+        future: ioController.getSlidePaths(
+            context, lessonController.currentLesson.path),
         builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
           if (snapshot.hasData) {
             return LessonContainer();

@@ -46,7 +46,10 @@ class _QuestionGroup extends State<QuestionGroup> {
                 widget.questionIndex, _selectionIndex);
           },
           child: Text(answer.answer));*/
-          Obx(() => ListTile(
+          Obx(() => Container(
+                  child: ListTile(
+                contentPadding: EdgeInsets.all(0),
+                dense: true,
                 leading: Radio(
                   value: answer.answer,
                   groupValue: _groupValue.value,
@@ -58,8 +61,11 @@ class _QuestionGroup extends State<QuestionGroup> {
                         widget.questionIndex, _selectionIndex);
                   },
                 ),
-                title: Text(answer.answer),
-              ));
+                title: Text(
+                  answer.answer,
+                  style: TextStyle(fontSize: 17),
+                ),
+              )));
 
       buttons.add(button);
     }
@@ -71,11 +77,14 @@ class _QuestionGroup extends State<QuestionGroup> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(widget.question.question),
+        Text(widget.question.question, style: TextStyle(fontSize: 17)),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: _buttons,
-        )
+        ),
+        SizedBox(
+          height: 20,
+        ),
       ],
     );
   }
