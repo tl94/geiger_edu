@@ -13,6 +13,7 @@ class QuizSlide extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+        margin: EdgeInsets.all(30),
         child: FutureBuilder<List<Widget>>(
             future: quizController.getQuestionGroups(context),
             builder:
@@ -21,13 +22,36 @@ class QuizSlide extends StatelessWidget {
 
               if (snapshot.hasData) {
                 children = [
-                  Center(child: Text(quizController.introText)),
-                  /* add QuestionGroups */
+                  Text(
+                    quizController.introText,
+                    style: TextStyle(fontSize: 17),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  // add QuestionGroups
                   for (var qg in snapshot.data!) qg,
-                  ElevatedButton(
-                      onPressed: quizController.finishQuiz,
-                      child: Text("QuizFinishQuiz".tr)
-                  )];
+                  OutlinedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                        (Set<MaterialState> states) {
+                          if (states.contains(MaterialState.pressed))
+                            return Theme.of(context)
+                                .colorScheme
+                                .primary
+                                .withOpacity(0.5);
+                          return Colors.green;
+                        },
+                      ),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.0))),
+                    ),
+                    onPressed: quizController.finishQuiz,
+                    child: Text('QuizFinishQuiz'.tr,
+                        style: TextStyle(fontSize: 20, color: Colors.white)),
+                  )
+                ];
               } else {
                 children = <Widget>[Container(color: Colors.white)];
               }
@@ -36,8 +60,6 @@ class QuizSlide extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return children[index];
                   });
-            }
-            )
-    );
+            }));
   }
 }

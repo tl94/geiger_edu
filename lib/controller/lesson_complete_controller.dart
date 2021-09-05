@@ -21,6 +21,7 @@ class LessonCompleteController extends GetxController {
   final String icon2 = "assets/img/trophy_icon.svg";
 
   DateTime? selectedDate;
+  var dateSelected = false.obs;
 
   // difference between new and old score.
   int difference = 0;
@@ -33,8 +34,6 @@ class LessonCompleteController extends GetxController {
     var difference = 0;
     if (newScore > oldScore) {
       difference = newScore - oldScore;
-    } else {
-      difference = oldScore - newScore;
     }
     this.difference = difference;
     return difference;
@@ -42,7 +41,8 @@ class LessonCompleteController extends GetxController {
 
   /// navigate to home screen after finish lesson button press.
   void onFinishLessonPressed(BuildContext context) {
-    if (!lessonController.isMaxScoreReached() || !lessonController.getCurrentLesson().completed) {
+    if (!lessonController.isMaxScoreReached() ||
+        !lessonController.getCurrentLesson().completed) {
       lessonController.setLessonCompleted();
       var currentLesson = lessonController.currentLesson;
       var oldScore = currentLesson.lastQuizScore;
@@ -69,13 +69,15 @@ class LessonCompleteController extends GetxController {
 
   /// opens datepicker and saves selected date.
   Future<void> selectDate(BuildContext context) async {
+    dateSelected(false);
     final DateTime? newSelectedDate = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
         firstDate: DateTime.now(),
         lastDate: DateTime.utc(2100, 12, 31));
-    if (selectedDate != null) {
+    if (newSelectedDate != null) {
       selectedDate = newSelectedDate;
+      dateSelected(true);
     }
   }
 }
