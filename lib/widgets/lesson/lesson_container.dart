@@ -21,7 +21,13 @@ class LessonContainer extends StatelessWidget {
         appBar: AppBar(
             leading: IconButton(
               icon: Icon(Icons.arrow_back),
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () async {
+                if (await lessonController.canGoBack()) {
+                  lessonController.goBack();
+                } else {
+                  Navigator.of(context).pop();
+                }
+              },
             ),
             actions: [
               Container(
@@ -110,19 +116,6 @@ class LessonContainer extends StatelessWidget {
                                   borderRadius: BorderRadius.horizontal(
                                       left: Radius.circular(50))),
                               child: Icon(Icons.chevron_right))));
-                  return Align(
-                      alignment: Alignment.centerRight,
-                      child: Material(
-                          color: Colors.transparent,
-                          child: Ink(
-                              decoration: const ShapeDecoration(
-                                color: _buttonColor,
-                                shape: CircleBorder(),
-                              ),
-                              child: IconButton(
-                                icon: Icon(Icons.chevron_right),
-                                onPressed: () => lessonController.nextPage(),
-                              ))));
                 } else
                   return SizedBox.shrink();
               }),

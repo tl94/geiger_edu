@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:geiger_edu/controller/lesson_controller.dart';
+import 'package:get/get.dart';
 
 /// SlideContainer Widget.
 ///
@@ -9,6 +11,9 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 /// @author Turan Ledermann
 
 class SlideContainer extends StatelessWidget {
+
+  final LessonController lessonController = Get.find();
+
   final String slidePath;
 
   SlideContainer({required this.slidePath}) : super();
@@ -21,6 +26,8 @@ class SlideContainer extends StatelessWidget {
         gestureRecognizers: Set()
           ..add(Factory<VerticalDragGestureRecognizer>(
               () => VerticalDragGestureRecognizer())),
-        onWebViewCreated: (InAppWebViewController controller) {});
+        onWebViewCreated: (InAppWebViewController controller) {
+          lessonController.webViewControllers[slidePath] = controller;
+        });
   }
 }
