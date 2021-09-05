@@ -20,7 +20,6 @@ class ProfileScreen extends StatelessWidget {
   final GlobalController globalController = Get.find();
   final ProfileController profileController = Get.find();
 
-  static const bckColor = const Color(0xFF5dbcd2); //0xFFedb879
   static const borderColor = const Color(0xff0085ff);
 
   @override
@@ -35,7 +34,6 @@ class ProfileScreen extends StatelessWidget {
         ),
         title: Text("ProfileTitle".tr),
         centerTitle: true,
-        backgroundColor: ProfileScreen.bckColor,
       ),
       body: Container(
           child: SingleChildScrollView(
@@ -106,7 +104,8 @@ class ProfileScreen extends StatelessWidget {
                                             .get('default')!
                                             .userName,
                                         onSubmitted: (text) {
-                                          profileController.saveNewUserName(text);
+                                          profileController
+                                              .saveNewUserName(text);
                                         });
                                   },
                                 ),
@@ -177,7 +176,8 @@ class ProfileScreen extends StatelessWidget {
                                             color: color, width: 2);
                                       })),
                                   onPressed: null,
-                                  child: Text('ProfileExportLearningProgress'.tr,
+                                  child: Text(
+                                      'ProfileExportLearningProgress'.tr,
                                       style: TextStyle(fontSize: 20)),
                                 ),
                                 SizedBox(height: 40),

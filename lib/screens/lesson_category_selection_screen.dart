@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:geiger_edu/controller/global_controller.dart';
 import 'package:geiger_edu/controller/lesson_category_selection_controller.dart';
 import 'package:geiger_edu/controller/settings_controller.dart';
 import 'package:geiger_edu/screens/lesson_selection_screen.dart';
@@ -16,13 +15,12 @@ class LessonCategorySelectionScreen extends StatelessWidget {
   static const routeName = '/lessoncategoryselection';
 
   final SettingsController settingsController = Get.find();
-  final LessonCategorySelectionController lessonCategorySelectionController = Get.find();
-
+  final LessonCategorySelectionController lessonCategorySelectionController =
+      Get.find();
 
   @override
   Widget build(BuildContext context) {
     var categories = lessonCategorySelectionController.getLessonCategories();
-    var bckColor = GlobalController.bckColor;
 
     return Scaffold(
       appBar: AppBar(
@@ -32,7 +30,6 @@ class LessonCategorySelectionScreen extends StatelessWidget {
         ),
         title: Text("LessonTopicSelection".tr),
         centerTitle: true,
-        backgroundColor: bckColor,
       ),
       body: Container(
         margin: EdgeInsets.fromLTRB(0, 15, 0, 15),
@@ -49,16 +46,21 @@ class LessonCategorySelectionScreen extends StatelessWidget {
                     shrinkWrap: true,
                     itemCount: categories.length,
                     itemBuilder: (BuildContext context, int i) {
-                      var lessonSpecs = lessonCategorySelectionController.getCompletedLessonsForCategory(categories[i].lessonCategoryId);
+                      var lessonSpecs = lessonCategorySelectionController
+                          .getCompletedLessonsForCategory(
+                              categories[i].lessonCategoryId);
                       return Container(
                         margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
                         child: NavigationContainer(
                           imagePath: "assets/img/password_icon.png",
-                          text: categories[i].title[settingsController.language]!,
+                          text:
+                              categories[i].title[settingsController.language]!,
                           passedRoute: LessonSelectionScreen.routeName,
                           currentValue: lessonSpecs["completed"]!,
                           maxValue: lessonSpecs["allLessons"]!,
-                          passedLessons: lessonCategorySelectionController.getLessonListForCategory(categories[i].lessonCategoryId),
+                          passedLessons: lessonCategorySelectionController
+                              .getLessonListForCategory(
+                                  categories[i].lessonCategoryId),
                         ),
                       );
                     }),

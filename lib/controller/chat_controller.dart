@@ -26,7 +26,6 @@ class ChatController extends GetxController {
   final ImagePicker _picker = ImagePicker();
   var msgController = TextEditingController();
   var scrollController = ScrollController();
-  var bckColor = GlobalController.bckColor;
   var lastMessageId = 0;
   var currentImage = "".obs;
   var currentLessonId = "";

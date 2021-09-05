@@ -36,7 +36,8 @@ void main() async {
 
   runApp(GetMaterialApp(
     title: 'GEIGER Mobile Learning',
-    theme: ThemeData(primaryColor: Color(0xFF5dbcd2)),
+    theme: ThemeData(primaryColor: Color(0xff3ac279)),
+    //Old Theme color: Color(0xFF5dbcd2);
     locale: Get.deviceLocale,
     translationsKeys: AppTranslations.translationsKeys,
     fallbackLocale: Locale('en'),
@@ -51,20 +52,6 @@ void main() async {
 /// @author Turan Ledermann
 
 class MyApp extends StatefulWidget {
-  //** INITIALISE CONTROLLERS **
-  final globalController = Get.put(GlobalController());
-  final settingsController = Get.put(SettingsController());
-  final ioController = Get.put(IOController());
-  final lessonController = Get.put(LessonController());
-  final lessonCategorySelectionController =
-      Get.put(LessonCategorySelectionController());
-  final lessonSelectionController = Get.put(LessonSelectionController());
-  final quizController = Get.put(QuizController());
-  final lessonCompleteController = Get.put(LessonCompleteController());
-  final profileController = Get.put(ProfileController());
-  final chatController = Get.put(ChatController());
-  final commentsController = Get.put(CommentsController());
-
   _MyAppState createState() => _MyAppState();
 }
 
@@ -73,19 +60,33 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
+    //** INITIALISE CONTROLLERS **
+    final globalController = Get.put(GlobalController());
+    final settingsController = Get.put(SettingsController());
+    final ioController = Get.put(IOController());
+    final lessonController = Get.put(LessonController());
+    final lessonCategorySelectionController =
+        Get.put(LessonCategorySelectionController());
+    final lessonSelectionController = Get.put(LessonSelectionController());
+    final quizController = Get.put(QuizController());
+    final lessonCompleteController = Get.put(LessonCompleteController());
+    final profileController = Get.put(ProfileController());
+    final chatController = Get.put(ChatController());
+    final commentsController = Get.put(CommentsController());
+
     //** load lesson data **
-    widget.ioController.loadLessonData(context);
+    ioController.loadLessonData(context);
 
     //** start internet connection check **
-    widget.globalController.getConnectionMode();
+    globalController.getConnectionMode();
 
     //** set lesson language **
-    widget.settingsController.setLessonLanguageForLocale();
+    settingsController.setLessonLanguageForLocale();
 
     /// Application splashscreen.
     Future.delayed(Duration(seconds: 3), () {
-      widget.lessonController.setLessonNumbers();
-      widget.lessonController.updateIndicator();
+      lessonController.setLessonNumbers();
+      lessonController.updateIndicator();
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -108,10 +109,6 @@ class _MyAppState extends State<MyApp> {
                           fit: BoxFit.fitWidth),
                       SizedBox(height: 40),
                       LoadingAnimation(width: 140)
-                    ]
-                )
-            )
-        )
-    );
+                    ]))));
   }
 }

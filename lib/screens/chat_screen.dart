@@ -36,7 +36,6 @@ class ChatScreen extends StatelessWidget {
           ),
           title: Text("ChatTitle".tr + chatController.currentLessonId),
           centerTitle: true,
-          backgroundColor: chatController.bckColor,
         ),
         body: Obx(
           () => Container(

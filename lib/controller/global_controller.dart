@@ -14,10 +14,9 @@ import 'package:get/get.dart';
 
 class GlobalController extends GetxController {
   static const txtColor = const Color(0xff2f4858);
-  static const bckColor = const Color(0xFF5dbcd2);
 
   //current version of the application
-  static const appVersion = "0.9.20210820";
+  static const appVersion = "1.0.20210906";
 
   //base score rewards for completing lesson and correct answers on quiz
   static const int baseLessonScoreReward = 0;
@@ -38,7 +37,10 @@ class GlobalController extends GetxController {
   final cron = Cron();
   final List<ScheduledTask> tasks = List.empty(growable: true);
 
-  /// schedules a cron job
+  /// This method schedules a cron job.
+  ///
+  /// @param schedule Cron String
+  /// @param function Function to be called by cron job
   ScheduledTask scheduleJob(String schedule, VoidCallback function) {
     final task = cron.schedule(Schedule.parse(schedule), () async {
       function();
@@ -47,7 +49,9 @@ class GlobalController extends GetxController {
     return task;
   }
 
-  /// cancels a cron job
+  /// This method cancels a cron job.
+  ///
+  /// @param task The cron task to be canceled.
   void cancelJob(ScheduledTask task) {
     tasks.remove(task);
     task.cancel();
