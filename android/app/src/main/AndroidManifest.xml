@@ -3,7 +3,7 @@
 
     <application
         android:icon="@mipmap/ic_launcher"
-        android:label="geiger_edu"
+        android:label="GEIGER Mobile Learning"
         android:usesCleartextTraffic="true">
 
         <activity

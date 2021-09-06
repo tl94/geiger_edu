@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:geiger_edu/controller/global_controller.dart';
 import 'package:geiger_edu/controller/lesson_selection_controller.dart';
 import 'package:geiger_edu/widgets/lesson_dropdown.dart';
 import 'package:get/get.dart';
@@ -20,8 +19,6 @@ class LessonSelectionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var bckColor = GlobalController.bckColor;
-
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -30,7 +27,6 @@ class LessonSelectionScreen extends StatelessWidget {
         ),
         title: Text(lessonSelectionController.categoryTitle),
         centerTitle: true,
-        backgroundColor: bckColor,
       ),
       body: Container(
         child: Column(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:geiger_edu/controller/global_controller.dart';
 import 'package:geiger_edu/controller/lesson_controller.dart';
 import 'package:geiger_edu/screens/lesson_category_selection_screen.dart';
 import 'package:geiger_edu/screens/profile_screen.dart';
@@ -24,14 +23,11 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var bckColor = GlobalController.bckColor;
-
     return Scaffold(
       appBar: AppBar(
         leading: new Container(),
         title: Text("GEIGER Mobile Learning"),
         centerTitle: true,
-        backgroundColor: bckColor,
       ),
       body: Container(
           child: SingleChildScrollView(
@@ -57,9 +53,10 @@ class HomeScreen extends StatelessWidget {
                                             "assets/img/continue_lesson.png",
                                         text: "HomeContinueLesson".tr,
                                         passedRoute: LessonScreen.routeName,
-                                    continueLessonFunction: () async {
-                                          return await lessonController.continueLesson(context);
-                                    }),
+                                        continueLessonFunction: () async {
+                                          return await lessonController
+                                              .continueLesson(context);
+                                        }),
 
                                     NavigationContainer(
                                         imagePath:
@@ -73,7 +70,10 @@ class HomeScreen extends StatelessWidget {
                                         text: "HomeMyComments".tr,
                                         passedRoute: CommentsScreen.routeName),
                                     //SizedBox(height: 50),
-                                    SizedBox(height: MediaQuery.of(context).size.height - 82* 8),
+                                    SizedBox(
+                                        height:
+                                            MediaQuery.of(context).size.height -
+                                                82 * 8),
                                     NavigationContainer(
                                         imagePath:
                                             "assets/img/profile/user_icon.png",

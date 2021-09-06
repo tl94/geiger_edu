@@ -26,7 +26,6 @@ class ChatController extends GetxController {
   final ImagePicker _picker = ImagePicker();
   var msgController = TextEditingController();
   var scrollController = ScrollController();
-  var bckColor = GlobalController.bckColor;
   var lastMessageId = 0;
   var currentImage = "".obs;
   var currentLessonId = "";
@@ -35,7 +34,6 @@ class ChatController extends GetxController {
   var requestedUserId = "";
   var lastUpdateDate = DateTime.now();
   ScheduledTask? chatUpdateTask;
-
 
   /// This method lets a user select an image from the gallery.
   Future getImage() async {
@@ -163,17 +161,15 @@ class ChatController extends GetxController {
       message = "";
       currentImage.value = "";
 
-      scrollToChatBottom();
+      //scrollToChatBottom();
     }
   }
 
   /// scroll to the bottom of the list view.
   void scrollToChatBottom() {
-    scrollController.animateTo(
-      scrollController.position.maxScrollExtent, //+height of new item
-      duration: Duration(seconds: 1),
-      curve: Curves.fastOutSlowIn,
-    );
+    //scroll to the bottom of the list view
+    scrollController.animateTo(scrollController.position.maxScrollExtent,
+        duration: Duration(milliseconds: 200), curve: Curves.easeInOut);
   }
 
   /// This method navigates to the chat of the currently selected lesson.
@@ -193,7 +189,8 @@ class ChatController extends GetxController {
   void createChatUpdateTask() {
     if (chatUpdateTask != null) cancelChatUpdateTask();
     chatUpdateTask = globalController.scheduleJob("*/5 * * * * *", () {
-      ChatAPI.saveMessagesToDB(ChatAPI.fetchNewMessages(currentLessonId, lastUpdateDate));
+      ChatAPI.saveMessagesToDB(
+          ChatAPI.fetchNewMessages(currentLessonId, lastUpdateDate));
       lastUpdateDate = DateTime.now();
     });
   }
@@ -206,7 +203,7 @@ class ChatController extends GetxController {
     }
   }
 
-  /// HELPER METHODS
+  /// HELPER METHODS ///
 
   /// This method returns the user of a comment.
   ///

@@ -81,14 +81,14 @@ class DB {
   /// This method returns the all the comments of a chatroom.
   ///
   /// @param lessonId The id of the lesson.
-  static List<Comment> getComments(String lessonId){
+  static List<Comment> getComments(String lessonId) {
     List<Comment> commentsOfLesson = [];
-    for(var lesson in getCommentBox().values){
-      if(lesson.lessonId == lessonId){
+    for (var lesson in getCommentBox().values) {
+      if (lesson.lessonId == lessonId) {
         commentsOfLesson.add(lesson);
       }
     }
-    commentsOfLesson.sort((a,b) => a.dateTime.compareTo(b.dateTime));
+    commentsOfLesson.sort((a, b) => b.dateTime.compareTo(a.dateTime));
     return commentsOfLesson;
   }
 
@@ -102,7 +102,7 @@ class DB {
   /// This method deletes a comment from the comment box in the db.
   ///
   /// @param id Id of the comment to be deleted.
-  static void deleteComment(String id){
+  static void deleteComment(String id) {
     getCommentBox().delete(id);
   }
 
@@ -131,8 +131,8 @@ class DB {
   /// chatroom
   /// @param showScore      Variable to check if userScore is shown in the
   /// chatroom
-  static void editDefaultUser(
-      String? userName, String? userImagePath, int? userScore, bool? showAlias, bool? showScore) {
+  static void editDefaultUser(String? userName, String? userImagePath,
+      int? userScore, bool? showAlias, bool? showScore) {
     User? tempUser = getDefaultUser();
 
     if (tempUser!.userName != userName && null != userName)
@@ -158,8 +158,7 @@ class DB {
   ///
   /// @param darkmode Variable to check if darkmode is enabled
   /// @param language The language
-  static void editDefaultSetting(
-      bool? darkmode, String? language) {
+  static void editDefaultSetting(bool? darkmode, String? language) {
     Setting? tempSetting = getDefaultSetting();
 
     if (tempSetting!.darkmode != darkmode && null != darkmode)
@@ -201,8 +200,7 @@ class DB {
   /// This method creates the default user.
   static void createDefaultSettings() {
     //add default settings to box
-    Setting defaultSetting = new Setting(
-        darkmode: false, language: 'ger');
+    Setting defaultSetting = new Setting(darkmode: false, language: 'ger');
     settingBox.put("default", defaultSetting);
   }
 

@@ -34,7 +34,6 @@ class LessonCompleteScreen extends StatelessWidget {
               child: Container(
                 margin: EdgeInsets.all(20),
                 child: Column(
-                  //mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Text("LessonCompleteCongratulations".tr,
@@ -46,41 +45,39 @@ class LessonCompleteScreen extends StatelessWidget {
                           SvgPicture.asset(
                             lessonCompleteController.icon1,
                           ),
-                          Row(
-                            children: [
-                              SvgPicture.asset(
-                                lessonCompleteController.icon2,
-                                height: 52,
-                              ),
-                              Column(children: [
-                                Text(
-                                    '+ ' +
-                                        lessonCompleteController
-                                            .calculateScore()
-                                            .toString(),
-                                    style: TextStyle(
-                                        fontSize: 30,
-                                        fontWeight: FontWeight.w600)),
-                                Text("LessonCompleteLearnScore".tr,
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        color:
-                                            Color.fromRGBO(116, 142, 160, 1))),
-                              ])
-                            ],
-                          )
+                          Row(children: [
+                            SvgPicture.asset(
+                              lessonCompleteController.icon2,
+                              height: 52,
+                            ),
+                            Column(children: [
+                              Text(
+                                  '+ ' +
+                                      lessonCompleteController
+                                          .calculateScore()
+                                          .toString(),
+                                  style: TextStyle(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.w600)),
+                              Text("LessonCompleteLearnScore".tr,
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      color: Color.fromRGBO(116, 142, 160, 1))),
+                            ]),
+                          ]),
                         ]),
                     SizedBox(height: 20),
                     Text("LessonCompleteText1".tr,
-                        style: TextStyle(fontSize: 16)),
+                        style: TextStyle(fontSize: 18)),
                     SizedBox(height: 20),
                     Text("LessonCompleteText2".tr,
-                        style: TextStyle(fontSize: 16)),
+                        style: TextStyle(fontSize: 18)),
                     SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("LessonCompleteRemindMe".tr),
+                        Text("LessonCompleteRemindMe".tr,
+                            style: TextStyle(fontSize: 18)),
                         Obx(() {
                           if (lessonCompleteController.dateSelected.value)
                             return GestureDetector(

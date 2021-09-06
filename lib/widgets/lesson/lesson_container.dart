@@ -63,8 +63,7 @@ class LessonContainer extends StatelessWidget {
                 ],
               ),
               Expanded(
-                  child: Stack(
-                children: [
+                child: Stack(children: [
                   PageView(
                     controller: lessonController.pageController,
                     children: lessonController.slides,
@@ -106,8 +105,8 @@ class LessonContainer extends StatelessWidget {
                     } else
                       return SizedBox.shrink();
                   }),
-                ],
-              ))
+                ]),
+              )
             ])));
   }
 }
