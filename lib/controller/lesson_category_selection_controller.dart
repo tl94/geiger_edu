@@ -46,6 +46,10 @@ class LessonCategorySelectionController extends GetxController {
   }
 
   /// This method calculates the height for the lesson dropdown menu.
+  ///
+  /// @param currentValue Completed lessons
+  /// @param maxValue Available lessons
+  /// @param maxIndicatorSize Maximum available space
   double calcCompletedLessonIndicatorWidth(int currentValue, int maxValue,
       {int maxIndicatorSize = 100}) {
     if (maxValue * 4 >= maxIndicatorSize) {

@@ -51,7 +51,7 @@ class GlobalController extends GetxController {
 
   /// This method calculates the responsive height between the elements in the homescreen.
   ///
-  /// @param contect BuildContext of parent Widget
+  /// @param context BuildContext of parent Widget
   double getResponsiveHeight(BuildContext context) {
     var temp = MediaQuery.of(context).size.height - 82 * 8;
     if (temp < 0) return 0;

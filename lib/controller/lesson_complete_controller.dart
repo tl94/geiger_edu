@@ -26,7 +26,7 @@ class LessonCompleteController extends GetxController {
   // difference between new and old score.
   int difference = 0;
 
-  /// calculate score to display on screen.
+  /// This method calculates the score to be displayed on the screen.
   int calculateScore() {
     var currentLesson = lessonController.currentLesson;
     var oldScore = currentLesson.lastQuizScore;
@@ -39,7 +39,9 @@ class LessonCompleteController extends GetxController {
     return difference;
   }
 
-  /// navigate to home screen after finish lesson button press.
+  /// This method navigates to home screen after a lesson is concluded.
+  ///
+  /// @param context BuildContext of parent Widget
   void onFinishLessonPressed(BuildContext context) {
     if (!lessonController.isMaxScoreReached() ||
         !lessonController.getCurrentLesson().completed) {
@@ -58,7 +60,7 @@ class LessonCompleteController extends GetxController {
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
-  /// create quiz result elements to visualise correct / false answers.
+  /// This method creates a quiz result elements to visualise correct / false answers.
   List<Widget> getQuizResultsGroups() {
     List<Widget> quizResultsGroups = [];
     if (lessonController.getCurrentLesson().hasQuiz) {
@@ -69,7 +71,9 @@ class LessonCompleteController extends GetxController {
     return quizResultsGroups;
   }
 
-  /// opens datepicker and saves selected date.
+  /// This method opens datepicker and saves selected date.
+  ///
+  /// @param context BuildContext of parent Widget
   Future<void> selectDate(BuildContext context) async {
     dateSelected(false);
     final DateTime? newSelectedDate = await showDatePicker(
