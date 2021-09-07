@@ -19,6 +19,8 @@ class IOController extends GetxController {
   SettingsController settingsController = Get.find();
 
   /// This method loads all lesson data from assets.
+  ///
+  /// @param context BuildContext of parent Widget
   void loadLessonData(BuildContext context) async {
     await loadLessons(context);
     await loadLessonCategories(context);
