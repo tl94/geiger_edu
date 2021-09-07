@@ -53,6 +53,8 @@ class LessonCompleteController extends GetxController {
         DB.addUserScore(difference);
       }
     }
+    selectedDate = null;
+    dateSelected(false);
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
