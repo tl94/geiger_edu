@@ -49,6 +49,15 @@ class GlobalController extends GetxController {
     return task;
   }
 
+  /// This method calculates the responsive height between the elements in the homescreen.
+  ///
+  /// @param contect BuildContext of parent Widget
+  double getResponsiveHeight(BuildContext context) {
+    var temp = MediaQuery.of(context).size.height - 82 * 8;
+    if (temp < 0) return 0;
+    return temp;
+  }
+
   /// This method cancels a cron job.
   ///
   /// @param task The cron task to be canceled.

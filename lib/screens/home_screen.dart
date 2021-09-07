@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:geiger_edu/controller/global_controller.dart';
 import 'package:geiger_edu/controller/lesson_controller.dart';
 import 'package:geiger_edu/screens/lesson_category_selection_screen.dart';
 import 'package:geiger_edu/screens/profile_screen.dart';
@@ -20,6 +21,7 @@ class HomeScreen extends StatelessWidget {
   static const routeName = '/homescreen';
 
   final LessonController lessonController = Get.find();
+  final GlobalController globalController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -71,9 +73,8 @@ class HomeScreen extends StatelessWidget {
                                         passedRoute: CommentsScreen.routeName),
                                     //SizedBox(height: 50),
                                     SizedBox(
-                                        height:
-                                            MediaQuery.of(context).size.height -
-                                                82 * 8),
+                                        height: globalController
+                                            .getResponsiveHeight(context)),
                                     NavigationContainer(
                                         imagePath:
                                             "assets/img/profile/user_icon.png",
