@@ -16,3 +16,12 @@ Having access to the internet enables the second main feature of the app namely 
 # Advantages
 In contrast to other Apps is *GEIGER Mobile Learning* part of the *GEIGER Community* and thus supported by a wide range of experts that directly answer questions.
 The half structured communication channel further enhances the exchange experience. The Application is completely free to use helps prevent serious damage to businesses and individuals alike in today's digitalised world.
+
+# Development
+GEIGER Mobile Learning was developed using:
+| Platform | Version | 
+|---|---|
+| Flutter | 2.2.2 | 
+| Android Studio  | 4.2.1 | 
+| Pixel 2 - Emulator  | API 30 - x86_64 | 
+| Andoid | 11.0 |
