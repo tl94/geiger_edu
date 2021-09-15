@@ -15,20 +15,21 @@ import '../services/db.dart';
 /// @author Felix Mayer
 /// @author Turan Ledermann
 
-
-//TODO: COMMENT THIS CLASS
 class IOController extends GetxController {
-
   SettingsController settingsController = Get.find();
 
+  /// This method loads all lesson data from assets.
+  ///
+  /// @param context BuildContext of parent Widget
   void loadLessonData(BuildContext context) async {
     await loadLessons(context);
     await loadLessonCategories(context);
   }
 
-  /* loads lessons from lesson_meta.json files
-  *  recommended is set to false by default
-  *  lastIndex is set to 0 by default */
+  /// This method loads lessons from assets.
+  /// recommended is set to false by default, lastIndex is set to 0 by default.
+  ///
+  /// @param context BuildContext of parent Widget
   Future<void> loadLessons(BuildContext context) async {
     var lessonMetaFiles = await getAssetFiles(context, "lesson_meta.json");
     for (var path in lessonMetaFiles) {
@@ -67,20 +68,26 @@ class IOController extends GetxController {
     }
   }
 
+  /// This method checks if a lesson is present in database.
+  ///
+  /// @param lesson Lesson to be evaluated
   bool isLessonPresent(Lesson lesson) {
     return DB.getLessonBox().containsKey(lesson.lessonId);
   }
 
-  /* loads lesson categories from lesson_category_meta.json files */
+  /// This method loads lesson categories from lesson_category_meta.json files.
+  ///
+  /// @param context BuildContext of parent Widget
   Future<void> loadLessonCategories(BuildContext context) async {
     var lessonCategoryMetaFiles =
-    await getAssetFiles(context, "lesson_category_meta.json");
+        await getAssetFiles(context, "lesson_category_meta.json");
     for (var path in lessonCategoryMetaFiles) {
       var file = await DefaultAssetBundle.of(context).loadString(path);
       var jsonData = await json.decode(file);
       var lessonCategoryId = jsonData['lessonCategoryId'];
       var title = Map<String, String>.from(jsonData['title']);
-      var directoryPath = getDirectoryFromFilePath(path, 'lesson_category_meta.json');
+      var directoryPath =
+          getDirectoryFromFilePath(path, 'lesson_category_meta.json');
       LessonCategory lc = LessonCategory(
           lessonCategoryId: lessonCategoryId,
           title: title,
@@ -89,6 +96,10 @@ class IOController extends GetxController {
     }
   }
 
+  /// This method returns assets file paths for a given directory regex.
+  ///
+  /// @param context BuildContext of parent Widget
+  /// @param regExp RegularExpression to be utilised
   Future<List<String>> getDirectoryFilePaths(
       BuildContext context, RegExp regExp) async {
     var manifestContent =
@@ -99,6 +110,10 @@ class IOController extends GetxController {
     return filePaths;
   }
 
+  /// This method returns a list of asset file paths for given filename.
+  ///
+  /// @param context BuildContext of parent Widget
+  /// @param filename Name of the asset file
   Future<List<String>> getAssetFiles(
       BuildContext context, String filename) async {
     var manifestContent =
@@ -111,18 +126,29 @@ class IOController extends GetxController {
     return files;
   }
 
+  /// This method returns directory path from full file path.
+  ///
+  /// @param filePath Whole file path
+  /// @param fileName Name of the file in question
   String getDirectoryFromFilePath(String filePath, String fileName) {
     String directory = filePath.replaceFirst(RegExp(fileName), '');
     return directory;
   }
 
+  /// This method returns paths for slides of a lesson.
   ///
+  /// @param context BuildContext of parent Widget
+  /// @param lessonPath Path of the lesson
   Future<List<String>> getSlidePaths(
       BuildContext context, String lessonPath) async {
     List<String> filePaths = await getLessonSlidePaths(context, lessonPath);
     return filePaths;
   }
 
+  /// This method returns paths for slides of a lesson.
+  ///
+  /// @param context BuildContext of parent Widget
+  /// @param lessonPath Path of the lesson
   Future<List<String>> getLessonSlidePaths(
       BuildContext context, String lessonPath) async {
     lessonPath = getLocalizedLessonPath(lessonPath);
@@ -131,16 +157,26 @@ class IOController extends GetxController {
     return filePaths;
   }
 
+  /// This method returns the path for lesson with correct language.
+  ///
+  /// @param lessonPath Path of the lesson
   String getLocalizedLessonPath(String lessonPath) {
     return lessonPath + settingsController.language + '/';
   }
 
+  /// This method returns number of slides in a lesson.
+  ///
+  /// @param context BuildContext of parent Widget
+  /// @param lessonPath Path of the lesson
   Future<int> getNumberOfLessonSlides(
       BuildContext context, String lessonPath) async {
     var slidePaths = await getLessonSlidePaths(context, lessonPath);
     return slidePaths.length;
   }
 
+  /// This method deletes a file from disk.
+  ///
+  /// @param file File to be deleted
   Future<void> deleteFile(File file) async {
     try {
       if (await file.exists()) {

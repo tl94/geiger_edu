@@ -29,7 +29,6 @@ class _LabeledTextFieldState extends State<LabeledTextField>{
             Text(widget.label, style: TextStyle(fontSize: 20)),
             SizedBox(width: 60),
             Flexible(child: SizedBox( width: 200, child: TextField(
-                //TODO: BUG - click on text field causes many redraws of selection screen
                 controller: TextEditingController(text: widget.text),
                 decoration: InputDecoration(
                   //hintText: 'username',

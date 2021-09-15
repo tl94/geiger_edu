@@ -21,23 +21,21 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var defaultSetting = globalController.defaultSetting;
-    var bckColor = GlobalController.bckColor;
 
     return Scaffold(
       appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         title: Text("SettingsTitle".tr),
         centerTitle: true,
-        backgroundColor: bckColor,
       ),
       body: Container(
-        child: Column(children: [
-          Expanded(child:
-          SingleChildScrollView(
-              child:Container(
+          child: Column(children: [
+        Expanded(
+          child: SingleChildScrollView(
+              child: Container(
                   margin: EdgeInsets.fromLTRB(20, 20, 20, 20),
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -45,7 +43,9 @@ class SettingsScreen extends StatelessWidget {
                       children: <Widget>[
                         HiveListener(
                           box: DB.getSettingBox(),
-                          keys: [ defaultSetting ], // keys is optional to specify listening value changes
+                          keys: [
+                            defaultSetting
+                          ], // keys is optional to specify listening value changes
                           builder: (box) {
                             return LabeledSwitch(
                               label: "SettingsDarkMode".tr,
@@ -54,10 +54,9 @@ class SettingsScreen extends StatelessWidget {
                             );
                           },
                         ),
-
                         SizedBox(height: 20),
-                        Text("SettingsLessons".tr, style: TextStyle(fontSize: 20)),
-
+                        Text("SettingsLessons".tr,
+                            style: TextStyle(fontSize: 20)),
                         HiveListener(
                           box: DB.getUserBox(),
                           builder: (box) {
@@ -68,7 +67,6 @@ class SettingsScreen extends StatelessWidget {
                             );
                           },
                         ),
-
                         HiveListener(
                           box: DB.getUserBox(),
                           builder: (box) {
@@ -79,16 +77,14 @@ class SettingsScreen extends StatelessWidget {
                             );
                           },
                         ),
-                      ])
-              )
-          ),
-          ),
-          Container(
-            margin: EdgeInsets.fromLTRB(20, 20, 20, 20),
-            child: Text("Mobile Learning v" + globalController.appVersion, style: TextStyle(fontSize: 20, color: Colors.grey)),
-          )
-        ])
+                      ]))),
         ),
-      );
+        Container(
+          margin: EdgeInsets.fromLTRB(20, 20, 20, 20),
+          child: Text("Mobile Learning v" + GlobalController.appVersion,
+              style: TextStyle(fontSize: 20, color: Colors.grey)),
+        )
+      ])),
+    );
   }
 }

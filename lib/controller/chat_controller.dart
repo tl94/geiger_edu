@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cron/cron.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:geiger_edu/controller/global_controller.dart';
@@ -25,13 +26,14 @@ class ChatController extends GetxController {
   final ImagePicker _picker = ImagePicker();
   var msgController = TextEditingController();
   var scrollController = ScrollController();
-  var bckColor = GlobalController.bckColor;
   var lastMessageId = 0;
   var currentImage = "".obs;
   var currentLessonId = "";
   var message = "";
   var image = "";
   var requestedUserId = "";
+  var lastUpdateDate = DateTime.now();
+  ScheduledTask? chatUpdateTask;
 
   /// This method lets a user select an image from the gallery.
   Future getImage() async {
@@ -145,7 +147,7 @@ class ChatController extends GetxController {
 
       //generate comment object
       Comment comment = new Comment(
-          id: "C00_" + DateTime.now().toString(), //TODO: SERVER RESPONSE
+          id: "C00_" + DateTime.now().toString(),
           text: message,
           dateTime: DateTime.now(),
           lessonId: currentLessonId,
@@ -159,22 +161,46 @@ class ChatController extends GetxController {
       message = "";
       currentImage.value = "";
 
-      //scroll to the bottom of the list view
-      scrollController.animateTo(
-        scrollController.position.maxScrollExtent, //+height of new item
-        duration: Duration(seconds: 1),
-        curve: Curves.fastOutSlowIn,
-      );
+      //scrollToChatBottom();
     }
+  }
+
+  /// scroll to the bottom of the list view.
+  void scrollToChatBottom() {
+    //scroll to the bottom of the list view
+    scrollController.animateTo(scrollController.position.maxScrollExtent,
+        duration: Duration(milliseconds: 200), curve: Curves.easeInOut);
   }
 
   /// This method navigates to the chat of the currently selected lesson.
   ///
   /// @param context The context of the parent widget.
   Future<void> navigateToChat(BuildContext context) async {
-    await ChatAPI.authenticateUser();
-    ChatAPI.saveMessagesToDB(ChatAPI.fetchMessages(currentLessonId));
+    if (globalController.checkInternetConnection()) {
+      await ChatAPI.authenticateUser();
+      ChatAPI.saveMessagesToDB(ChatAPI.fetchMessages(currentLessonId));
+      lastUpdateDate = DateTime.now();
+      createChatUpdateTask();
+    }
     Navigator.pushNamed(context, ChatScreen.routeName);
+  }
+
+  /// creates cron job to update chat
+  void createChatUpdateTask() {
+    if (chatUpdateTask != null) cancelChatUpdateTask();
+    chatUpdateTask = globalController.scheduleJob("*/5 * * * * *", () {
+      ChatAPI.saveMessagesToDB(
+          ChatAPI.fetchNewMessages(currentLessonId, lastUpdateDate));
+      lastUpdateDate = DateTime.now();
+    });
+  }
+
+  /// cancels update chat cron job
+  void cancelChatUpdateTask() {
+    if (chatUpdateTask != null) {
+      globalController.cancelJob(chatUpdateTask!);
+      chatUpdateTask = null;
+    }
   }
 
   /// HELPER METHODS ///
