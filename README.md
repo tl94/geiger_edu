@@ -24,4 +24,4 @@ GEIGER Mobile Learning was developed using:
 | Flutter | 2.2.2 | 
 | Android Studio  | 4.2.1 | 
 | Pixel 2 - Emulator  | API 30 - x86_64 | 
-| Andoid | 11.0 |
+| Android | 11.0 |
