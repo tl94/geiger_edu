@@ -5,8 +5,7 @@
 # Table of Contents
 - [What is GEIGER Mobile Learning?](#what-is-geiger-mobile-learning)
 - [Advantages](#advantages)
-- [Basic Structure](#basic-structure)
-- [Documentation](#documentation)
+- [Documentation](#Documentation)
 
 # What is GEIGER Mobile Learning?
 *GEIGER Mobile Learning* is a mobile application available for Android, iOS and Desktop. 
@@ -17,7 +16,8 @@ Having access to the internet enables the second main feature of the app namely 
 In contrast to other Apps is *GEIGER Mobile Learning* part of the *GEIGER Community* and thus supported by a wide range of experts that directly answer questions.
 The half structured communication channel further enhances the exchange experience. The Application is completely free to use helps prevent serious damage to businesses and individuals alike in today's digitalised world.
 
-# Development
+# Documentation
+## Development
 GEIGER Mobile Learning was developed using:
 | Platform | Version | 
 |---|---|
